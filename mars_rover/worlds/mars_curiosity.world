@@ -1,0 +1,14 @@
+<sdf version="1.5">
+  <world name="default">
+
+    <!-- Martian Gravity-->
+    <gravity>0 0 -3.711</gravity>
+
+    <include>
+      <uri>/gz_garden/demo/mars_rover/models/curiosity_path</uri>
+      <name>curiosity_path</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
