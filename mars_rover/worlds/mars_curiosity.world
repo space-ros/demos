@@ -5,7 +5,7 @@
     <gravity>0 0 -3.711</gravity>
 
     <include>
-      <uri>/gz_garden/demo/mars_rover/models/curiosity_path</uri>
+      <uri>/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/models/curiosity_path</uri>
       <name>curiosity_path</name>
       <pose>0 0 0 0 0 0</pose>
     </include>
