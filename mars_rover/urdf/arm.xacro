@@ -131,9 +131,9 @@
 			<mass value="${arm_02_Mass}"/>
 			<xacro:box_inertia
 				m="${arm_02_Mass}"
-				x="${arm_02_X*scale_XYZ}"
-				y="${arm_02_Y*scale_XYZ}"
-				z="${arm_02_Z*scale_XYZ}"/>
+				x="0.49659166964500007"
+				y="0.13536811128100001"
+				z="0.13536811128100001"/>
 		</inertial>
 	</link>
 

@@ -1,3 +1,4 @@
+from http.server import executable
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
@@ -38,8 +39,31 @@ def generate_launch_description():
         shell=True
     )
 
+    params = {'use_sim_time': True, 'robot_description': Command(['xacro ', LaunchConfiguration('model')])}
+    robot_state_publisher = Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[params],
+            arguments=[])
+
+    spawn = Node(
+        package='ros_ign_gazebo', executable='create',
+        arguments=[
+            '-name', 'curiosity_mars_rover',
+            '-x','1.0',
+            '-z','0.0',
+            '-y','0.0',
+            '-topic', '/robot_description'
+        ],
+        output='screen'
+    )
+
     ld.add_action(model_arg)
     ld.add_action(test_node)
     ld.add_action(start_world)
+    ld.add_action(robot_state_publisher)
+    ld.add_action(spawn)
 
     return ld

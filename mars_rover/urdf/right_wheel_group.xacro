@@ -62,9 +62,9 @@
 			<mass value="${suspension_arm_F_L_Mass}"/>
 			<xacro:box_inertia
 				m="${suspension_arm_F_L_Mass}"
-				x="${suspension_arm_F_L_X*scale_XYZ}"
-				y="${suspension_arm_F_L_Y*scale_XYZ}"
-				z="${suspension_arm_F_L_Z*scale_XYZ}"/>
+				x="0.691776350704"
+				y="0.1520658179456"
+				z="0.1520658179456"/>
 		</inertial>
 	</link>
 
@@ -113,9 +113,9 @@
 			<mass value="${suspension_arm_B_L_Mass}"/>
 			<xacro:box_inertia
 				m="${suspension_arm_B_L_Mass}"
-				x="${suspension_arm_B_L_X*scale_XYZ}"
-				y="${suspension_arm_B_L_Y*scale_XYZ}"
-				z="${suspension_arm_B_L_Z*scale_XYZ}"/>
+				x="0.5152426402118399"
+				y="0.083058082238336"
+				z="0.083058082238336"/>
 		</inertial>
 	</link>
 
@@ -190,9 +190,9 @@
 			<mass value="${suspension_arm_B2_L_Mass}"/>
 			<xacro:box_inertia
 				m="${suspension_arm_B2_L_Mass}"
-				x="${suspension_arm_B2_L_X*scale_XYZ}"
-				y="${suspension_arm_B2_L_Y*scale_XYZ}"
-				z="${suspension_arm_B2_L_Z*scale_XYZ}"/>
+				x="1.1489656574635518"
+				y="0.33974878204390385"
+				z="0.33974878204390385"/>
 		</inertial>
 	</link>
 
