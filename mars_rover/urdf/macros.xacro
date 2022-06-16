@@ -26,7 +26,7 @@
     			ixz = "0"
     			iyy="${m*(x*x+z*z)/12}" 
     			iyz = "0"
-    			izz="${m*(x*x+z*z)/12}"
+    			izz="${m*(x*x+y*y)/12}"
     />
   </xacro:macro>
 

@@ -113,7 +113,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -131,9 +131,9 @@
 			<mass value="${arm_02_Mass}"/>
 			<xacro:box_inertia
 				m="${arm_02_Mass}"
-				x="0.49659166964500007"
-				y="0.13536811128100001"
-				z="0.13536811128100001"/>
+				x="${arm_02_X*scale_XYZ}"
+				y="${arm_02_Y*scale_XYZ}"
+				z="${arm_02_Z*scale_XYZ}"/>
 		</inertial>
 	</link>
 

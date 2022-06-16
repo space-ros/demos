@@ -14,7 +14,7 @@
 	<xacro:include filename="$(find mars_rover)/urdf/left_wheel_group.xacro" />
 	<xacro:include filename="$(find mars_rover)/urdf/right_wheel_group.xacro" />
 	<!-- Arm -->
-	<!-- <xacro:include filename="$(find mars_rover)/urdf/arm.xacro" /> -->
+	<xacro:include filename="$(find mars_rover)/urdf/arm.xacro" />
 	<!-- Sensor Mast -->
 	<xacro:include filename="$(find mars_rover)/urdf/sensor_mast.xacro" />
 
@@ -22,7 +22,7 @@
 	<xacro:left_wheel_tree/>
 	<xacro:right_wheel_tree/>
 
-	<!-- <xacro:arm/> -->
+	<xacro:arm/>
 	<xacro:sensor_mast/>
 
 </robot>
