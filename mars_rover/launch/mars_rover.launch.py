@@ -27,10 +27,11 @@ def generate_launch_description():
 
     test_node = Node(
         package="mars_rover",
-        executable="test_node",
+        executable="move_arm",
         parameters=[
             {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
-        ]
+        ],
+        output='screen'
     )
 
     start_world = ExecuteProcess(
