@@ -25,4 +25,24 @@
 	<xacro:arm/>
 	<xacro:sensor_mast/>
 
+
+    <ros2_control name="IgnitionSystem" type="system">
+        <hardware>
+            <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </hardware>
+        <joint name="arm_01_joint">
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+    </ros2_control>
+
+    <gazebo>
+        <plugin filename="libign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <robot_param>robot_description</robot_param>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+        <parameters>$(find mars_rover)/config/mars_rover_control.yaml</parameters>
+        </plugin>
+    </gazebo>
 </robot>

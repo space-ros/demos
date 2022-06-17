@@ -9,7 +9,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(rclpy REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -32,13 +36,14 @@ install(DIRECTORY
   models
   meshes
   worlds
+  config
   DESTINATION share/${PROJECT_NAME}
 )
 
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
-  nodes/test_node
+  nodes/move_arm
   DESTINATION lib/${PROJECT_NAME}
 )
 

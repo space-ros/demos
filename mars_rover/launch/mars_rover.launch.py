@@ -1,9 +1,10 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.event_handlers import OnProcessExit
 import os
 from os import environ
 
@@ -60,10 +61,43 @@ def generate_launch_description():
         output='screen'
     )
 
+
+    component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
+
+    set_hardware_interface_active = ExecuteProcess(
+        cmd=['ros2', 'service', 'call', 
+            'controller_manager/set_hardware_component_state',
+            'controller_manager_msgs/srv/SetHardwareComponentState',
+            component_state_msg]
+    )
+
+    load_joint_state_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'joint_state_broadcaster'],
+        output='screen'
+    )
+
+    load_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'joint_trajectory_controller'],
+        output='screen'
+    )
+
+    set_hardware_interface_active_event = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=set_hardware_interface_active,
+            on_exit=[load_joint_state_broadcaster, load_joint_traj_controller]
+        )
+    )
+
     ld.add_action(model_arg)
     ld.add_action(test_node)
     ld.add_action(start_world)
     ld.add_action(robot_state_publisher)
     ld.add_action(spawn)
+    ld.add_action(set_hardware_interface_active)
+    ld.add_action(load_joint_state_broadcaster)
+    ld.add_action(load_joint_traj_controller)
+    #ld.add_action(set_hardware_interface_active_event)
 
     return ld
