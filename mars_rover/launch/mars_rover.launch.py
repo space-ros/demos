@@ -4,12 +4,12 @@ from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventH
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessExit, OnExecutionComplete
 import os
 from os import environ
 
 def generate_launch_description():
-    ld = LaunchDescription()
+    # ld = LaunchDescription()
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
@@ -63,8 +63,11 @@ def generate_launch_description():
     )
 
 
+    ## Control Components
+
     component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
 
+    ## a hack to resolve current bug
     set_hardware_interface_active = ExecuteProcess(
         cmd=['ros2', 'service', 'call', 
             'controller_manager/set_hardware_component_state',
@@ -78,27 +81,45 @@ def generate_launch_description():
         output='screen'
     )
 
-    load_joint_traj_controller = ExecuteProcess(
+    load_arm_joint_traj_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-             'joint_trajectory_controller'],
+             'arm_joint_trajectory_controller'],
         output='screen'
     )
 
-    set_hardware_interface_active_event = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=set_hardware_interface_active,
-            on_exit=[load_joint_state_broadcaster, load_joint_traj_controller]
-        )
+    load_mast_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'mast_joint_trajectory_controller'],
+        output='screen'
     )
 
-    ld.add_action(model_arg)
-    ld.add_action(test_node)
-    ld.add_action(start_world)
-    ld.add_action(robot_state_publisher)
-    ld.add_action(spawn)
-    ld.add_action(set_hardware_interface_active)
-    ld.add_action(load_joint_state_broadcaster)
-    ld.add_action(load_joint_traj_controller)
-    #ld.add_action(set_hardware_interface_active_event)
+    load_wheel_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'wheel_velocity_controller'],
+        output='screen'
+    )
 
-    return ld
+
+
+
+    return LaunchDescription([
+        model_arg,
+        start_world,
+        robot_state_publisher,
+        spawn,
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=spawn,
+                on_exit=[set_hardware_interface_active],
+            )
+        ),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=set_hardware_interface_active,
+                on_exit=[load_joint_state_broadcaster,
+                        load_arm_joint_traj_controller,
+                        load_mast_joint_traj_controller,
+                        load_wheel_joint_traj_controller],
+            )
+        ),
+    ])

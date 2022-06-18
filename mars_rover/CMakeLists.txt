@@ -44,6 +44,8 @@ ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
   nodes/move_arm
+  nodes/move_mast
+  nodes/move_wheel
   DESTINATION lib/${PROJECT_NAME}
 )
 

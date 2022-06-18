@@ -31,32 +31,73 @@
             <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
         <joint name="arm_01_joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position" />
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
         <joint name="arm_02_joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position" />
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
         <joint name="arm_03_joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position" />
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
         <joint name="arm_04_joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position" />
+            
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
         <joint name="arm_tools_joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mast_p_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mast_02_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="mast_cameras_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="front_wheel_L_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="middle_wheel_L_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="back_wheel_L_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="front_wheel_R_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="middle_wheel_R_joint">
+            <command_interface name="velocity" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="back_wheel_R_joint">
+            <command_interface name="velocity" />
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>

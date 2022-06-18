@@ -7,38 +7,38 @@ from builtin_interfaces.msg import Duration
 from std_msgs.msg import String, Float64
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
-class MoveArm(Node):
+class MastArm(Node):
 
     def __init__(self):
-        super().__init__('arm_node')
-        self.arm_publisher_ = self.create_publisher(JointTrajectory, '/arm_joint_trajectory_controller/joint_trajectory', 10)
+        super().__init__('mast_node')
+        self.mast_publisher_ = self.create_publisher(JointTrajectory, '/mast_joint_trajectory_controller/joint_trajectory', 10)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
 
     def timer_callback(self):
         traj = JointTrajectory()
-        traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
+        traj.joint_names = ["mast_p_joint", "mast_02_joint", "mast_cameras_joint"]
         
         point = JointTrajectoryPoint()
-        point.positions = [0.0,0.0,0.0,0.0,0.0]
+        point.positions = [0.0,0.0,0.0]
         point.time_from_start = Duration(sec=1)
 
         traj.points.append(point)
-        self.arm_publisher_.publish(traj)
+        self.mast_publisher_.publish(traj)
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    arm_node = MoveArm()
+    mast_node = MastArm()
 
-    rclpy.spin(arm_node)
+    rclpy.spin(mast_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    arm_node.destroy_node()
+    mast_node.destroy_node()
     rclpy.shutdown()
 
 

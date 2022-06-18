@@ -2,14 +2,20 @@ controller_manager:
   ros__parameters:
     update_rate: 100
 
-    joint_trajectory_controller:
+    arm_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    mast_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    wheel_velocity_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-joint_trajectory_controller:
+arm_joint_trajectory_controller:
   ros__parameters:
     joints:
       - arm_01_joint
@@ -20,6 +26,35 @@ joint_trajectory_controller:
     interface_name: position
     command_interfaces:
       - position
+    state_interfaces:
+      - position
+      - velocity
+
+mast_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - mast_p_joint
+      - mast_02_joint
+      - mast_cameras_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+wheel_velocity_controller:
+  ros__parameters:
+    joints:
+      - front_wheel_L_joint
+      - middle_wheel_L_joint
+      - back_wheel_L_joint
+      - front_wheel_R_joint
+      - middle_wheel_R_joint
+      - back_wheel_R_joint
+    interface_name: velocity
+    command_interfaces:
+      - velocity
     state_interfaces:
       - position
       - velocity

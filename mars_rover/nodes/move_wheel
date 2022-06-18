@@ -7,38 +7,42 @@ from builtin_interfaces.msg import Duration
 from std_msgs.msg import String, Float64
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 
-class MoveArm(Node):
+class MoveWheel(Node):
 
     def __init__(self):
-        super().__init__('arm_node')
-        self.arm_publisher_ = self.create_publisher(JointTrajectory, '/arm_joint_trajectory_controller/joint_trajectory', 10)
+        super().__init__('wheel_node')
+        self.wheel_publisher_ = self.create_publisher(JointTrajectory, '/wheel_velocity_controller/joint_trajectory', 10)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
 
     def timer_callback(self):
         traj = JointTrajectory()
-        traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
+        traj.joint_names = ["front_wheel_L_joint",
+                            "middle_wheel_L_joint",
+                            "back_wheel_L_joint",
+                            "front_wheel_R_joint",
+                            "middle_wheel_R_joint",
+                            "back_wheel_R_joint"]
         
         point = JointTrajectoryPoint()
-        point.positions = [0.0,0.0,0.0,0.0,0.0]
+        point.positions = [0.0,0.0,0.0,0.0,0.0,0.0]
         point.time_from_start = Duration(sec=1)
 
         traj.points.append(point)
-        self.arm_publisher_.publish(traj)
-
+        self.wheel_publisher_.publish(traj)
 
 def main(args=None):
     rclpy.init(args=args)
 
-    arm_node = MoveArm()
+    wheel_node = MoveWheel()
 
-    rclpy.spin(arm_node)
+    rclpy.spin(wheel_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    arm_node.destroy_node()
+    wheel_node.destroy_node()
     rclpy.shutdown()
 
 
