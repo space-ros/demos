@@ -12,11 +12,14 @@ class MoveWheel(Node):
     def __init__(self):
         super().__init__('wheel_node')
         self.wheel_publisher_ = self.create_publisher(JointTrajectory, '/wheel_velocity_controller/joint_trajectory', 10)
+        self.steer_publisher_ = self.create_publisher(JointTrajectory, '/steer_position_controller/joint_trajectory', 10)
+#        self.suspension_publisher_ = self.create_publisher(JointTrajectory, '/wheel_tree_position_controller/joint_trajectory',10)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
 
     def timer_callback(self):
+        #wheel velocities
         traj = JointTrajectory()
         traj.joint_names = ["front_wheel_L_joint",
                             "middle_wheel_L_joint",
@@ -31,6 +34,39 @@ class MoveWheel(Node):
 
         traj.points.append(point)
         self.wheel_publisher_.publish(traj)
+
+
+        #steering wheel
+        steer_traj = JointTrajectory()
+        steer_traj.joint_names = ["suspension_steer_F_L_joint",
+                                    "suspension_steer_B_L_joint",
+                                    "suspension_steer_F_R_joint",
+                                    "suspension_steer_B_R_joint"]
+        
+        steer_point = JointTrajectoryPoint()
+        steer_point.positions = [1.0,1.0,0.0,0.0]
+        steer_point.time_from_start = Duration(sec=1)
+
+        steer_traj.points.append(steer_point)
+        self.steer_publisher_.publish(steer_traj)
+
+        # #wheel suspension
+        # suspension_traj = JointTrajectory()
+        # suspension_traj.joint_names = ["suspension_arm_F_L_joint",
+        #                                 "suspension_arm_B_L_joint",
+        #                                 "suspension_arm_B2_L_joint",
+        #                                 "suspension_arm_F_R_joint",
+        #                                 "suspension_arm_B_R_joint",
+        #                                 "suspension_arm_B2_R_joint"]
+
+        # suspension_point = JointTrajectoryPoint()
+        # suspension_point.positions = [0.0,0.0,0.0,0.0,0.0,0.0]
+        # suspension_point.time_from_start = Duration(sec=1)
+
+        # suspension_traj.points.append(suspension_point)
+        # self.suspension_publisher_.publish(suspension_traj)
+
+        
 
 def main(args=None):
     rclpy.init(args=args)

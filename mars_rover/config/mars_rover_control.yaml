@@ -11,6 +11,12 @@ controller_manager:
     wheel_velocity_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
+    steer_position_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    wheel_tree_position_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -58,3 +64,33 @@ wheel_velocity_controller:
     state_interfaces:
       - position
       - velocity
+
+
+steer_position_controller:
+  ros__parameters:
+    joints:
+      - suspension_steer_F_L_joint
+      - suspension_steer_B_L_joint
+      - suspension_steer_F_R_joint
+      - suspension_steer_B_R_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+wheel_tree_position_controller:
+  ros__parameters:
+    joints:
+      - suspension_arm_F_L_joint
+      - suspension_arm_B_L_joint
+      - suspension_arm_B2_L_joint
+      - suspension_arm_F_R_joint
+      - suspension_arm_B_R_joint
+      - suspension_arm_B2_R_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

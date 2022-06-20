@@ -101,6 +101,50 @@
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>
+        <joint name="suspension_steer_F_L_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="suspension_steer_B_L_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="suspension_steer_F_R_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="suspension_steer_B_R_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        <joint name="suspension_arm_F_L_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="suspension_arm_B_L_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="suspension_arm_B2_L_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="suspension_arm_F_R_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="suspension_arm_B_R_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
+        <joint name="suspension_arm_B2_R_joint">
+            <command_interface name="position" />
+            <state_interface name="position" />
+        </joint>
     </ros2_control>
 
     <gazebo>

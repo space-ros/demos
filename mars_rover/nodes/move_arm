@@ -21,7 +21,7 @@ class MoveArm(Node):
         traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
         
         point = JointTrajectoryPoint()
-        point.positions = [0.0,0.0,0.0,0.0,0.0]
+        point.positions = [0.0,0.0,0.0,1.0,0.0]
         point.time_from_start = Duration(sec=1)
 
         traj.points.append(point)

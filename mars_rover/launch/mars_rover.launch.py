@@ -25,7 +25,7 @@ def generate_launch_description():
         description="mars rover urdf"
     )
 
-    test_node = Node(
+    arm_node = Node(
         package="mars_rover",
         executable="move_arm",
         parameters=[
@@ -34,8 +34,26 @@ def generate_launch_description():
         output='screen'
     )
 
+    mast_node = Node(
+        package="mars_rover",
+        executable="move_mast",
+        parameters=[
+            {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
+        ],
+        output='screen'
+    )
+
+    wheel_node = Node(
+        package="mars_rover",
+        executable="move_wheel",
+        parameters=[
+            {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
+        ],
+        output='screen'
+    )
+
     start_world = ExecuteProcess(
-        cmd=['ign gazebo', mars_world_model],
+        cmd=['ign gazebo', mars_world_model, '-r'],
         output='screen',
         additional_env=env,
         shell=True
@@ -55,7 +73,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'curiosity_mars_rover',
             '-x','1.0',
-            '-z','0.0',
+            '-z','-7.0',
             '-y','0.0',
             '-topic', '/robot_description'
         ],
@@ -99,6 +117,18 @@ def generate_launch_description():
         output='screen'
     )
 
+    load_steer_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'steer_position_controller'],
+        output='screen'
+    )
+
+    load_suspension_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'wheel_tree_position_controller'],
+        output='screen'
+    )
+
 
 
 
@@ -107,6 +137,16 @@ def generate_launch_description():
         start_world,
         robot_state_publisher,
         spawn,
+        arm_node,
+        mast_node,
+        wheel_node,
+
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=start_world,
+                on_exit=[spawn],
+            )
+        ),
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
@@ -119,7 +159,9 @@ def generate_launch_description():
                 on_exit=[load_joint_state_broadcaster,
                         load_arm_joint_traj_controller,
                         load_mast_joint_traj_controller,
-                        load_wheel_joint_traj_controller],
+                        load_wheel_joint_traj_controller,
+                        load_steer_joint_traj_controller,
+                        load_suspension_joint_traj_controller],
             )
         ),
     ])
