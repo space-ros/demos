@@ -143,4 +143,42 @@
         <parameters>$(find mars_rover)/config/mars_rover_control.yaml</parameters>
         </plugin>
     </gazebo>
+
+
+
+    <gazebo reference="camera_link">
+        <sensor type="camera" name="camera_sensor">
+            <visualize>1</visualize>
+            <update_rate>10.0</update_rate>
+            <camera>
+                <pose>1.0 0 0 0 0 -1.57</pose>
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                <near>0.01</near>
+                <far>100</far>
+                </clip>
+                <noise>
+                <type>gaussian</type>
+                <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <always_on>1</always_on>
+            <topic>image_raw</topic>
+            <plugin
+                filename="ignition-gazebo-sensors-system"
+                name="ignition::gazebo::systems::Sensors">
+                <render_engine>ogre2</render_engine>
+                <background_color>1 1 1 1</background_color>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+
+
+
 </robot>

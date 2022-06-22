@@ -68,7 +68,6 @@ class MoveWheel(Node):
             else:
                 target_steer.data = [-alpha_o, alpha_o, -alpha_i, alpha_i]
 
-        self.get_logger().info(f'Publishing: "{target_steer.data}"')
         self.steer_publisher_.publish(target_steer)
 
 

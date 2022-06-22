@@ -99,11 +99,11 @@ def generate_launch_description():
         output='screen'
     )
 
-    # load_arm_joint_traj_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-    #          'arm_joint_trajectory_controller'],
-    #     output='screen'
-    # )
+    load_arm_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+             'arm_joint_trajectory_controller'],
+        output='screen'
+    )
 
     # load_mast_joint_traj_controller = ExecuteProcess(
     #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
@@ -157,6 +157,7 @@ def generate_launch_description():
             OnProcessExit(
                 target_action=set_hardware_interface_active,
                 on_exit=[load_joint_state_broadcaster,
+                        load_arm_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
                         load_suspension_joint_traj_controller],

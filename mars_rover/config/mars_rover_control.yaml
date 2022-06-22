@@ -21,20 +21,20 @@ controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-# arm_joint_trajectory_controller:
-#   ros__parameters:
-#     joints:
-#       - arm_01_joint
-#       - arm_02_joint
-#       - arm_03_joint
-#       - arm_04_joint
-#       - arm_tools_joint
-#     interface_name: position
-#     command_interfaces:
-#       - position
-#     state_interfaces:
-#       - position
-#       - velocity
+arm_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_01_joint
+      - arm_02_joint
+      - arm_03_joint
+      - arm_04_joint
+      - arm_tools_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
 
 # mast_joint_trajectory_controller:
 #   ros__parameters:
