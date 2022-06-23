@@ -45,6 +45,7 @@ class MoveWheel(Node):
 
 
     def set_steering(self, turn_rad):
+        #Ideal Ackerman Steering
         target_steer = Float64MultiArray()
         if abs(turn_rad) < 1e-3:
             target_steer.data = [0.0, 0.0, 0.0, 0.0]

@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+
+import rclpy
+from rclpy.node import Node
+
+from geometry_msgs.msg import Twist
+import math
+from random import randint
+from std_srvs.srv import Empty
+
+class RunDemo(Node):
+    def __init__(self) -> None:
+        super().__init__('run_node')
+        self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.random_srv = self.create_service(Empty, 'random_walk', self.random_walk_callback)
+
+        timer_period = 10
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        action1 = Twist()
+        action1.linear.x = 2.0
+        
+        action2 = Twist()
+        action2.linear.x = 3.0
+        action2.angular.z = 0.4
+
+        action3 = Twist()
+        action3.linear.x = 3.0
+        action3.angular.z = -0.4
+
+        self.actions = [action1, action2, action3]
+
+        self.random_walk = False
+
+    def timer_callback(self):
+        if self.random_walk:
+            curr_action = self.actions[randint(0,2)]
+            self.motion_publisher_.publish(curr_action)
+
+    def random_walk_callback(self, request, response):
+        if self.random_walk:
+            self.motion_publisher_.publish(Twist())
+        else:
+            self.motion_publisher_.publish(self.actions[0])
+
+        self.random_walk = not self.random_walk
+        return response
+
+    
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    run_demo = RunDemo()
+
+    rclpy.spin(run_demo)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    run_demo.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()

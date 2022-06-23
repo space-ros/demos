@@ -16,15 +16,12 @@ class MoveArm(Node):
         self.pick_srv = self.create_service(Empty, 'move_arm', self.move_arm_callback)
 
 
-        # timer_period = 20.0  # seconds
-        # self.timer = self.create_timer(timer_period, self.timer_callback)
-
     def move_arm_callback(self, request, response):
         traj = JointTrajectory()
         traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
         
         point1 = JointTrajectoryPoint()
-        point1.positions = [0.0,0.0,1.0,0.0,0.0]
+        point1.positions = [-1.57,-0.4,-1.1,-1.57,-1.57]
         point1.time_from_start = Duration(sec=4)
 
         traj.points.append(point1)

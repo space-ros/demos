@@ -52,6 +52,12 @@ def generate_launch_description():
         output='screen'
     )
 
+    run_node = Node(
+        package="mars_rover",
+        executable="run_demo",
+        output='screen'
+    )
+
     start_world = ExecuteProcess(
         cmd=['ign gazebo', mars_world_model, '-r'],
         output='screen',
@@ -140,6 +146,7 @@ def generate_launch_description():
         arm_node,
         mast_node,
         wheel_node,
+        run_node,
 
         RegisterEventHandler(
             OnProcessExit(

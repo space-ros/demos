@@ -46,6 +46,7 @@ install(PROGRAMS
   nodes/move_arm
   nodes/move_mast
   nodes/move_wheel
+  nodes/run_demo
   DESTINATION lib/${PROJECT_NAME}
 )
 
