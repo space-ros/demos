@@ -13,28 +13,38 @@ class MoveArm(Node):
     def __init__(self):
         super().__init__('arm_node')
         self.arm_publisher_ = self.create_publisher(JointTrajectory, '/arm_joint_trajectory_controller/joint_trajectory', 10)
-        self.pick_srv = self.create_service(Empty, 'move_arm', self.move_arm_callback)
+        self.open_srv = self.create_service(Empty, 'open_arm', self.open_arm_callback)
+        self.close_srv = self.create_service(Empty, 'close_arm', self.close_arm_callback)
 
 
-    def move_arm_callback(self, request, response):
+        self.open = True
+
+    def open_arm_callback(self, request, response):
+        self.open = True
+        traj = JointTrajectory()
+        traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
+        
+        point1 = JointTrajectoryPoint()
+        point1.positions = [0.0,0.0,0.0,0.0,0.0]
+        point1.velocities = [1.0, 1.0, 1.0, 1.0, 1.0]
+        point1.time_from_start = Duration(sec=4)
+
+        traj.points.append(point1)
+        self.arm_publisher_.publish(traj)
+
+        return response
+
+    def close_arm_callback(self, request, response):
+        self.open = False
         traj = JointTrajectory()
         traj.joint_names = ["arm_01_joint", "arm_02_joint", "arm_03_joint", "arm_04_joint", "arm_tools_joint"]
         
         point1 = JointTrajectoryPoint()
         point1.positions = [-1.57,-0.4,-1.1,-1.57,-1.57]
+        point1.velocities = [1.0, 1.0, 1.0, 1.0, 1.0]
         point1.time_from_start = Duration(sec=4)
 
         traj.points.append(point1)
-
-        point2 = JointTrajectoryPoint()
-        point2.positions = [0.0,0.0,0.0,0.0,0.0]
-        point2.time_from_start = Duration(sec=8)
-
-
-        traj.points.append(point2)
-
-        self.get_logger().info(f'Publishing: "{traj.points}"')
-
         self.arm_publisher_.publish(traj)
 
         return response

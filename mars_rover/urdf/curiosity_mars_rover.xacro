@@ -173,7 +173,7 @@
                 filename="ignition-gazebo-sensors-system"
                 name="ignition::gazebo::systems::Sensors">
                 <render_engine>ogre2</render_engine>
-                <background_color>1 1 1 1</background_color>
+                <background_color>0.9 0.753 0.66 1</background_color>
             </plugin>
         </sensor>
     </gazebo>

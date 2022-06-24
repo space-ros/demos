@@ -76,7 +76,7 @@ class MoveWheel(Node):
 
         target_val = Float64MultiArray()
         if sus_val is None:
-            target_val.data = [0.1,0.0,-0.1,0.1,0.0,-0.1]
+            target_val.data = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.suspension_publisher_.publish(target_val)
 
 

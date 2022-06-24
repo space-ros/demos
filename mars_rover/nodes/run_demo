@@ -14,24 +14,28 @@ class RunDemo(Node):
         super().__init__('run_node')
         self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         self.random_srv = self.create_service(Empty, 'random_walk', self.random_walk_callback)
+        self.arm_cli = self.create_client(Empty, 'close_arm')
+        while not self.arm_cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service not available, waiting again...')
 
         timer_period = 10
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         action1 = Twist()
-        action1.linear.x = 2.0
+        action1.linear.x = 3.0
         
         action2 = Twist()
-        action2.linear.x = 3.0
+        action2.linear.x = 4.0
         action2.angular.z = 0.4
 
         action3 = Twist()
-        action3.linear.x = 3.0
+        action3.linear.x = 4.0
         action3.angular.z = -0.4
 
         self.actions = [action1, action2, action3]
 
         self.random_walk = False
+
 
     def timer_callback(self):
         if self.random_walk:
@@ -42,6 +46,7 @@ class RunDemo(Node):
         if self.random_walk:
             self.motion_publisher_.publish(Twist())
         else:
+            future = self.arm_cli.call_async(Empty.Request())
             self.motion_publisher_.publish(self.actions[0])
 
         self.random_walk = not self.random_walk
