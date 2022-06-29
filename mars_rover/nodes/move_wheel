@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from pickle import FALSE
 import rclpy
 from rclpy.node import Node
 from builtin_interfaces.msg import Duration
@@ -14,7 +15,7 @@ class MoveWheel(Node):
     def __init__(self):
         super().__init__('wheel_node')
         self.wheel_publisher_ = self.create_publisher(Float64MultiArray, '/wheel_velocity_controller/commands', 10)
-        self.steer_publisher_ = self.create_publisher(Float64MultiArray, '/steer_position_controller/commands', 10)
+        self.steer_publisher_ = self.create_publisher(JointTrajectory, '/steer_position_controller/joint_trajectory', 10)
         self.suspension_publisher_ = self.create_publisher(Float64MultiArray, '/wheel_tree_position_controller/commands',10)
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -22,8 +23,16 @@ class MoveWheel(Node):
 
         self.vel_sub = self.create_subscription(Twist, '/cmd_vel', self.vel_callback, 10)
         self.curr_vel = Twist()
+        self.last_vel = Twist()
+        self.should_steer = False
 
     def vel_callback(self, msg):
+        if abs(self.last_vel.angular.z - self.curr_vel.angular.z) > 0.01 and self.should_steer is False:
+            self.last_vel = Twist()
+            self.last_vel.linear.x = self.curr_vel.linear.x
+            self.last_vel.angular.z = self.curr_vel.angular.z
+            self.should_steer = True
+
         self.curr_vel = msg
 
     def set_wheel_common_speed(self, vel):
@@ -46,9 +55,14 @@ class MoveWheel(Node):
 
     def set_steering(self, turn_rad):
         #Ideal Ackerman Steering
-        target_steer = Float64MultiArray()
+        target_steer = JointTrajectory()
+        # target_steer.header.stamp = self.get_clock().now().to_msg()
+        target_steer.joint_names = ["suspension_steer_F_L_joint", "suspension_steer_B_L_joint", 
+                                    "suspension_steer_F_R_joint", "suspension_steer_B_R_joint"]
+        steer_point = JointTrajectoryPoint()
+        
         if abs(turn_rad) < 1e-3:
-            target_steer.data = [0.0, 0.0, 0.0, 0.0]
+            steer_point.positions = [0.0, 0.0, 0.0, 0.0]
         else:
             R = abs(turn_rad)         #Turning radius
 
@@ -64,10 +78,18 @@ class MoveWheel(Node):
             if alpha_o > 0.6:
                 alpha_o = 0.6
 
+            alpha_i = round(alpha_i, 2)
+            alpha_o = round(alpha_o, 2)
+
             if turn_rad > 0.0:
-                target_steer.data = [alpha_i, -alpha_i, alpha_o, -alpha_o]
+                steer_point.positions = [alpha_i, -alpha_i, alpha_o, -alpha_o]
             else:
-                target_steer.data = [-alpha_o, alpha_o, -alpha_i, alpha_i]
+                steer_point.positions = [-alpha_o, alpha_o, -alpha_i, alpha_i]
+
+        
+        steer_point.time_from_start = Duration(sec=1)
+
+        target_steer.points.append(steer_point)
 
         self.steer_publisher_.publish(target_steer)
 
@@ -76,7 +98,7 @@ class MoveWheel(Node):
 
         target_val = Float64MultiArray()
         if sus_val is None:
-            target_val.data = [0.0,0.0,0.0,0.0,0.0,0.0]
+            target_val.data = [600.0,-700.0,-100.0,600.0,-700.0,-100.0]
         self.suspension_publisher_.publish(target_val)
 
 
@@ -84,8 +106,10 @@ class MoveWheel(Node):
         self.set_wheel_common_speed(self.curr_vel.linear.x)
         self.set_suspension()
 
-        steering_val = self.map_angular_to_steering(self.curr_vel.angular.z)
-        self.set_steering(steering_val)
+        if self.should_steer:
+            steering_val = self.map_angular_to_steering(self.curr_vel.angular.z)
+            self.set_steering(steering_val)
+            self.should_steer = False
 
 
 def main(args=None):

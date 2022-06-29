@@ -19,6 +19,7 @@ class MoveArm(Node):
 
         self.open = True
 
+
     def open_arm_callback(self, request, response):
         self.open = True
         traj = JointTrajectory()
@@ -31,6 +32,7 @@ class MoveArm(Node):
 
         traj.points.append(point1)
         self.arm_publisher_.publish(traj)
+
 
         return response
 

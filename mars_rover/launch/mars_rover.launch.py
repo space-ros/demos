@@ -8,6 +8,10 @@ from launch.event_handlers import OnProcessExit, OnExecutionComplete
 import os
 from os import environ
 
+from ament_index_python.packages import get_package_share_directory
+
+import xacro
+
 def generate_launch_description():
     # ld = LaunchDescription()
 
@@ -16,39 +20,33 @@ def generate_launch_description():
                      environ.get('LD_LIBRARY_PATH', default='')])}
 
 
-    urdf_model_path = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'urdf/curiosity_mars_rover.xacro')
+    mars_rover_demos_path = os.path.join(
+        get_package_share_directory('mars_rover'))
+
+    urdf_model_path = os.path.join(mars_rover_demos_path, 'urdf/curiosity_mars_rover.xacro.urdf')
     mars_world_model = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'worlds/mars_curiosity.world')
 
-    model_arg = DeclareLaunchArgument(
-        name="model", 
-        default_value=urdf_model_path,
-        description="mars rover urdf"
-    )
+
+    doc = xacro.parse(open(urdf_model_path))
+    xacro.process_doc(doc)
+    params = {'robot_description': doc.toxml()}
+
 
     arm_node = Node(
         package="mars_rover",
         executable="move_arm",
-        parameters=[
-            {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
-        ],
         output='screen'
     )
 
     mast_node = Node(
         package="mars_rover",
         executable="move_mast",
-        parameters=[
-            {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
-        ],
         output='screen'
     )
 
     wheel_node = Node(
         package="mars_rover",
         executable="move_wheel",
-        parameters=[
-            {"robot_description": Command(['xacro ', LaunchConfiguration('model')])}
-        ],
         output='screen'
     )
 
@@ -65,7 +63,7 @@ def generate_launch_description():
         shell=True
     )
 
-    params = {'use_sim_time': True, 'robot_description': Command(['xacro ', LaunchConfiguration('model')])}
+
     robot_state_publisher = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -81,7 +79,8 @@ def generate_launch_description():
             '-x','1.0',
             '-z','-7.4',
             '-y','0.0',
-            '-topic', '/robot_description'
+            '-string', doc.toxml(),
+            '-allow_renaming', 'true'
         ],
         output='screen'
     )
@@ -139,7 +138,6 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        model_arg,
         start_world,
         robot_state_publisher,
         spawn,
@@ -163,8 +161,13 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=set_hardware_interface_active,
-                on_exit=[load_joint_state_broadcaster,
-                        load_arm_joint_traj_controller,
+                on_exit=[load_joint_state_broadcaster],
+            )
+        ),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=load_joint_state_broadcaster,
+                on_exit=[load_arm_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
                         load_suspension_joint_traj_controller],
