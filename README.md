@@ -61,6 +61,22 @@ On the top left corner, click on the refresh button to show camera feed
 
 ### Curiosity Rover
 
+Open a new terminal and attach to the currently running container
+
+```
+$ docker -it exec <container-name> bash
+```
+
+Make sure packages are sourced
+
+```
+$ source /root/src/spaceros_ws/install/setup.bash
+```
+
+```
+$ source /root/src/depends_ws/install/setup.bash
+```
+
 Explore randomly on the Mars surface:
 
 ```
