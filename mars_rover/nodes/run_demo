@@ -22,14 +22,14 @@ class RunDemo(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         action1 = Twist()
-        action1.linear.x = 3.0
+        action1.linear.x = 2.0
         
         action2 = Twist()
-        action2.linear.x = 4.0
+        action2.linear.x = 3.0
         action2.angular.z = 0.4
 
         action3 = Twist()
-        action3.linear.x = 4.0
+        action3.linear.x = 3.0
         action3.angular.z = -0.4
 
         self.actions = [action1, action2, action3]

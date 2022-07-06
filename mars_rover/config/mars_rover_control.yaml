@@ -15,7 +15,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
     wheel_tree_position_controller:
-      type: effort_controllers/JointGroupEffortController
+      type: effort_controllers/JointGroupPositionController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -90,3 +90,28 @@ wheel_tree_position_controller:
       - position
       - velocity
       - effort
+    gains:
+      suspension_arm_F_L_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B_L_joint:
+        p: 4200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B2_L_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_F_R_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B_R_joint:
+        p: 4200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B2_R_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
