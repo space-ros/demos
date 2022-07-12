@@ -66,7 +66,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-arm_01_limit}" upper="${arm_01_limit}" effort="10000.0" velocity="100.0"/>
         <axis xyz="0 0 1"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
 	</joint>
 
     <transmission name="arm_01_trans">
@@ -144,7 +144,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-arm_02_limit}" upper="${arm_02_limit}" effort="10000.0" velocity="100.0"/>
         <axis xyz="1 0 0"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
 	</joint>
 
     <transmission name="arm_02_trans">
@@ -222,7 +222,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-arm_03_limit}" upper="${arm_03_limit}" effort="10000.0" velocity="100.0"/>
         <axis xyz="1 0 0"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
 	</joint>
 
     <transmission name="arm_03_trans">
@@ -301,7 +301,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-arm_04_limit}" upper="${arm_04_limit}" effort="10000.0" velocity="100.0"/>
         <axis xyz="0 1 0"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
 	</joint>
 
     <transmission name="arm_04_trans">
@@ -380,7 +380,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit effort="10000.0" velocity="100.0"/>
         <axis xyz="0 0 1"/>
-        <joint_properties damping="0.0" friction="0.0"/>
+        <dynamics damping="0.0" friction="0.0"/>
 	</joint>
 
     <transmission name="arm_tools_trans">

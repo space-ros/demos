@@ -6,7 +6,7 @@
 	<!-- Robot constants and properties -->
 	<xacro:include filename="$(find mars_rover)/urdf/curiosity_mars_rover_properties.xacro" />
 	<!-- Gazebo aspects of the robot -->
-	<!-- <xacro:include filename="$(find mars_rover)/urdf/curiosity_mars_rover.gazebo" /> -->
+	<xacro:include filename="$(find mars_rover)/urdf/curiosity_mars_rover.gazebo" />
 	<!-- Chasis -->
 	<xacro:include filename="$(find mars_rover)/urdf/chassis.xacro" />
 	<!-- Wheel Groups -->
@@ -48,7 +48,6 @@
         </joint>
         <joint name="arm_04_joint">
             <command_interface name="position" />
-            
             <state_interface name="position" />
             <state_interface name="velocity" />
         </joint>

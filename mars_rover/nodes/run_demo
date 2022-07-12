@@ -25,11 +25,11 @@ class RunDemo(Node):
         action1.linear.x = 2.0
         
         action2 = Twist()
-        action2.linear.x = 3.0
+        action2.linear.x = 2.0
         action2.angular.z = 0.4
 
         action3 = Twist()
-        action3.linear.x = 3.0
+        action3.linear.x = 2.0
         action3.angular.z = -0.4
 
         self.actions = [action1, action2, action3]
@@ -39,7 +39,7 @@ class RunDemo(Node):
 
     def timer_callback(self):
         if self.random_walk:
-            curr_action = self.actions[randint(0,2)]
+            curr_action = self.actions[0]#randint(0,2)]
             self.motion_publisher_.publish(curr_action)
 
     def random_walk_callback(self, request, response):

@@ -4,6 +4,91 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="curiosity_mars_rover">
+  <!-- Chassis -->
+  <gazebo reference="chassis">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <!-- Wheel Train -->
+  <gazebo reference="left_axis">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_F_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="right_axis">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_F_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B_L_to_B2_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="suspension_arm_B_R_to_B2_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="suspension_arm_B2_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B2_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_F_L_to_suspension_steer_F_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_F_R_to_suspension_steer_F_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_steer_F_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_steer_F_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B2_L_to_suspension_steer_B_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_arm_B2_R_to_suspension_steer_B_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_steer_B_L">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <gazebo reference="suspension_steer_B_R">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
+  <!-- Arm -->
+  <gazebo reference="arm_01">
+    <mu1>0.3</mu1>
+    <mu2>0.3</mu2>
+  </gazebo>
   <!-- Used for fixing robot to Gazebo 'chassis' -->
   <link name="base_footprint"/>
   <joint name="base_joint" type="fixed">
@@ -78,7 +163,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_F_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -115,7 +200,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_B_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -174,9 +259,9 @@
     <parent link="suspension_arm_B_L_to_B2_L"/>
     <child link="suspension_arm_B2_L"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <limit effort="10000.0" lower="-1.2" upper="0.1" velocity="10.0"/>
+    <limit effort="10000.0" lower="-1.2" upper="1.2" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_B2_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -309,7 +394,7 @@
     <origin rpy="0 0 0.0" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="front_wheel_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -383,7 +468,7 @@
     <origin rpy="0 0 0.0" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="middle_wheel_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -517,7 +602,7 @@
     <origin rpy="0 0 0.0" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="back_wheel_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -579,7 +664,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_F_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -616,7 +701,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_B_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -675,9 +760,9 @@
     <parent link="suspension_arm_B_R_to_B2_R"/>
     <child link="suspension_arm_B2_R"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <limit effort="10000.0" lower="-1.2" upper="0.1" velocity="10.0"/>
+    <limit effort="10000.0" lower="-1.2" upper="1.2" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.5" friction="0.5"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="suspension_arm_B2_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -810,7 +895,7 @@
     <origin rpy="0 0 -3.141592653589793" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="front_wheel_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -883,7 +968,7 @@
     <origin rpy="0 0 -3.141592653589793" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="middle_wheel_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1016,7 +1101,7 @@
     <origin rpy="0 0 -3.141592653589793" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="back_wheel_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1078,7 +1163,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
     <axis xyz="0 0 1"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="arm_01_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1139,7 +1224,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="arm_02_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1200,7 +1285,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="arm_03_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1261,7 +1346,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
     <axis xyz="0 1 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="arm_04_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1322,7 +1407,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="0 0 1"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="arm_tools_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1383,7 +1468,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="0.0" upper="1.57" velocity="100.0"/>
     <axis xyz="0 1 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="mast_p_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1444,7 +1529,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" velocity="100.0"/>
     <axis xyz="0 0 1"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="mast_02_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1505,7 +1590,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
     <axis xyz="1 0 0"/>
-    <joint_properties damping="0.0" friction="0.0"/>
+    <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <transmission name="mast_02_trans">
     <type>transmission_interface/SimpleTransmission</type>

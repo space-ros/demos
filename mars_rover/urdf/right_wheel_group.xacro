@@ -74,7 +74,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-suspension_arm_F_L_limit}" upper="${suspension_arm_F_L_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
         <axis xyz="1 0 0"/>
-		<joint_properties damping="${suspension_damping}" friction="${suspension_friction}"/>
+		<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
 	</joint>
 
   	<transmission name="suspension_arm_F_R_trans">
@@ -125,7 +125,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${-suspension_arm_B_L_limit}" upper="${suspension_arm_B_L_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
         <axis xyz="1 0 0"/>
-		<joint_properties damping="${suspension_damping}" friction="${suspension_friction}"/>
+		<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
 	</joint>
 
   	<transmission name="suspension_arm_B_R_trans">
@@ -202,7 +202,7 @@
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<limit lower="${suspension_arm_B2_lower_limit}" upper="${suspension_arm_B2_upper_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
         <axis xyz="1 0 0"/>
-		<joint_properties damping="${suspension_damping}" friction="${suspension_friction}"/>
+		<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
 	</joint>
 
   	<transmission name="suspension_arm_B2_R_trans">

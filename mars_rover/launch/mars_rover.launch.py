@@ -12,6 +12,11 @@ from ament_index_python.packages import get_package_share_directory
 
 import xacro
 
+
+
+# . ../spaceros_ws/install/setup.bash && . ../depends_ws/install/setup.bash
+# rm -rf build install log && colcon build && . install/setup.bash
+
 def generate_launch_description():
     # ld = LaunchDescription()
 
