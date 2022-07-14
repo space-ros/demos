@@ -163,7 +163,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_F_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -200,7 +200,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_B_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -261,7 +261,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.2" upper="1.2" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_B2_L_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -664,7 +664,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_F_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -701,7 +701,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-0.4" upper="0.4" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_B_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -762,7 +762,7 @@
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <limit effort="10000.0" lower="-1.2" upper="1.2" velocity="10.0"/>
     <axis xyz="1 0 0"/>
-    <dynamics damping="0.0" friction="0.0"/>
+    <dynamics damping="0.5" friction="0.5"/>
   </joint>
   <transmission name="suspension_arm_B2_R_trans">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1283,7 +1283,7 @@
     <parent link="arm_02_to_arm_03"/>
     <child link="arm_03"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-    <limit effort="10000.0" lower="-1.57" upper="1.57" velocity="100.0"/>
+    <limit effort="10000.0" lower="-5.0" upper="5.0" velocity="100.0"/>
     <axis xyz="1 0 0"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>

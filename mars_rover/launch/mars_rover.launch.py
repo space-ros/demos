@@ -82,7 +82,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'curiosity_mars_rover',
             '-x','1.0',
-            '-z','-7.4',
+            '-z','-7.7',
             '-y','0.0',
             '-string', doc.toxml(),
             '-allow_renaming', 'true'
@@ -104,37 +104,37 @@ def generate_launch_description():
     )
 
     load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'joint_state_broadcaster'],
         output='screen'
     )
 
     load_arm_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'arm_joint_trajectory_controller'],
         output='screen'
     )
 
-    # load_mast_joint_traj_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
-    #          'mast_joint_trajectory_controller'],
-    #     output='screen'
-    # )
+    load_mast_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'mast_joint_trajectory_controller'],
+        output='screen'
+    )
 
     load_wheel_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'wheel_velocity_controller'],
         output='screen'
     )
 
     load_steer_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'steer_position_controller'],
         output='screen'
     )
 
     load_suspension_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'start',
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
              'wheel_tree_position_controller'],
         output='screen'
     )
@@ -173,6 +173,7 @@ def generate_launch_description():
             OnProcessExit(
                 target_action=load_joint_state_broadcaster,
                 on_exit=[load_arm_joint_traj_controller,
+                        load_mast_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
                         load_suspension_joint_traj_controller],

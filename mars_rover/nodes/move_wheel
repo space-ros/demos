@@ -38,7 +38,7 @@ class MoveWheel(Node):
     def set_wheel_common_speed(self, vel):
 
         target_vel = Float64MultiArray()
-        target_vel.data = [vel for i in range(3)] + [-vel for i in range(3,6)]
+        target_vel.data = [vel, vel*1.5, vel, -vel, -vel*1.5, -vel]
         
         # self.get_logger().info(f'Publishing: "{target_vel.data}"')
         self.wheel_publisher_.publish(target_vel)

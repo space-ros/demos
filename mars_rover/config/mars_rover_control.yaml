@@ -36,18 +36,18 @@ arm_joint_trajectory_controller:
       - position
       - velocity
 
-# mast_joint_trajectory_controller:
-#   ros__parameters:
-#     joints:
-#       - mast_p_joint
-#       - mast_02_joint
-#       - mast_cameras_joint
-#     interface_name: position
-#     command_interfaces:
-#       - position
-#     state_interfaces:
-#       - position
-#       - velocity
+mast_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - mast_p_joint
+      - mast_02_joint
+      - mast_cameras_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
 
 wheel_velocity_controller:
   ros__parameters:
@@ -100,7 +100,7 @@ wheel_tree_position_controller:
         i: 10.0
         d: 10.0
       suspension_arm_B2_L_joint:
-        p: 2200.0
+        p: 1500.0
         i: 10.0
         d: 10.0
       suspension_arm_F_R_joint:
@@ -112,7 +112,7 @@ wheel_tree_position_controller:
         i: 10.0
         d: 10.0
       suspension_arm_B2_R_joint:
-        p: 2200.0
+        p: 1500.0
         i: 10.0
         d: 10.0
     enable:

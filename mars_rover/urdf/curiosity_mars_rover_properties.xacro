@@ -59,8 +59,8 @@
 
 	<xacro:property name="suspension_effort" value="10000.0"/>
 	<xacro:property name="suspension_speed" value="10.0"/>
-	<xacro:property name="suspension_damping" value="0.0"/>
-	<xacro:property name="suspension_friction" value="0.0"/>
+	<xacro:property name="suspension_damping" value="0.5"/>
+	<xacro:property name="suspension_friction" value="0.5"/>
 
 	<!-- Wheels properties -->
 	<xacro:property name="wheelWidth" value="0.39473"/>
@@ -87,7 +87,7 @@
 	<xacro:property name="arm_03_X" value="0.30683"/>
 	<xacro:property name="arm_03_Y" value="0.178607"/>
 	<xacro:property name="arm_03_Z" value="0.878958"/>
-	<xacro:property name="arm_03_limit" value="1.57"/>
+	<xacro:property name="arm_03_limit" value="5.0"/>
 
 	<xacro:property name="arm_04_Mass" value="${armMass/armParts}"/>
 	<xacro:property name="arm_04_X" value="0.32452"/>
