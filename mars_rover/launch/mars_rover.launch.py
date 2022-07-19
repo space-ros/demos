@@ -82,7 +82,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'curiosity_mars_rover',
             '-x','1.0',
-            '-z','-7.7',
+            '-z','-7.8',
             '-y','0.0',
             '-string', doc.toxml(),
             '-allow_renaming', 'true'

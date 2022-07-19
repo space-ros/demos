@@ -7,12 +7,6 @@ This repository provides examples for running robots using Space ROS
 
 The demos run in the Space ROS Demo docker. Please proceed to this [repo](https://github.com/tonylitianyu/docker-images/tree/tonylitianyu/demo_depends), clone and perform the following steps to build the docker image.
 
-Within folder ```/spaceros```, run:
-
-```
-$ ./build-image.sh
-```
-
 Within folder ```/demo_spaceros```, run:
 
 ```
@@ -21,34 +15,19 @@ $ ./build-image.sh
 
 ## Running the Demo Docker
 
-Come back to this repo, run the following to allow GUI passthrough:
+run the following to allow GUI passthrough:
 ```
 $ xhost +local:docker
 ```
 
 Then run:
 ```
-$ ./run_sp.sh
+$ ./run.sh
 ```
 
-Depends on the host computer, you might need to remove ```--gpus all``` flag in ```run_sp.sh```, which uses your GPUs
+Depends on the host computer, you might need to remove ```--gpus all``` flag in ```run.sh```, which uses your GPUs
 
 ## Running the Demo
-
-Make sure packages are sourced
-
-```
-$ source /root/src/spaceros_ws/install/setup.bash
-```
-
-```
-$ source /root/src/depends_ws/install/setup.bash
-```
-
-Enter the folder ```/spaceros_demo_ws```, run:
-```
-$ rm -rf build install log && colcon build && . install/setup.bash
-```
 
 Launch the demo:
 ```
