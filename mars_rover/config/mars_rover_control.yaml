@@ -80,10 +80,8 @@ wheel_tree_position_controller:
     joints:
       - suspension_arm_F_L_joint
       - suspension_arm_B_L_joint
-      - suspension_arm_B2_L_joint
       - suspension_arm_F_R_joint
       - suspension_arm_B_R_joint
-      - suspension_arm_B2_R_joint
     command_interfaces:
       - effort
     state_interfaces:
@@ -99,10 +97,6 @@ wheel_tree_position_controller:
         p: 4200.0
         i: 10.0
         d: 10.0
-      suspension_arm_B2_L_joint:
-        p: 1500.0
-        i: 10.0
-        d: 10.0
       suspension_arm_F_R_joint:
         p: 2200.0
         i: 10.0
@@ -111,20 +105,12 @@ wheel_tree_position_controller:
         p: 4200.0
         i: 10.0
         d: 10.0
-      suspension_arm_B2_R_joint:
-        p: 1500.0
-        i: 10.0
-        d: 10.0
     enable:
       suspension_arm_F_L_joint:
         status: 1
       suspension_arm_B_L_joint:
         status: 1
-      suspension_arm_B2_L_joint:
-        status: 0
       suspension_arm_F_R_joint:
         status: 1
       suspension_arm_B_R_joint:
         status: 1
-      suspension_arm_B2_R_joint:
-        status: 0
