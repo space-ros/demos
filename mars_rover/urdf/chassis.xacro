@@ -18,7 +18,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -26,7 +26,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
