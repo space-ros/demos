@@ -120,7 +120,7 @@
     <plugin filename="libign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
       <robot_param>robot_description</robot_param>
       <robot_param_node>robot_state_publisher</robot_param_node>
-      <parameters>/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/config/mars_rover_control.yaml</parameters>
+      <parameters>/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/config/mars_rover_control.yaml</parameters>
     </plugin>
   </gazebo>
   <gazebo reference="camera_link">
@@ -247,13 +247,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -266,13 +266,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/left_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/left_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/left_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/left_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -290,13 +290,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -327,13 +327,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -388,13 +388,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -450,13 +450,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -517,7 +517,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -591,7 +591,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -658,13 +658,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_L_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -725,7 +725,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -767,13 +767,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/right_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/right_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/right_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/right_axis_jointfix_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -791,13 +791,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -828,13 +828,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -889,13 +889,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_arm_B2_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -951,13 +951,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_F_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1018,7 +1018,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1091,7 +1091,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1157,13 +1157,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/suspension_steer_B_R_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1224,7 +1224,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/wheel_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1290,13 +1290,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1351,13 +1351,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_02_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_02_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1412,13 +1412,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1473,13 +1473,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1534,13 +1534,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1595,13 +1595,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_p_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_p_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_p_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_p_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1656,13 +1656,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_02_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_02_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_02_fixed.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_02_fixed.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>
@@ -1717,13 +1717,13 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_cameras.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_cameras.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/meshes/mast_cameras.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/mast_cameras.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
     <inertial>

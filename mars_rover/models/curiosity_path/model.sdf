@@ -17,7 +17,7 @@
         <collision name='collision'>
           <geometry>
             <mesh>
-              <uri>/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/models/curiosity_path/meshes/curiosity_path.stl</uri>
+              <uri>/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/models/curiosity_path/meshes/curiosity_path.stl</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -41,7 +41,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/models/curiosity_path/meshes/mars_path_simple1.dae</uri>
+              <uri>/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/models/curiosity_path/meshes/mars_path_simple1.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>

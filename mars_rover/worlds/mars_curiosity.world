@@ -55,7 +55,7 @@
     <gravity>0 0 -3.711</gravity>
 
     <include>
-      <uri>/root/src/spaceros_demo_ws/install/mars_rover/share/mars_rover/models/curiosity_path</uri>
+      <uri>/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/models/curiosity_path</uri>
       <name>curiosity_path</name>
       <pose>0 0 0 0 0 0</pose>
     </include>
