@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import rclpy
+from rclpy.action import ActionServer
+from rclpy.node import Node
+from builtin_interfaces.msg import Duration
+
+from std_msgs.msg import String, Float64, Float64MultiArray
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from std_srvs.srv import Empty
+
+from canadarm.action import MoveJoint
+
+class MoveJointActionServer(Node):
+
+    def __init__(self):
+        super().__init__('move_joint_node')
+        self.arm_publisher_ = self.create_publisher(Float64MultiArray, 'canadarm_joint_controller/commands',10)
+
+        self._action_server = ActionServer(
+            self,
+            MoveJoint,
+            'movejoint',
+            self.movejoint_callback
+        )
+
+        timer_period = 0.01  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        self.goal_joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    def movejoint_callback(self, goal_handle):
+        self.get_logger().info('Executing joint goal...')
+        self.goal_joint_pos = [float(i) for i in goal_handle.request.target]
+        goal_handle.succeed()
+        result = MoveJoint.Result()
+        return result
+
+    def move_joint(self):
+        target_val = Float64MultiArray()
+        target_val.data = self.goal_joint_pos
+        self.arm_publisher_.publish(target_val)
+
+    def timer_callback(self):
+        self.move_joint()
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    move_joint_node = MoveJointActionServer()
+
+    rclpy.spin(move_joint_node)
+
+    move_joint_node.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
