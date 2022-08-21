@@ -35,7 +35,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -43,7 +43,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
@@ -113,7 +113,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -121,7 +121,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
@@ -191,7 +191,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -199,7 +199,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
@@ -270,7 +270,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -278,7 +278,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
@@ -349,7 +349,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</collision>
 
@@ -357,7 +357,7 @@
 			<origin xyz="0 0 0"
 					rpy="0 0 0"/>
 			<geometry>
-				<mesh filename="/home/spaceros-user/src/spaceros_demo/install/mars_rover/share/mars_rover/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				<mesh filename="package://mars_rover/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 			</geometry>
 		</visual>
 
