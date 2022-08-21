@@ -19,14 +19,15 @@ import xacro
 
 def generate_launch_description():
     # ld = LaunchDescription()
+    mars_rover_demos_path = os.path.join(
+        get_package_share_directory('mars_rover'))
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
-                     environ.get('LD_LIBRARY_PATH', default='')])}
-
-
-    mars_rover_demos_path = os.path.join(
-        get_package_share_directory('mars_rover'))
+                     environ.get('LD_LIBRARY_PATH', default='')]),
+           'IGN_GAZEBO_RESOURCE_PATH':
+           ':'.join([mars_rover_demos_path])}
+    
 
     urdf_model_path = os.path.join(mars_rover_demos_path, 'urdf/curiosity_mars_rover.xacro.urdf')
     mars_world_model = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'worlds/mars_curiosity.world')
@@ -151,12 +152,6 @@ def generate_launch_description():
         wheel_node,
         run_node,
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=start_world,
-                on_exit=[spawn],
-            )
-        ),
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,

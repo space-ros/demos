@@ -16,17 +16,19 @@ import xacro
 def generate_launch_description():
     # ld = LaunchDescription()
 
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
-                     environ.get('LD_LIBRARY_PATH', default='')])}
-
-
-    mars_rover_demos_path = os.path.join(
+    canadarm_demos_path = os.path.join(
         get_package_share_directory('canadarm'))
 
-    urdf_model_path = os.path.join(mars_rover_demos_path, 'urdf/SSRMS_Canadarm2.urdf')
-    sdf_model_path = os.path.join(mars_rover_demos_path, 'sdf/model.sdf')
-    mars_world_model = os.path.join(FindPackageShare(package='canadarm').find('canadarm'), 'worlds/simple.world')
+    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+                     environ.get('LD_LIBRARY_PATH', default='')]),
+           'IGN_GAZEBO_RESOURCE_PATH':
+           ':'.join([canadarm_demos_path])}
+
+
+    urdf_model_path = os.path.join(canadarm_demos_path, 'urdf/SSRMS_Canadarm2.urdf')
+    sdf_model_path = os.path.join(canadarm_demos_path, 'sdf/model.sdf')
+    leo_model = os.path.join(FindPackageShare(package='canadarm').find('canadarm'), 'worlds/simple.world')
 
 
     doc = xacro.parse(open(urdf_model_path))
@@ -41,7 +43,7 @@ def generate_launch_description():
     )
 
     start_world = ExecuteProcess(
-        cmd=['ign gazebo', mars_world_model, '-r'],
+        cmd=['ign gazebo', leo_model, '-r'],
         output='screen',
         additional_env=env,
         shell=True
@@ -91,12 +93,6 @@ def generate_launch_description():
         spawn,
         run_node,
 
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=start_world,
-                on_exit=[spawn],
-            )
-        ),
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
