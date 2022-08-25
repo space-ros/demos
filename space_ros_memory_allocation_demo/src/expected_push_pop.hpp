@@ -25,6 +25,7 @@ struct states
   bool free_expected;
 };
 
+inline
 void
 set_expectations_from_states(states expectations)
 {
@@ -50,6 +51,7 @@ set_expectations_from_states(states expectations)
   }
 }
 
+inline
 states
 push_expectations(states new_states)
 {
@@ -62,6 +64,7 @@ push_expectations(states new_states)
   return s;
 }
 
+inline
 void
 pop_expectations(states previous_states)
 {

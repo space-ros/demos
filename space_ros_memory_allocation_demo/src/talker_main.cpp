@@ -21,22 +21,24 @@
 #include "common_main.hpp"
 
 int
-actual_main(int argc, char const *argv[], space_ros_memory_allocation_demo::MemoryAllocator & ma)
+actual_main(int argc, char const * argv[], space_ros_memory_allocation_demo::MemoryAllocator & ma)
 {
   using std::pmr::polymorphic_allocator;
+  // Create a C-style allocator that wraps the pmr C++ allocator.
+  polymorphic_allocator<void> pa(&ma);
+  rcl_allocator_t rcl_allocator =
+    rclcpp::allocator::get_rcl_allocator<void, polymorphic_allocator<void>>(pa);
 
   using rclcpp::Context;
-  // TODO(wjwwood): wrap ma in rcl_allocator_t and pass to InitOptions
-  rclcpp::InitOptions io;
+  rclcpp::InitOptions io(rcl_allocator);
   auto context = std::allocate_shared<Context, polymorphic_allocator<Context>>(&ma);
   context->init(argc, argv, io);
 
-  // TODO(wjwwood): wrap ma in rcl_allocator_t and pass to NodeOptions
-  rclcpp::NodeOptions no;
+  rclcpp::NodeOptions no(rcl_allocator);
   no.context(context);
   using space_ros_memory_allocation_demo::Talker;
-  // TODO(wjwwood): pass ma into Talker
-  auto talker = std::allocate_shared<Talker, std::pmr::polymorphic_allocator<Talker>>(&ma, no);
+  auto talker =
+    std::allocate_shared<Talker, std::pmr::polymorphic_allocator<Talker>>(&ma, no, &ma);
 
   // TODO(wjwwood): use ma in executor memory_strategy
   rclcpp::ExecutorOptions eo;
@@ -50,7 +52,7 @@ actual_main(int argc, char const *argv[], space_ros_memory_allocation_demo::Memo
 }
 
 int
-main(int argc, char const *argv[])
+main(int argc, char const * argv[])
 {
   return common_main(argc, argv, actual_main);
 }

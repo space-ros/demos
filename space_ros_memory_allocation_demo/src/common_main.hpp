@@ -25,7 +25,7 @@ using space_ros_memory_allocation_demo::MemoryAllocator;
 int
 common_main(
   int argc,
-  char const *argv[],
+  char const * argv[],
   std::function<int(int, char const *[], MemoryAllocator &)> actual_main)
 {
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
@@ -36,19 +36,19 @@ common_main(
   using osrf_testing_tools_cpp::memory_tools::MemoryToolsService;
   auto callback_factory = [](std::string msg, bool should_trace) {
       return [msg, should_trace](MemoryToolsService & service) {
-        // filter out things that come from below the rmw layer
-        auto st = service.get_stack_trace();
-        // const std::regex pattern("/?librmw_\\.");
-        const std::regex is_fastrtps("fastrtps");
-        if (st && st->matches_any_object_filename(is_fastrtps)) {
-          service.ignore();
-          return;
-        }
-        // printf("%s\n", msg.c_str());
-        if (should_trace) {
-          service.print_backtrace();
-        }
-      };
+               // filter out things that come from below the rmw layer
+               auto st = service.get_stack_trace();
+               // const std::regex pattern("/?librmw_\\.");
+               const std::regex is_fastrtps("fastrtps");
+               if (st && st->matches_any_object_filename(is_fastrtps)) {
+                 service.ignore();
+                 return;
+               }
+               // printf("%s\n", msg.c_str());
+               if (should_trace) {
+                 service.print_backtrace();
+               }
+             };
     };
 
   osrf_testing_tools_cpp::memory_tools::initialize();

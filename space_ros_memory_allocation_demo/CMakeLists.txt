@@ -28,7 +28,18 @@ ament_target_dependencies(talker_main
   "rcutils"
   "std_msgs")
 
-add_library(${PROJECT_NAME}_library SHARED src/talker_library.cpp)
+add_executable(listener_main src/listener_main.cpp)
+target_include_directories(listener_main PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+target_link_libraries(listener_main osrf_testing_tools_cpp::memory_tools)
+ament_target_dependencies(listener_main
+  "rclcpp"
+  "rclcpp_components"
+  "rcutils"
+  "std_msgs")
+
+add_library(${PROJECT_NAME}_library SHARED src/talker_library.cpp src/listener_library.cpp)
 target_include_directories(${PROJECT_NAME}_library PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
@@ -44,6 +55,9 @@ ament_target_dependencies(${PROJECT_NAME}_library
 rclcpp_components_register_node(${PROJECT_NAME}_library
   PLUGIN "space_ros_memory_allocation_demo::Talker"
   EXECUTABLE talker)
+rclcpp_components_register_node(${PROJECT_NAME}_library
+  PLUGIN "space_ros_memory_allocation_demo::Listener"
+  EXECUTABLE listener)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -65,6 +79,15 @@ install(TARGETS
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
 
+install(TARGETS talker_main listener_main
+  DESTINATION lib/${PROJECT_NAME})
+
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME})
+
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)

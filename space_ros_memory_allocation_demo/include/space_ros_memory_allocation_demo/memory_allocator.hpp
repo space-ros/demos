@@ -43,8 +43,7 @@ public:
     // std::string name,
     unsigned char * buffer,
     size_t buffer_size)
-  :
-    // m_name(std::move(name)),
+  : // m_name(std::move(name)),
     monotonic(buffer, buffer_size, std::pmr::null_memory_resource()),
     memory_pool(&monotonic)
   {}

@@ -44,9 +44,12 @@ class Talker : public rclcpp::Node
 {
 public:
   SPACE_ROS_MEMORY_ALLOCATION_DEMO_PUBLIC
-  explicit Talker(const rclcpp::NodeOptions & options)
+  explicit Talker(
+    const rclcpp::NodeOptions & options,
+    std::pmr::memory_resource * memory_resource = std::pmr::get_default_resource())
   : Node("talker", options)
   {
+    RCUTILS_UNUSED(memory_resource);
     // Create a function for when messages are to be sent.
     auto publish_message =
       [this]() -> void

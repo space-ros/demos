@@ -431,7 +431,8 @@ public:
   }
 
   pool_options
-  options() const noexcept {
+  options() const noexcept
+  {
     return pool_options_;
   }
 
