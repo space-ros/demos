@@ -1,0 +1,10 @@
+<launch>
+  <arg name="use_memory_tools" default="false" />
+  <set_env
+    name="LD_PRELOAD"
+    value="/opt/ros/rolling/lib/libmemory_tools_interpose.so"
+    if="$(var use_memory_tools)"
+  />
+  <node pkg="space_ros_memory_allocation_demo" exec="talker_main" output="screen" />
+  <node pkg="space_ros_memory_allocation_demo" exec="listener_main" output="screen" />
+</launch>
