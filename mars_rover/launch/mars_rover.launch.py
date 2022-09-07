@@ -21,6 +21,8 @@ def generate_launch_description():
     # ld = LaunchDescription()
     mars_rover_demos_path = os.path.join(
         get_package_share_directory('mars_rover'))
+    mars_rover_models_path = os.path.join(
+        get_package_share_directory('simulation'))
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
@@ -29,7 +31,7 @@ def generate_launch_description():
            ':'.join([mars_rover_demos_path])}
     
 
-    urdf_model_path = os.path.join(mars_rover_demos_path, 'urdf/curiosity_mars_rover.xacro.urdf')
+    urdf_model_path = os.path.join(mars_rover_models_path, 'urdf/curiosity_mars_rover.xacro.urdf')
     mars_world_model = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'worlds/mars_curiosity.world')
 
 

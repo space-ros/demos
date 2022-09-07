@@ -12,6 +12,7 @@
 
   <depend>rclcpp</depend>
   <depend>rclpy</depend>
+  <depend>simulation</depend>
 
   <exec_depend>ament_index_python</exec_depend>
   <exec_depend>control_msgs</exec_depend>
