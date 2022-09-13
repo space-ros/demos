@@ -1,0 +1,105 @@
+VERSION 0.6
+FROM ubuntu:jammy
+
+setup:
+  # Disable prompting during package installation
+  ARG DEBIAN_FRONTEND=noninteractive
+  
+  # The following commands are based on the source install for ROS 2 Rolling Ridley.
+  # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
+  # The main variation is getting Space ROS sources instead of the Rolling sources.
+  
+  # Update the Ubuntu software repository
+  RUN apt-get update
+  
+  # Set the locale
+  RUN apt-get install -y locales
+  RUN locale-gen en_US en_US.UTF-8
+  RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+  ENV LANG=en_US.UTF-8
+  
+  # Add the ROS 2 apt repository
+  RUN apt-get install -y software-properties-common
+  RUN add-apt-repository universe
+  RUN apt-get update && apt-get install -y curl gnupg lsb-release
+  RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+  RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  
+  # Install required software development tools and ROS tools (and vim included for convenience)
+  RUN apt-get update && apt-get install -y \
+    bison \
+    build-essential \
+    cmake \
+    git \
+    python3-colcon-common-extensions \
+    python3-flake8 \
+    python3-pip \
+    python3-pytest-cov \
+    python3-rosdep \
+    python3-setuptools \
+    python3-vcstool \
+    wget \
+    vim
+  
+  # Install the required pip packages
+  RUN python3 -m pip install -U \
+    flake8-blind-except \
+    flake8-builtins \
+    flake8-class-newline \
+    flake8-comprehensions \
+    flake8-deprecated \
+    flake8-docstrings \
+    flake8-import-order \
+    flake8-quotes \
+    pytest-repeat \
+    pytest-rerunfailures \
+    pytest
+
+  RUN mkdir /spaceros_ws
+  WORKDIR /spaceros_ws
+
+vcs-file:
+  FROM curlimages/curl
+  RUN curl --compressed 'https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos' > /tmp/ros2.repos
+  SAVE ARTIFACT /tmp/ros2.repos /ros2.repos AS LOCAL spaceros_ws/ros2.repos
+
+sources:
+  FROM +setup
+  COPY +vcs-file/ros2.repos ros2.repos
+  RUN mkdir src
+  RUN vcs import src < ros2.repos
+  SAVE ARTIFACT src /src AS LOCAL spaceros_ws/src
+
+workspace:
+  FROM +setup
+  COPY spaceros_ws/src src
+
+vcs-exact:
+  FROM +workspace
+  RUN vcs export --exact src > exact.repos
+  SAVE ARTIFACT exact.repos /exact.repos AS LOCAL spaceros_ws/exact.repos
+
+rosdep:
+  FROM +workspace
+  # Install system package dependencies using rosdep
+  RUN rosdep init && rosdep update
+  RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+
+build-release:
+  FROM +rosdep
+  RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+  COPY +vcs-exact/exact.repos install/exact.repos
+  SAVE ARTIFACT install /install AS LOCAL spaceros_ws/install
+
+build-test:
+  FROM +rosdep
+  RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+  COPY +vcs-exact/exact.repos install/exact.repos
+  SAVE ARTIFACT build /build AS LOCAL spaceros_ws/build
+  SAVE ARTIFACT install /install AS LOCAL spaceros_ws/install
+
+test:
+  FROM +build-test
+  RUN colcon test
+  RUN bash -c 'source install/setup.bash; ros2 run process_sarif make_build_archive'
+  SAVE ARTIFACT log/build_results_archives /build_results_archives AS LOCAL spaceros_ws/build_results_archives
