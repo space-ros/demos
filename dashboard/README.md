@@ -15,7 +15,7 @@ git clone https://github.com/space-ros/process_sarif spaceros_ws/src/process_sar
 Run a build and test
 
 ```
-earthly +build-test +test
+earthly +test
 ```
 
 TBC
