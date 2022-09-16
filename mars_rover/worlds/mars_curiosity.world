@@ -54,11 +54,12 @@
     <!-- Martian Gravity-->
     <gravity>0 0 -3.711</gravity>
 
-    <include>
-      <uri>package://simulation/models/curiosity_path</uri>
-      <name>curiosity_path</name>
+    <model name="curiosity_path">
       <pose>0 0 0 0 0 0</pose>
-    </include>
+      <include merge="true">
+        <uri>package://simulation/models/curiosity_path</uri>
+      </include>
+    </model>
 
   </world>
 </sdf>
