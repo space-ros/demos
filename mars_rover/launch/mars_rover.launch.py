@@ -1,9 +1,10 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit, OnExecutionComplete
 import os
 from os import environ
@@ -23,6 +24,7 @@ def generate_launch_description():
         get_package_share_directory('mars_rover'))
     mars_rover_models_path = os.path.join(
         get_package_share_directory('simulation'))
+    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
@@ -64,11 +66,17 @@ def generate_launch_description():
         output='screen'
     )
 
-    start_world = ExecuteProcess(
-        cmd=['ign gazebo', mars_world_model, '-r'],
-        output='screen',
-        additional_env=env,
-        shell=True
+    # start_world = ExecuteProcess(
+    #     cmd=['ign gazebo', mars_world_model, '-r'],
+    #     output='screen',
+    #     additional_env=env,
+    #     shell=True
+    # )
+    start_world = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
+        ),
+        launch_arguments={'gz_args': mars_world_model}.items(),
     )
 
 
@@ -83,7 +91,7 @@ def generate_launch_description():
     spawn = Node(
         package='ros_ign_gazebo', executable='create',
         arguments=[
-            '-name', 'curiosity_mars_rover',
+            '-name', 'curiosity_path',
             '-x','1.0',
             '-z','-7.8',
             '-y','0.0',
