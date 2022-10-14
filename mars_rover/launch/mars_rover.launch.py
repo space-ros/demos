@@ -31,7 +31,7 @@ def generate_launch_description():
     mars_world_model = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'worlds/mars_curiosity.world')
 
 
-    doc = xacro.parse(open(urdf_model_path))
+    doc = xacro.process_file(open(urdf_model_path))
     robot_description = {'robot_description': doc.toxml()}
 
 
