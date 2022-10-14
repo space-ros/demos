@@ -247,7 +247,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh uri="package://meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
+        <mesh filename="package://meshes/chassis_full_fixed_glitch_v2.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <visual>
