@@ -61,7 +61,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
         ),
-        launch_arguments={'gz_args': mars_world_model}.items(),
+        launch_arguments={'ign_args': mars_world_model}.items(),
     )
 
 
