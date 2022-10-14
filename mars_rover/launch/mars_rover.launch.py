@@ -22,8 +22,12 @@ def generate_launch_description():
 
     mars_rover_demos_path = get_package_share_directory('mars_rover')
     mars_rover_models_path = get_package_share_directory('simulation')
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
-    
+
+    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+                     environ.get('LD_LIBRARY_PATH', default='')]),
+           'IGN_GAZEBO_RESOURCE_PATH':
+           ':'.join([mars_rover_demos_path])}
 
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
         'urdf', 'curiosity_mars_rover.xacro.urdf')
@@ -57,13 +61,12 @@ def generate_launch_description():
         output='screen'
     )
 
-    start_world = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
-        ),
-        launch_arguments={'ign_args': mars_world_model}.items(),
+    start_world = ExecuteProcess(
+        cmd=['ign gazebo', mars_world_model, '-r'],
+        output='screen',
+        additional_env=env,
+        shell=True
     )
-
 
     robot_state_publisher = Node(
             package='robot_state_publisher',

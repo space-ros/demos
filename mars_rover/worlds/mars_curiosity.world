@@ -54,12 +54,11 @@
     <!-- Martian Gravity-->
     <gravity>0 0 -3.711</gravity>
 
-    <model name="curiosity_path">
+    <include>
+      <uri>/home/spaceros-user/demos_ws/install/simulation/share/simulation/models/curiosity_path</uri>
+      <name>curiosity_path</name>
       <pose>0 0 0 0 0 0</pose>
-      <include merge="true">
-        <uri>package://simulation/models/curiosity_path</uri>
-      </include>
-    </model>
+    </include>
 
   </world>
 </sdf>
