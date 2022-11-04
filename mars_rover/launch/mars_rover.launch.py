@@ -1,9 +1,10 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit, OnExecutionComplete
 import os
 from os import environ
@@ -18,24 +19,22 @@ import xacro
 # rm -rf build install log && colcon build && . install/setup.bash
 
 def generate_launch_description():
-    # ld = LaunchDescription()
-    mars_rover_demos_path = os.path.join(
-        get_package_share_directory('mars_rover'))
+
+    mars_rover_demos_path = get_package_share_directory('mars_rover')
+    mars_rover_models_path = get_package_share_directory('simulation')
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
            'IGN_GAZEBO_RESOURCE_PATH':
            ':'.join([mars_rover_demos_path])}
-    
 
-    urdf_model_path = os.path.join(mars_rover_demos_path, 'urdf/curiosity_mars_rover.xacro.urdf')
-    mars_world_model = os.path.join(FindPackageShare(package='mars_rover').find('mars_rover'), 'worlds/mars_curiosity.world')
+    urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
+        'urdf', 'curiosity_mars_rover.xacro.urdf')
+    mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.world')
 
-
-    doc = xacro.parse(open(urdf_model_path))
-    xacro.process_doc(doc)
-    params = {'robot_description': doc.toxml()}
+    doc = xacro.process_file(urdf_model_path)
+    robot_description = {'robot_description': doc.toxml()}
 
 
     arm_node = Node(
@@ -69,24 +68,18 @@ def generate_launch_description():
         shell=True
     )
 
-
     robot_state_publisher = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[params],
-            arguments=[])
+            parameters=[robot_description])
 
     spawn = Node(
         package='ros_ign_gazebo', executable='create',
         arguments=[
-            '-name', 'curiosity_mars_rover',
-            '-x','1.0',
-            '-z','-7.8',
-            '-y','0.0',
-            '-string', doc.toxml(),
-            '-allow_renaming', 'true'
+            '-name', 'curiosity_path',
+            '-topic', robot_description,
         ],
         output='screen'
     )

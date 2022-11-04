@@ -16,8 +16,8 @@ import xacro
 def generate_launch_description():
     # ld = LaunchDescription()
 
-    canadarm_demos_path = os.path.join(
-        get_package_share_directory('canadarm'))
+    canadarm_demos_path = get_package_share_directory('canadarm')
+    simulation_models_path = get_package_share_directory('simulation')
 
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
@@ -26,14 +26,12 @@ def generate_launch_description():
            ':'.join([canadarm_demos_path])}
 
 
-    urdf_model_path = os.path.join(canadarm_demos_path, 'urdf/SSRMS_Canadarm2.urdf')
-    sdf_model_path = os.path.join(canadarm_demos_path, 'sdf/model.sdf')
-    leo_model = os.path.join(FindPackageShare(package='canadarm').find('canadarm'), 'worlds/simple.world')
+    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf')
+    leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.world')
 
 
-    doc = xacro.parse(open(urdf_model_path))
-    xacro.process_doc(doc)
-    params = {'robot_description': doc.toxml()}
+    doc = xacro.process_file(urdf_model_path)
+    robot_description = {'robot_description': doc.toxml()}
 
 
     run_node = Node(
@@ -55,18 +53,13 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[params],
-            arguments=[])
+            parameters=[robot_description])
 
     spawn = Node(
         package='ros_ign_gazebo', executable='create',
         arguments=[
             '-name', 'canadarm',
-            '-x','1.0',
-            '-z','-7.8',
-            '-y','0.0',
-            '-string', doc.toxml(),
-            '-allow_renaming', 'true'
+            '-topic', robot_description,
         ],
         output='screen'
     )

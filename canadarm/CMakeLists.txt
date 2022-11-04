@@ -36,9 +36,7 @@ install(DIRECTORY
   action
   config
   launch
-  urdf
   worlds
-  sdf
   DESTINATION share/${PROJECT_NAME}
 )
 
