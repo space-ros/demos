@@ -299,7 +299,7 @@ private:
     allocate(
       std::size_t size,
       std::size_t alignment,
-      memory_resource * resource,
+      memory_resource * const resource,
       LinkedListAllocationNode ** head)
     {
       // Allocate space for the requested size and this Node, with the alignment.
@@ -316,7 +316,7 @@ private:
     LinkedListAllocationNode *
     deallocate(
       LinkedListAllocationNode * node,
-      memory_resource * resource)
+      memory_resource * const resource)
     {
       LinkedListAllocationNode * next = node->next_;
       // |memory_location ...|node ...|
@@ -326,8 +326,12 @@ private:
       return next;
     }
 
-    std::size_t size_;
-    std::size_t alignment_;
+    // TODO(wjwwood): this could be space optimized better, combining the size
+    //   and alignment into a single struct and sizing it depending on the
+    //   value we need to store in it, as they are essentially const and known
+    //   at construction time.
+    const std::size_t size_;
+    const std::size_t alignment_;
     LinkedListAllocationNode * next_;
   };
 
@@ -370,14 +374,13 @@ private:
   static constexpr std::size_t k_common_ratio_ = 2;
 
   void * buffer_ = nullptr;
-  // void * pointer_ = nullptr;
   std::size_t size_ = 0;
   std::size_t next_buffer_size_ = k_default_next_buffer_size_;
 
   // Initial values set by constructors, used in release().
-  std::pmr::memory_resource * upstream_;
-  void * original_buffer_ = nullptr;
-  std::size_t original_size_ = next_buffer_size_;
+  std::pmr::memory_resource * const upstream_;
+  void * const original_buffer_ = nullptr;
+  const std::size_t original_size_ = next_buffer_size_;
 
   // Linked list of allocations.
   LinkedListAllocationNode * head_;

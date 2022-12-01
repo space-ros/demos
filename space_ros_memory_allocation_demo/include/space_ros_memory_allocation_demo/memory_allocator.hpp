@@ -19,6 +19,8 @@
 #include <string>
 #include <cassert>
 
+#include "rcutils/error_handling.h"
+
 // Provides std::pmr, accounting for differences in different platforms.
 #include "space_ros_memory_allocation_demo/memory_resource_helper.hpp"
 
@@ -60,6 +62,26 @@ private:
   do_allocate(std::size_t bytes, std::size_t alignment) override
   {
     auto result = memory_pool.allocate(bytes, alignment);
+
+#if 1
+    RCUTILS_SAFE_FWRITE_TO_STDERR("in MemoryAllocator::do_allocate(");
+    char buffer[32];
+    buffer[0] = '\0';
+    std::size_t bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%zu", bytes);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(", ");
+    buffer[0] = '\0';
+    bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%zu", alignment);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR("):   ");
+    buffer[0] = '\0';
+    bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%p", result);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
+#endif
     return result;
   }
 
@@ -67,6 +89,25 @@ private:
   do_deallocate(void * p, std::size_t bytes, std::size_t alignment) override
   {
     memory_pool.deallocate(p, bytes, alignment);
+#if 1
+    RCUTILS_SAFE_FWRITE_TO_STDERR("in MemoryAllocator::do_deallocate(");
+    char buffer[32];
+    buffer[0] = '\0';
+    std::size_t bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%zu", bytes);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(", ");
+    buffer[0] = '\0';
+    bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%zu", alignment);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR("): ");
+    buffer[0] = '\0';
+    bytes_written = rcutils_snprintf(buffer, sizeof(buffer), "%p", p);
+    RCUTILS_UNUSED(bytes_written);
+    RCUTILS_SAFE_FWRITE_TO_STDERR(buffer);
+    RCUTILS_SAFE_FWRITE_TO_STDERR("\n");
+#endif
   }
 
   bool

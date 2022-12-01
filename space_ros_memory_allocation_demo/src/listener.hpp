@@ -49,7 +49,7 @@ public:
       [this](std_msgs::msg::String::ConstSharedPtr msg) -> void
       {
         RCLCPP_INFO(this->get_logger(), "I heard: [%s]", msg->data.c_str());
-        this->get_node_base_interface()->get_context()->shutdown("done");
+        // this->get_node_base_interface()->get_context()->shutdown("done");
       };
     // Create a subscription to the topic which can be matched with one or more compatible ROS
     // publishers.
