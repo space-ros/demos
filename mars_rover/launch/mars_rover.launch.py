@@ -78,7 +78,7 @@ def generate_launch_description():
     spawn = Node(
         package='ros_ign_gazebo', executable='create',
         arguments=[
-            '-name', 'curiosity_path',
+            '-name', 'curiosity_mars_rover',
             '-topic', robot_description,
         ],
         output='screen'

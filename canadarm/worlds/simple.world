@@ -47,7 +47,7 @@
           <visual name='visual'>
             <geometry>
               <mesh>
-                <uri>package://simulation/canadarm/meshes/earth.dae</uri>
+                <uri>/home/spaceros-user/demos_ws/install/simulation/share/simulation/models/canadarm/meshes/earth.dae</uri>
                 <scale>3 3 3</scale>
               </mesh>
             </geometry>
@@ -77,7 +77,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>package://simulation/canadarm/meshes/iss.dae</uri>
+              <uri>/home/spaceros-user/demos_ws/install/simulation/share/simulation/models/canadarm/meshes/iss.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
