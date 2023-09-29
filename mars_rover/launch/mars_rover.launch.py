@@ -30,7 +30,7 @@ def generate_launch_description():
            ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), mars_rover_demos_path])}
     
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
-        'urdf', 'curiosity_mars_rover.xacro.urdf')
+        'urdf', 'curiosity_mars_rover.xacro')
     mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.world')
 
     doc = xacro.process_file(urdf_model_path)
