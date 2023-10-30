@@ -23,10 +23,10 @@ def generate_launch_description():
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
            'IGN_GAZEBO_RESOURCE_PATH':
-           ':'.join([canadarm_demos_path])}
+           ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), canadarm_demos_path])}
 
 
-    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf')
+    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.world')
 
 
