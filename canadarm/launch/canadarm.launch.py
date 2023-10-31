@@ -30,7 +30,7 @@ def generate_launch_description():
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.world')
 
 
-    doc = xacro.process_file(urdf_model_path)
+    doc = xacro.process_file(urdf_model_path, mappings={'xyz' : '1.0 0.0 1.5', 'rpy': '3.1416 0.0 0.0'})
     robot_description = {'robot_description': doc.toxml()}
 
 
