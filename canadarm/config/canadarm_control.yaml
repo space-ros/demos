@@ -3,7 +3,7 @@ controller_manager:
     update_rate: 100
 
     canadarm_joint_controller:
-      type: effort_controllers/JointGroupPositionController
+      type: position_controllers/JointGroupPositionController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
