@@ -2,7 +2,7 @@ from http.server import executable
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit, OnExecutionComplete
@@ -36,7 +36,6 @@ def generate_launch_description():
     doc = xacro.process_file(urdf_model_path)
     robot_description = {'robot_description': doc.toxml()}
 
-
     arm_node = Node(
         package="mars_rover",
         executable="move_arm",
@@ -61,6 +60,12 @@ def generate_launch_description():
         output='screen'
     )
 
+    odom_node = Node(
+        package="mars_rover",
+        executable="odom_tf_publisher",
+        output='screen'
+    )
+
     start_world = ExecuteProcess(
         cmd=['ign gazebo', mars_world_model, '-r'],
         output='screen',
@@ -74,14 +79,32 @@ def generate_launch_description():
             name='robot_state_publisher',
             output='screen',
             parameters=[robot_description])
+    
+    ros_gz_bridge = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            arguments=[
+                '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
+                '/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
+                '/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
+            ],
+            output='screen')
+            
+    image_bridge = Node(
+            package='ros_gz_image',
+            executable='image_bridge',
+            arguments=['/image_raw', '/image_raw'],
+            output='screen')
 
     spawn = Node(
         package='ros_ign_gazebo', executable='create',
         arguments=[
             '-name', 'curiosity_mars_rover',
             '-topic', robot_description,
+            '-z', '-7.5'
         ],
         output='screen'
+        
     )
 
 
@@ -133,10 +156,8 @@ def generate_launch_description():
         output='screen'
     )
 
-
-
-
     return LaunchDescription([
+        SetParameter(name='use_sim_time', value=True),
         start_world,
         robot_state_publisher,
         spawn,
@@ -144,6 +165,9 @@ def generate_launch_description():
         mast_node,
         wheel_node,
         run_node,
+        odom_node,
+        ros_gz_bridge,
+        image_bridge,
 
         RegisterEventHandler(
             OnProcessExit(
