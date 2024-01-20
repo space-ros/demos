@@ -20,6 +20,7 @@ class RunDemo(Node):
         self.stop_srv = self.create_service(Empty, 'move_stop', self.move_stop_callback)
         self.left_srv = self.create_service(Empty, 'turn_left', self.turn_left_callback)
         self.right_srv = self.create_service(Empty, 'turn_right', self.turn_right_callback)
+        self.stopped = True
 
         timer_period = 0.1
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -27,33 +28,44 @@ class RunDemo(Node):
         self.curr_action = Twist()
 
     def timer_callback(self):
-        self.motion_publisher_.publish(self.curr_action)
+        if (not self.stopped):
+            self.motion_publisher_.publish(self.curr_action)
 
     def move_forward_callback(self, request, response):
+        self.get_logger().info("Moving forward")
         action = Twist()
         action.linear.x = 2.0
         self.curr_action = action
+        self.stopped = False
         return response
 
     def move_stop_callback(self, request, response):
+        # stop timer from publishing
+        self.stopped = True
+        self.get_logger().info("Stopping")
         self.curr_action = Twist()
+        # publish once to ensure we stop
+        self.motion_publisher_.publish(self.curr_action)
         return response
 
     def turn_left_callback(self, request, response):
+        self.get_logger().info("Turning left")
         action = Twist()
         action.linear.x = 1.0
         action.angular.z = 0.4
         self.curr_action = action
+        self.stopped = False
         return response
 
     def turn_right_callback(self, request, response):
+        self.get_logger().info("Turning right")
+        self.stopped = False
         action = Twist()
         action.linear.x = 1.0
         action.angular.z = -0.4
         self.curr_action = action
+        self.stopped = False
         return response
-
-    
 
 
 def main(args=None):
