@@ -34,11 +34,18 @@ def generate_launch_description():
     robot_description = {'robot_description': doc.toxml()}
 
 
-    run_node = Node(
+    #run_node = Node(
+    #    package="canadarm",
+    #    executable="move_joint_server",
+    #    output='screen'
+    #)
+
+    run_move_arm = Node(
         package="canadarm",
-        executable="move_joint_server",
+        executable="move_arm",
         output='screen'
     )
+
 
     start_world = ExecuteProcess(
         cmd=['ign gazebo', leo_model, '-r'],
@@ -74,7 +81,7 @@ def generate_launch_description():
 
     load_canadarm_joint_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'canadarm_joint_controller'],
+             'canadarm_joint_trajectory_controller'],
         output='screen'
     )
 
@@ -84,7 +91,8 @@ def generate_launch_description():
         start_world,
         robot_state_publisher,
         spawn,
-        run_node,
+        #run_node,
+        run_move_arm,
 
         RegisterEventHandler(
             OnProcessExit(
