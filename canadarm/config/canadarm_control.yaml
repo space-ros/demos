@@ -5,9 +5,29 @@ controller_manager:
     canadarm_joint_controller:
       type: effort_controllers/JointGroupPositionController
 
+    canadarm_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+
+canadarm_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - Base_Joint
+      - Shoulder_Roll
+      - Shoulder_Yaw
+      - Elbow_Pitch
+      - Wrist_Pitch
+      - Wrist_Yaw
+      - Wrist_Roll
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
 
 canadarm_joint_controller:
   ros__parameters:

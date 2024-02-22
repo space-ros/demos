@@ -23,22 +23,29 @@ def generate_launch_description():
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
            'IGN_GAZEBO_RESOURCE_PATH':
-           ':'.join([canadarm_demos_path])}
+           ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), canadarm_demos_path])}
 
 
-    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf')
+    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.world')
 
 
-    doc = xacro.process_file(urdf_model_path)
+    doc = xacro.process_file(urdf_model_path, mappings={'xyz' : '1.0 0.0 1.5', 'rpy': '3.1416 0.0 0.0'})
     robot_description = {'robot_description': doc.toxml()}
 
 
-    run_node = Node(
+    #run_node = Node(
+    #    package="canadarm",
+    #    executable="move_joint_server",
+    #    output='screen'
+    #)
+
+    run_move_arm = Node(
         package="canadarm",
-        executable="move_joint_server",
+        executable="move_arm",
         output='screen'
     )
+
 
     start_world = ExecuteProcess(
         cmd=['ign gazebo', leo_model, '-r'],
@@ -74,7 +81,7 @@ def generate_launch_description():
 
     load_canadarm_joint_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'canadarm_joint_controller'],
+             'canadarm_joint_trajectory_controller'],
         output='screen'
     )
 
@@ -84,7 +91,8 @@ def generate_launch_description():
         start_world,
         robot_state_publisher,
         spawn,
-        run_node,
+        #run_node,
+        run_move_arm,
 
         RegisterEventHandler(
             OnProcessExit(

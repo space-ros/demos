@@ -43,6 +43,7 @@ install(DIRECTORY
 
 install(PROGRAMS
   nodes/move_joint_server
+  nodes/move_arm
   DESTINATION lib/${PROJECT_NAME}
 )
 
