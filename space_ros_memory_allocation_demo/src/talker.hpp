@@ -35,8 +35,8 @@ namespace space_ros_memory_allocation_demo
 {
 
 // TODO(wjwwood): Cannot use this until we fix https://github.com/ros2/rosidl/issues/566
-// using String = std_msgs::msg::String_<MemoryAllocator>;
-using String = std_msgs::msg::String;
+using String = std_msgs::msg::String_<std::pmr::polymorphic_allocator<std::byte>>;
+// using String = std_msgs::msg::String_<std::allocator<void>>;
 
 // Create a Talker class that subclasses the generic rclcpp::Node base class.
 // The main function below will instantiate the class as a ROS node.
@@ -49,21 +49,27 @@ public:
     std::pmr::memory_resource * memory_resource = std::pmr::get_default_resource())
   : Node("talker", options)
   {
-    RCUTILS_UNUSED(memory_resource);
+    using std::pmr::polymorphic_allocator;
+    polymorphic_allocator<std::byte> pa(memory_resource);
+
+    auto msg = std::allocate_shared<String>(pa, pa);
+    msg->data = decltype(msg->data)(1024, 'a', pa);
+    RCLCPP_INFO(this->get_logger(), "Testing: '%s'", msg->data.c_str());
     // Create a function for when messages are to be sent.
     auto publish_message =
-      [this]() -> void
+      [this, pa]() -> void
       {
-        msg_ = std::make_unique<String>();
-        msg_->data = "Hello World: " + std::to_string(count_++);
+        msg_ = std::allocate_shared<String>(pa, pa);
+        // msg_ = std::make_shared<String>(pa);
+        msg_->data = "Hello World:  " + std::to_string(count_++);
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", msg_->data.c_str());
         // Put the message into a queue to be processed by the middleware.
         // This call is non-blocking.
         auto states = push_expectations({false, false, false, false});
         osrf_testing_tools_cpp::memory_tools::guaranteed_malloc("it's working");
-        pub_->publish(std::move(msg_));
+        pub_->publish(*msg_);
         pop_expectations(states);
-        this->get_node_base_interface()->get_context()->shutdown("done");
+        // this->get_node_base_interface()->get_context()->shutdown("done");
       };
     // Create a publisher with a custom Quality of Service profile.
     // Uniform initialization is suggested so it can be trivially changed to
@@ -78,7 +84,7 @@ public:
 
 private:
   size_t count_ = 1;
-  std::unique_ptr<String> msg_;
+  std::shared_ptr<String> msg_;
   rclcpp::Publisher<String>::SharedPtr pub_;
   rclcpp::TimerBase::SharedPtr timer_;
 };

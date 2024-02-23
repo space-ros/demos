@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
 #include <memory>
 
 #include "osrf_testing_tools_cpp/memory_tools/memory_tools.hpp"
@@ -21,14 +22,15 @@
 #include "expected_push_pop.hpp"
 #include "listener.hpp"
 
+template<typename MemoryAllocatorT>
 int
-actual_main(int argc, char const * argv[], space_ros_memory_allocation_demo::MemoryAllocator & ma)
+actual_main(int argc, char const * argv[], MemoryAllocatorT & ma)
 {
   using std::pmr::polymorphic_allocator;
   // Create a C-style allocator that wraps the pmr C++ allocator.
-  polymorphic_allocator<void> pa(&ma);
+  polymorphic_allocator<std::byte> pa(&ma);
   rcl_allocator_t rcl_allocator =
-    rclcpp::allocator::get_rcl_allocator<void, polymorphic_allocator<void>>(pa);
+    rclcpp::allocator::get_rcl_allocator<std::byte, polymorphic_allocator<std::byte>>(pa);
 
   using rclcpp::Context;
   rclcpp::InitOptions io(rcl_allocator);
@@ -58,5 +60,7 @@ actual_main(int argc, char const * argv[], space_ros_memory_allocation_demo::Mem
 int
 main(int argc, char const * argv[])
 {
-  return common_main(argc, argv, actual_main);
+  // using AllocatorT = MultiArena::UnsynchronizedArenaResource<16, 1024>;
+  using AllocatorT = MemoryAllocator;
+  return common_main<AllocatorT>(argc, argv, actual_main<AllocatorT>);
 }

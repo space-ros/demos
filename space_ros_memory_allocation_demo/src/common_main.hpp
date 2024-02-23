@@ -18,20 +18,20 @@
 #include "rclcpp/rclcpp.hpp"
 #include "osrf_testing_tools_cpp/memory_tools/memory_tools.hpp"
 
+#include <MultiArena/MultiArena.h>
+
 #include "space_ros_memory_allocation_demo/memory_allocator.hpp"
 
 using space_ros_memory_allocation_demo::MemoryAllocator;
 
+template<typename MemoryAllocatorT>
 int
 common_main(
   int argc,
   char const * argv[],
-  std::function<int(int, char const *[], MemoryAllocator &)> actual_main)
+  std::function<int(int, char const *[], MemoryAllocatorT &)> actual_main)
 {
   setvbuf(stdout, NULL, _IONBF, BUFSIZ);
-
-  std::array<std::uint8_t, 65536> buffer;
-  MemoryAllocator ma(buffer.data(), buffer.size());
 
   using osrf_testing_tools_cpp::memory_tools::MemoryToolsService;
   auto callback_factory = [](std::string msg, bool should_trace) {
@@ -67,7 +67,24 @@ common_main(
 
   osrf_testing_tools_cpp::memory_tools::enable_monitoring();
 
-  return actual_main(argc, argv, ma);
+  if constexpr (std::is_same<MemoryAllocatorT, MemoryAllocator>::value) {
+    std::array<std::uint8_t, 65536 * 3> buffer;
+    MemoryAllocator ma(buffer.data(), buffer.size());
+    return actual_main(argc, argv, ma);
+  } else {
+    MemoryAllocatorT multi_arena_allocator;
+    return actual_main(argc, argv, multi_arena_allocator);
+  }
+
+  using MyBaseNodeInterfaces = rclcpp::node_interfaces::NodeInterfaces<
+    rclcpp::node_interfaces::Base,
+    rclcpp::node_interfaces::Clock,
+    rclcpp::node_interfaces::Graph
+  >;
+  auto base_interfaces = std::make_shared<MyBaseNodeInterfaces>(
+    node->get_node_base_interface(),
+    node->get_node_clock_interface(),
+    node->get_node_graph_interface());
 }
 
 #endif  // SPACE_ROS_MEMORY_ALLOCATION_DEMO__COMMON_MAIN_HPP_
