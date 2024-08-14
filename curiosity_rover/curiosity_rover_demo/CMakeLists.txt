@@ -13,11 +13,9 @@ find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(simulation REQUIRED)
+find_package(curiosity_description REQUIRED)
 find_package(std_msgs REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,9 +30,7 @@ if(BUILD_TESTING)
 endif()
 
 install(DIRECTORY
-  config
   launch
-  worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -45,7 +41,6 @@ install(PROGRAMS
   nodes/move_mast
   nodes/move_wheel
   nodes/run_demo
-  nodes/odom_tf_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 
