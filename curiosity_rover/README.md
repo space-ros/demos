@@ -20,7 +20,7 @@ To start the demo, there are few dependencies that need to be installed. The fol
     ```
 3. To build the demo, you can use the following command.
     ```bash
-    # To build all the demos for the canadarm2
+    # To build the demos
     ./build.sh
     ```
 4. To run the demo, you can use the following command.
