@@ -3,7 +3,7 @@
 <package format="3">
   <name>canadarm_demo</name>
   <version>1.0.0</version>
-  <description>TODO: Package description</description>
+  <description>CanadArm2 Control demo using SpaceROS</description>
   <maintainer email="tonylitianyu@gmail.com">root</maintainer>
   <license>TODO: License declaration</license>
 

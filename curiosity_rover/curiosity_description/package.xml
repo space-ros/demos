@@ -2,10 +2,10 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>curiosity_description</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <version>1.0.0</version>
+  <description>Simulation description for Curiosity Mars Rover</description>
   <maintainer email="franklinselva10@gmail.com">franklinselva</maintainer>
-  <license>TODO: License declaration</license>
+  <license>GPL</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
