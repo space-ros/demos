@@ -14,4 +14,5 @@ Please refer to the [dockerfile repo](https://github.com/space-ros/docker/tree/m
 
 ## Demos
 
-1. [Curiosity Rover](curiosity_rover/README.md)
+1. [Canadarm2](canadarm2/README.md)
+2. [Curiosity Rover](curiosity_rover/README.md)
