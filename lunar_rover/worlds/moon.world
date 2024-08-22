@@ -1,0 +1,49 @@
+<sdf version="1.5">
+  <world name="default">
+    <gui fullscreen="1">
+
+      <plugin filename="GzScene3D" name="3D View">
+        <ignition-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </ignition-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <background_color>0 0 0</background_color>
+        <camera_pose>-5.0 0.0 10.0 0.0 0.8 0.0</camera_pose>
+      </plugin>
+
+    </gui>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Lunar Gravity-->
+    <gravity>0 0 -1.62</gravity>
+
+    <include>
+      <uri>model://apollo15_landing_site_1000x1000</uri>
+      <name>lunar_landing_site</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://lunar_roving_vehicle</uri>
+      <name>lunar_roving_vehicle</name>
+      <pose>0 0 1.5 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>
