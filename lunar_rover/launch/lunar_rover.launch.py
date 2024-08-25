@@ -37,8 +37,20 @@ def generate_launch_description():
         shell=True
     )
 
+    # Set right parameters here
+    ros_gz_bridge = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            arguments=[
+                '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
+                '/model/lunar_roving_vehicle/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
+                '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
+            ],
+            output='screen')
+
  
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
         start_world,
+        ros_gz_bridge,
     ])

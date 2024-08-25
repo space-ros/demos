@@ -32,7 +32,6 @@ if(BUILD_TESTING)
 endif()
 
 install(DIRECTORY
-  config
   launch
   worlds
   DESTINATION share/${PROJECT_NAME}
@@ -40,13 +39,5 @@ install(DIRECTORY
 
 ament_python_install_package(${PROJECT_NAME})
 
-install(PROGRAMS
-  nodes/move_arm
-  nodes/move_mast
-  nodes/move_wheel
-  nodes/run_demo
-  nodes/odom_tf_publisher
-  DESTINATION lib/${PROJECT_NAME}
-)
 
 ament_package()
