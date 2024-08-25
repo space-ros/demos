@@ -1,6 +1,6 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
