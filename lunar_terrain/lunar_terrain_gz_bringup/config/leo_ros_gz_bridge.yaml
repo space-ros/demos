@@ -1,0 +1,21 @@
+---
+- ros_topic_name: "/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_topic_name: "/cmd_vel"
+  gz_type_name: "ignition.msgs.Twist"
+  direction: ROS_TO_GZ
+- gz_topic_name: "/imu/data_raw"
+  gz_type_name: "ignition.msgs.IMU"
+  ros_topic_name: "/imu/data_raw"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  direction: GZ_TO_ROS
+- gz_topic_name: "/joint_states"
+  gz_type_name: "ignition.msgs.Model"
+  ros_topic_name: "/joint_states"
+  ros_type_name: "sensor_msgs/msg/JointState"
+  direction: GZ_TO_ROS
+- gz_topic_name: "/odom"
+  gz_type_name: "ignition.msgs.Odometry"
+  ros_topic_name: "/odom"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  direction: GZ_TO_ROS
