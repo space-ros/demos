@@ -58,11 +58,10 @@ def generate_launch_description():
         executable="move_wheel",
         output='screen'
     )
-    # Start demo
-    # TODO more data needed
-    run_node = Node(
+    # Node to take teleop / 
+    teleop_rover_node = Node(
         package="mars_rover",
-        executable="run_demo",
+        executable="teleop_rover",
         output='screen'
     )
     # Publish odometry
@@ -167,7 +166,7 @@ def generate_launch_description():
         # arm_node,
         # mast_node,
         wheel_node,
-        run_node,
+        teleop_rover_node, # Renamed from run_node
         odom_node,
         ros_gz_bridge,
         image_bridge,

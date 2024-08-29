@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Implementation of the RunDemo class.
+Implementation of the TeleOpRover class.
 
 This node acts as an interface between user sent service call to publishing
 twist message that is then subscribed too by the controller
@@ -31,11 +31,11 @@ from geometry_msgs.msg import Twist
 # from random import randint
 from std_srvs.srv import Empty
 
-class RunDemo(Node):
-    """Node that converts user's service / input device commands to Twist messages."""
+class TeleOpRover(Node):
+    """Node that converts user's service request / input device commands to Twist messages."""
 
     def __init__(self) -> None:
-        super().__init__('run_node')
+        super().__init__('teleop_node')
         # Setup publishers
         self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
         # Setup services
@@ -96,12 +96,12 @@ class RunDemo(Node):
 def main(args=None):
     """Run main."""
     rclpy.init(args=args)
-    run_demo = RunDemo()
-    rclpy.spin(run_demo)
+    teleop_node = TeleOpRover()
+    rclpy.spin(teleop_node)
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    run_demo.destroy_node()
+    teleop_node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':
