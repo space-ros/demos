@@ -41,17 +41,17 @@ def generate_launch_description():
     doc = xacro.process_file(urdf_model_path)
     robot_description = {'robot_description': doc.toxml()}
     # Arm
-    arm_node = Node(
-        package="mars_rover",
-        executable="move_arm",
-        output='screen'
-    )
+    # arm_node = Node(
+    #     package="mars_rover",
+    #     executable="move_arm",
+    #     output='screen'
+    # )
     # Sensor mast
-    mast_node = Node(
-        package="mars_rover",
-        executable="move_mast",
-        output='screen'
-    )
+    # mast_node = Node(
+    #     package="mars_rover",
+    #     executable="move_mast",
+    #     output='screen'
+    # )
     # Wheel groups
     wheel_node = Node(
         package="mars_rover",
@@ -59,6 +59,7 @@ def generate_launch_description():
         output='screen'
     )
     # Start demo
+    # TODO more data needed
     run_node = Node(
         package="mars_rover",
         executable="run_demo",
@@ -128,17 +129,17 @@ def generate_launch_description():
         output='screen'
     )
     # Controller for arm
-    load_arm_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'arm_joint_trajectory_controller'],
-        output='screen'
-    )
+    # load_arm_joint_traj_controller = ExecuteProcess(
+    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+    #          'arm_joint_trajectory_controller'],
+    #     output='screen'
+    # )
     # Controller for sensor mast
-    load_mast_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'mast_joint_trajectory_controller'],
-        output='screen'
-    )
+    # load_mast_joint_traj_controller = ExecuteProcess(
+    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+    #          'mast_joint_trajectory_controller'],
+    #     output='screen'
+    # )
     # Controller for wheel
     load_wheel_joint_traj_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
@@ -163,8 +164,8 @@ def generate_launch_description():
         start_world,
         robot_state_publisher,
         spawn,
-        arm_node,
-        mast_node,
+        # arm_node,
+        # mast_node,
         wheel_node,
         run_node,
         odom_node,
@@ -190,8 +191,9 @@ def generate_launch_description():
         RegisterEventHandler(
             OnProcessExit(
                 target_action=load_joint_state_broadcaster,
-                on_exit=[load_arm_joint_traj_controller,
-                        load_mast_joint_traj_controller,
+                on_exit=[
+                        # load_arm_joint_traj_controller,
+                        # load_mast_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
                         load_suspension_joint_traj_controller],
