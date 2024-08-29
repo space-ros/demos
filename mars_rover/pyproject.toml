@@ -1,0 +1,29 @@
+[tool.flake8]
+max-line-length = 120
+show-source = true
+
+[tool.pylint.'MAIN']
+persistent = "no"
+[tool.pylint.'VARIABLES']
+ignored-argument-names = "args|kwargs"
+
+[tool.pydocstyle]
+inherit = false
+ignore = "D105,D107,D203,D212,D413,D407"
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+fixable = []
+unfixable = ["ALL"]
+select = ["F", "E", "W", "N", "D", "UP", "BLE", "B", "A", "COM", "EM", "PTH", "C4", "ISC"]
+ignore = ["D105", "D107", "D203", "D212", "D413", "D407"]
+# select = [
+#     "A",  # prevent using keywords that clobber python builtins
+#     "B",  # bugbear: security warnings
+#     "E",  # pycodestyle
+#     "F",  # pyflakes
+#     "ISC",  # implicit string concatenation
+#     "UP",  # alert you when better syntax is available in your python version
+#     "RUF",  # the ruff developer's own rules
+# ]
