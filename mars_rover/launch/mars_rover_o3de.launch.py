@@ -65,11 +65,12 @@ def generate_launch_description():
         output='screen'
     )
     # Publish odometry
-    odom_node = Node(
-        package="mars_rover",
-        executable="odom_tf_publisher",
-        output='screen'
-    )
+    # odom_node = Node(
+    #     package="mars_rover",
+    #     executable="odom_tf_publisher",
+    #     output='screen'
+    # )
+
     # Fire up Gazebo ignition model
     start_world = ExecuteProcess(
         cmd=['ign gazebo', mars_world_model, '-r'],
@@ -167,7 +168,7 @@ def generate_launch_description():
         # mast_node,
         wheel_node,
         teleop_rover_node, # Renamed from run_node
-        odom_node,
+        # odom_node,
         ros_gz_bridge,
         image_bridge,
 
