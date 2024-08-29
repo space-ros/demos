@@ -17,7 +17,7 @@ target-version = "py38"
 fixable = []
 unfixable = ["ALL"]
 select = ["F", "E", "W", "N", "D", "UP", "BLE", "B", "A", "COM", "EM", "PTH", "C4", "ISC"]
-ignore = ["D105", "D107", "D203", "D212", "D413", "D407"]
+ignore = ["D105", "D107", "D203", "D212", "D413", "D407", "COM812"]
 # select = [
 #     "A",  # prevent using keywords that clobber python builtins
 #     "B",  # bugbear: security warnings

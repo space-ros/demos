@@ -39,8 +39,10 @@ class MoveWheel(Node):
         timer_period = 0.1  # seconds, 100ms to update once?
         self.timer = self.create_timer(timer_period, self.timer_callback)
         # Setup subscribers
-        # NOTE, ROS 2 Gem creates this subscriber via Components in prefab
-        self.vel_sub = self.create_subscription(Twist, '/cmd_vel', self.vel_callback, 10)
+        # Not used anywhere in this file,
+        # TODO depricate and delete this subscriberm it is not used anywhere
+        # self.vel_sub = self.create_subscription(Twist, '/cmd_vel', self.vel_callback, 10)
+        # Important instance variables
         self.curr_vel = Twist()
         self.last_vel = Twist()
         self.should_steer = False
