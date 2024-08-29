@@ -32,7 +32,7 @@ from geometry_msgs.msg import Twist
 from std_srvs.srv import Empty
 
 class RunDemo(Node):
-    """Node for performing combination of motions from different moving parts of the Curiosity rover."""
+    """Node that converts user's service / input device commands to Twist messages."""
 
     def __init__(self) -> None:
         super().__init__('run_node')

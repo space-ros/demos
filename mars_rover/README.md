@@ -7,3 +7,7 @@ This packge launches the curiositry mars rover simulation in Gazebo ignition. It
     * [ ] Description of fixing the .dae file for the ```chassis```
     * [ ] How I configured it to work with the O3DE project.
     * [ ] How to instructions
+
+**Changelogs**
+
+    * Changed RunDemo() class name to ????
