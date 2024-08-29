@@ -10,4 +10,5 @@ This packge launches the curiositry mars rover simulation in Gazebo ignition. It
 
 **Changelogs**
 
-    * Changed RunDemo class name to TeleOpRover as this class's primary function is to publish Twist message based on user/teleop input
+    * Changed RunDemo class name to TeleOpRover as this class's primary function is to publish Twist message based on user/teleop input.
+    * odom_tf_broadcaster may need to be turned off???
