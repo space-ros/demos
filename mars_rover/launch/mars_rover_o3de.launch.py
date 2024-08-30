@@ -115,6 +115,7 @@ def generate_launch_description():
 
     # Control Components
     component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
+    
     # TODO what bug was resolved with this hack?
     # Set hardware_interface state to active
     set_hardware_interface_active = ExecuteProcess(
@@ -123,6 +124,7 @@ def generate_launch_description():
             'controller_manager_msgs/srv/SetHardwareComponentState',
             component_state_msg]
     )
+    
     # Controller to broadcast all joint states
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
