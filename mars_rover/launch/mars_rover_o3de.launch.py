@@ -40,6 +40,7 @@ def generate_launch_description():
     mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.world')
     doc = xacro.process_file(urdf_model_path)
     robot_description = {'robot_description': doc.toxml()}
+    
     # Arm
     # arm_node = Node(
     #     package="mars_rover",
@@ -128,18 +129,21 @@ def generate_launch_description():
              'joint_state_broadcaster'],
         output='screen'
     )
+    
     # Controller for arm
     # load_arm_joint_traj_controller = ExecuteProcess(
     #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
     #          'arm_joint_trajectory_controller'],
     #     output='screen'
     # )
+    
     # Controller for sensor mast
     # load_mast_joint_traj_controller = ExecuteProcess(
     #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
     #          'mast_joint_trajectory_controller'],
     #     output='screen'
     # )
+    
     # Controller for wheel
     load_wheel_joint_traj_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
