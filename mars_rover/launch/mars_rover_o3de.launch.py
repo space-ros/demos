@@ -59,7 +59,7 @@ def generate_launch_description():
         executable="move_wheel",
         output='screen'
     )
-    # Node to take teleop / 
+    # Node to take teleop
     teleop_rover_node = Node(
         package="mars_rover",
         executable="teleop_rover",

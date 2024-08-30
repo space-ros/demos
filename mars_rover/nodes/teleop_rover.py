@@ -38,6 +38,7 @@ class TeleOpRover(Node):
         super().__init__('teleop_node')
         # Setup publishers
         self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.o3de_motion_publisher_ = self.create_publisher(Twist, '/base_footprint/cmd_vel', 10)
         # Setup services
         self.forward_srv = self.create_service(Empty, 'move_forward', self.move_forward_callback)
         self.stop_srv = self.create_service(Empty, 'move_stop', self.move_stop_callback)
@@ -51,7 +52,10 @@ class TeleOpRover(Node):
     def timer_callback(self):
         """Periodically publish velocity of rover in 3D space as Twist messages."""
         if (not self.stopped):
-            self.motion_publisher_.publish(self.curr_action)
+            self.o3de_motion_publisher_.publish(self.curr_action)
+            # self.motion_publisher_.publish(self.curr_action)
+            # Experimental
+            
 
     def move_forward_callback(self, request, response):
         """Print message when moving forward."""
@@ -69,7 +73,8 @@ class TeleOpRover(Node):
         self.get_logger().info("Stopping")
         self.curr_action = Twist()
         # publish once to ensure we stop
-        self.motion_publisher_.publish(self.curr_action)
+        # self.motion_publisher_.publish(self.curr_action)
+        self.o3de_motion_publisher_.publish(self.curr_action)
         return response
 
     def turn_left_callback(self, request, response):
