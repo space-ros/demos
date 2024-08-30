@@ -41,12 +41,12 @@ install(DIRECTORY
 ament_python_install_package(${PROJECT_NAME})
 
 install(PROGRAMS
-  #nodes/move_arm.py
-  #nodes/move_mast.py
-  nodes/move_wheel.py
-  #nodes/run_demo.py
-  nodes/teleop_rover.py
-  nodes/odom_tf_publisher.py
+  nodes/move_arm
+  nodes/move_mast
+  nodes/move_wheel
+  #nodes/run_demo
+  nodes/teleop_rover
+  nodes/odom_tf_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 
