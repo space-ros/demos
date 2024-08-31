@@ -35,9 +35,12 @@ def generate_launch_description():
                      environ.get('LD_LIBRARY_PATH', default='')]),
            'IGN_GAZEBO_RESOURCE_PATH':
            ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), mars_rover_demos_path])}
+    
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
         'urdf', 'curiosity_mars_rover.xacro')
+    
     mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.world')
+    
     doc = xacro.process_file(urdf_model_path)
     robot_description = {'robot_description': doc.toxml()}
     
@@ -72,7 +75,7 @@ def generate_launch_description():
     #     output='screen'
     # )
 
-    # Fire up Gazebo ignition model
+    # Fire up Gazebo Ignition
     start_world = ExecuteProcess(
         cmd=['ign gazebo', mars_world_model, '-r'],
         output='screen',
@@ -80,6 +83,7 @@ def generate_launch_description():
         shell=True
     )
     # Publish various joint positions and link orientation
+    # This is crucial for simulation
     robot_state_publisher = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
