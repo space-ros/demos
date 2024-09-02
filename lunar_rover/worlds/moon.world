@@ -2,7 +2,7 @@
 <sdf version="1.8">
     <world name="moon">
         <physics name="1ms" type="ignored">
-            <max_step_size>0.001</max_step_size>
+            <max_step_size>0.01</max_step_size>
             <real_time_factor>1.0</real_time_factor>
         </physics>
         <plugin
@@ -58,12 +58,6 @@
       <uri>model://apollo15_landing_site_1000x1000_modified</uri>
       <name>lunar_landing_site</name>
       <pose>0 0 -44 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://apollo_lunar_module</uri>
-      <name>lunar_module</name>
-      <pose>3 -10 1.4 0.0250 0 0</pose>
     </include>
 
     <!-- Lunar Gravity-->
