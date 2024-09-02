@@ -137,18 +137,18 @@ def generate_launch_description():
     )
     
     # Controller for arm
-    # load_arm_joint_traj_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-    #          'arm_joint_trajectory_controller'],
-    #     output='screen'
-    # )
+    load_arm_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'arm_joint_trajectory_controller'],
+        output='screen'
+    )
     
     # Controller for sensor mast
-    # load_mast_joint_traj_controller = ExecuteProcess(
-    #     cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-    #          'mast_joint_trajectory_controller'],
-    #     output='screen'
-    # )
+    load_mast_joint_traj_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+             'mast_joint_trajectory_controller'],
+        output='screen'
+    )
     
     # Controller for wheel
     load_wheel_joint_traj_controller = ExecuteProcess(
@@ -171,16 +171,16 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
-        start_world,
-        robot_state_publisher,
-        spawn,
+        #start_world,
+        #robot_state_publisher,
+        #spawn,
         # arm_node,
         # mast_node,
         wheel_node,
         teleop_rover_node, # Renamed from run_node
         # odom_node,
-        ros_gz_bridge,
-        image_bridge,
+        #ros_gz_bridge,
+        #image_bridge,
 
         RegisterEventHandler(
             OnProcessExit(
