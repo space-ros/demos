@@ -39,5 +39,10 @@ install(DIRECTORY
 
 ament_python_install_package(${PROJECT_NAME})
 
+install(PROGRAMS
+  lunar_rover/waypoints.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 ament_package()
