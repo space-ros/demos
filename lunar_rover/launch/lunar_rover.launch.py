@@ -45,6 +45,7 @@ def generate_launch_description():
                 '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
                 '/model/lunar_roving_vehicle/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
                 '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
+                'imu@sensor_msgs/msg/Imu[ignition.msgs.IMU',
             ],
             output='screen')
     
