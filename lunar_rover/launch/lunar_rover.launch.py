@@ -37,7 +37,7 @@ def generate_launch_description():
         shell=True
     )
 
-    # Set right parameters here
+    # Gazebo Bridge
     ros_gz_bridge = Node(
             package='ros_gz_bridge',
             executable='parameter_bridge',
@@ -47,10 +47,26 @@ def generate_launch_description():
                 '/cmd_vel@geometry_msgs/msg/Twist]ignition.msgs.Twist',
             ],
             output='screen')
+    
+    # Image Bridge for handheld camera
+    img_bridge_handheld = Node(
+            package='ros_gz_image',
+            executable='image_bridge',
+            arguments=['/img_raw_handheld', '/img_raw_handheld'],
+            output='screen')
+    
+    # Image Bridge for front camera
+    img_bridge_front = Node(
+            package='ros_gz_image',
+            executable='image_bridge',
+            arguments=['/img_raw_front', '/img_raw_front'],
+            output='screen')
 
  
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
         start_world,
         ros_gz_bridge,
+        img_bridge_handheld,
+        img_bridge_front,
     ])
