@@ -1,13 +1,14 @@
-<sdf version="1.5">
+<?xml version="1.0" ?>
+<sdf version="1.11">
   <world name="default">
     <gui fullscreen="0">
 
       <plugin filename="GzScene3D" name="3D View">
-        <ignition-gui>
+        <gz-gui>
           <title>3D View</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="string" key="state">docked</property>
-        </ignition-gui>
+        </gz-gui>
         <engine>ogre2</engine>
         <scene>scene</scene>
         <background_color>0.9 0.753 0.66</background_color>
@@ -15,9 +16,9 @@
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+        <gz-gui>
           <property key="state" type="string">floating</property>
-        </ignition-gui>
+        </gz-gui>
       </plugin>
     </gui>
 
@@ -25,13 +26,13 @@
     <plugins>
         <plugin entity_name="*"
                 entity_type="world"
-                filename="ignition-gazebo-scene-broadcaster-system"
-                name="ignition::gazebo::systems::SceneBroadcaster">
+                filename="gz-sim-scene-broadcaster-system"
+                name="gz::sim::systems::SceneBroadcaster">
         </plugin>
         <plugin entity_name="*"
                 entity_type="world"
-                filename="ignition-gazebo-sensors-system"
-                name="ignition::gazebo::systems::Sensors">
+                filename="gz-sim-sensors-system"
+                name="gz::sim::systems::Sensors">
         <render_engine>ogre2</render_engine>
         </plugin>
     </plugins>
