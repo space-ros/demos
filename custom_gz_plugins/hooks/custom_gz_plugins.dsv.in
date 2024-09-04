@@ -1,0 +1,2 @@
+prepend-non-duplicate;IGN_GAZEBO_RESOURCE_PATH;share
+prepend-non-duplicate;IGN_GAZEBO_RESOURCE_PATH;share/custom_gz_plugins_pkg/models
