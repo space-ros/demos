@@ -27,7 +27,7 @@ def generate_launch_description():
            ':'.join([environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
            'GZ_SIM_RESOURCE_PATH':
-           ':'.join([mars_rover_demos_path])}
+           ':'.join([mars_rover_demos_path, mars_rover_models_path + '/models'])}
 
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
         'urdf', 'curiosity_mars_rover.xacro')
