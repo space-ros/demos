@@ -254,7 +254,7 @@ void gz::sim::plugins::DayLightManager::Setup(gz::sim::EntityComponentManager &_
         </model>
       </sdf>
     )");
-    
+
   // Insert sun_sphere model
   gz::msgs::EntityFactory sunSphereSpawnEntity;
   gz::msgs::Boolean sunSphereSpawnRes;
@@ -317,7 +317,7 @@ void gz::sim::plugins::DayLightManager::SetSunPosition()
 
     // Update sun coordinates
     this->_x_coordinate = this->_radius * cos(alpha) * cos(theta) + this->_x_bias;
-    this->_y_coordinate = this->_radius * cos(alpha) * sin(theta) + this->_y_bias;
+    this->_y_coordinate = this->_radius * cos(alpha) * -1* sin(theta) + this->_y_bias;
     this->_z_coordinate = this->_radius * sin(alpha);
 
     // Set new sun position
