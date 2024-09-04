@@ -110,15 +110,14 @@ namespace gz::sim::plugins
 
     float *EARTHSKYCOLOR[3] = {&EARTHNIGHT[0], &EARTHDUSKDAWN[0], &EARTHNOON[0]};
 
-  float MARSNIGHT[4] = {0.02, 0.02, 0.05, 1.0};
-  float MARSNOON[4] = {1, 0.412 ,0.05, 1.0};
-  float MARSDUSKDAWN[4] = {0.85, 0.45, 0.30, 1.0};
+    float MARSNIGHT[4] = {0.02, 0.02, 0.05, 1.0};
+    float MARSNOON[4] = {1, 0.412, 0.05, 1.0};
+    float MARSDUSKDAWN[4] = {0.85, 0.45, 0.30, 1.0};
 
-  float *MARSSKYCOLOR[3] = {&MARSNIGHT[0], &MARSDUSKDAWN[0], &MARSNOON[0]};
+    float *MARSSKYCOLOR[3] = {&MARSNIGHT[0], &MARSDUSKDAWN[0], &MARSNOON[0]};
 
-  float NIGHTTHRES = -0.3;
-  float DUSKDAWNTHRES = 0.15; // after this point there will be a major transition in sky color ; Dusk -> Noon && Noon -< Dawn
-  
+    float NIGHTTHRES = -0.3;
+    float DUSKDAWNTHRES = 0.15; // after this point there will be a major transition in sky color ; Dusk -> Noon && Noon -< Dawn
   };
 }
 
@@ -213,11 +212,54 @@ void gz::sim::plugins::DayLightManager::Setup(gz::sim::EntityComponentManager &_
   std::string sunRemoveService = "/world/" + this->_dataPtr->_worldName + "/remove";
   this->_dataPtr->_node.Request(sunRemoveService, sunRemoveEntity, this->_dataPtr->_gzMsgsTimeout, sunRemoveRes, sunRemoveResult);
 
+  // sun sphere sdf file
+  sdf::SDF sunSDF;
+  sunSDF.SetFromString(
+      R"(
+      <?xml version='1.0'?>
+      <sdf version="1.5">
+        <model name="sun">
+          <static>true</static>
+          <pose>0 0 0 0 0 0</pose>
+          <link name="link">
+            <visual name="visual">
+              <cast_shadows>false</cast_shadows>
+              <geometry>
+                <sphere>
+                  <radius>2.0</radius>
+                </sphere>
+              </geometry>
+              <material>
+                <lighting>1</lighting>
+                <ambient>1 1 0.7 1</ambient>
+                <diffuse>1 1 0.7 1</diffuse>
+                <specular>1 1 1 1</specular>
+                <emissive>1 1 0.5 1</emissive>
+              </material>
+            </visual>
+            <light type="directional" name="directional_light">
+              <cast_shadows>true</cast_shadows>
+              <pose>0 0 10 0 0 0</pose>
+              <diffuse>1 1 1 1</diffuse>
+              <specular>1 1 1 1</specular>
+              <attenuation>
+                <range>100</range>
+                <constant>0.9</constant>
+                <linear>0.01</linear>
+                <quadratic>0.001</quadratic>
+              </attenuation>
+              <direction>0 0 -1</direction>
+            </light>
+          </link>
+        </model>
+      </sdf>
+    )");
+    
   // Insert sun_sphere model
   gz::msgs::EntityFactory sunSphereSpawnEntity;
   gz::msgs::Boolean sunSphereSpawnRes;
   bool sunSpawnResult;
-  sunSphereSpawnEntity.set_sdf_filename("models/sun_sphere/model.sdf");
+  sunSphereSpawnEntity.set_sdf(sunSDF.ToString());
   sunSphereSpawnEntity.set_name(this->_dataPtr->_sunModelName);
   std::string sunSphereSpawnService = "/world/" + this->_dataPtr->_worldName + "/create";
   this->_dataPtr->_node.Request(sunSphereSpawnService, sunSphereSpawnEntity, this->_dataPtr->_gzMsgsTimeout, sunSphereSpawnRes, sunSpawnResult);
@@ -449,7 +491,7 @@ void gz::sim::plugins::DayLightManager::SetY(int _y_bias)
   this->_y_bias = _y_bias;
 }
 
-void gz::sim::plugins::DayLightManager::BgColor(bool _checked )
+void gz::sim::plugins::DayLightManager::BgColor(bool _checked)
 {
   this->_bgSet = _checked;
 }
@@ -507,15 +549,15 @@ void gz::sim::plugins::DayLightManager::PerformRenderingOperations()
   if (nullptr == this->scene)
     return;
 
-  if (_bgSet){
-    this->scene->SetBackgroundColor({ this->R_next,
-                                      this->G_next, 
-                                      this->B_next, 
-                                      1.0});
+  if (_bgSet)
+  {
+    this->scene->SetBackgroundColor({this->R_next,
+                                     this->G_next,
+                                     this->B_next,
+                                     1.0});
 
     this->_dataPtr->_updateSky = false;
   }
-
 }
 
 /////////////////////////////////////////////////
