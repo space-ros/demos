@@ -1,0 +1,77 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    canadarm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+canadarm_controller:
+  ros__parameters:
+    open_loop_control: false
+    allow_nonzero_velocity_at_trajectory_end: false
+    constraints:
+      stopped_velocity_tolerance: 0.001
+      goal_time: 0.0
+    joints:
+      - Base_Joint
+      - Shoulder_Roll
+      - Shoulder_Yaw
+      - Elbow_Pitch
+      - Wrist_Pitch
+      - Wrist_Yaw
+      - Wrist_Roll
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+    gains:
+      Base_Joint:
+        p: 92000.0
+        i: 0.0
+        d: 2050.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Shoulder_Roll:
+        p: 92000.0
+        i: 0.0
+        d: 2050.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Shoulder_Yaw:
+        p: 92000.0
+        i: 0.0
+        d: 2050.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Elbow_Pitch:
+        p: 92000.0
+        i: 0.0
+        d: 2050.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Wrist_Pitch:
+        p: 50000.0
+        i: 0.0
+        d: 1100.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Wrist_Yaw:
+        p: 500.0
+        i: 0.0
+        d: 50.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
+      Wrist_Roll:
+        p: 500.0
+        i: 0.0
+        d: 50.0
+        ff_velocity_scale: 0.0
+        i_clamp: 0.0
