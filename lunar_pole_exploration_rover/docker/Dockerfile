@@ -1,5 +1,4 @@
-# Copyright 2024 Stevedan Ogochukwu Omodolor Omodolor
-# Copyright 2024 Robin Baran
+# Copyright 2021 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# A Docker configuration script to build the MoveIt2/Space ROS image.
+# A Docker configuration script to build the Space ROS image.
 #
 # The script provides the following build arguments:
 #
@@ -28,12 +27,12 @@ ARG VERSION="preview"
 
 # Specify the docker image metadata
 LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.name="MoveIt2"
-LABEL org.label-schema.description="Preview version of the MoveIt2/Space ROS platform"
+LABEL org.label-schema.name="Lunar Pole Exploration Rover"
+LABEL org.label-schema.description="Lunar Pole Exploration Rover entry for the NASA Space ROS Sim Summer Sprint Challenge"
 LABEL org.label-schema.vendor="Open Robotics"
 LABEL org.label-schema.version=${VERSION}
 LABEL org.label-schema.url="https://github.com/space-ros"
-LABEL org.label-schema.vcs-url="https://github.com/space-ros/docker-images"
+LABEL org.label-schema.vcs-url="https://github.com/space-ros/demos"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Disable prompting during package installation
