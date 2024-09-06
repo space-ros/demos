@@ -3,6 +3,14 @@ repositories:
     type: git
     url: https://github.com/ros-controls/gz_ros2_control.git
     version: humble
+  demos:
+    type: git
+    url: https://github.com/RBinsonB/demos.git
+    version: feat/lunar_pole_exploration_rover
+  simulation:
+    type: git
+    url: https://github.com/RBinsonB/simulation.git
+    version: feat/lunar_pole_exploration_rover
   qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git

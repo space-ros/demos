@@ -19,7 +19,7 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM openrobotics/moveit2:latest
+FROM osrf/space-ros:latest
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
@@ -43,6 +43,7 @@ ENV GZ_VERSION=fortress
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
+
 # Get rosinstall_generator
 # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
 # the cache won't make it into the built image but will be maintained between steps.
@@ -50,10 +51,68 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
 
+# Disable prompting during package installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+# # Clone all space-ros sources
+# RUN mkdir ${SPACEROS_DIR}/src \
+#   && vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/exact.repos
+
+# Make sure the latest versions of packages are installed
+# Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
+# the cache won't make it into the built image but will be maintained between steps.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get dist-upgrade -y
+RUN rosdep update
+
+# Install the various build and test tools
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt install -y \
+  build-essential \
+  clang-format \
+  cmake \
+  git \
+  libbullet-dev \
+  python3-colcon-common-extensions \
+  python3-flake8 \
+  python3-pip \
+  python3-pytest-cov \
+  python3-rosdep \
+  python3-setuptools \
+  python3-vcstool \
+  wget
+
+# Install some pip packages needed for testing
+RUN python3 -m pip install -U \
+  argcomplete \
+  flake8-blind-except \
+  flake8-builtins \
+  flake8-class-newline \
+  flake8-comprehensions \
+  flake8-deprecated \
+  flake8-docstrings \
+  flake8-import-order \
+  flake8-quotes \
+  pytest-repeat \
+  pytest-rerunfailures \
+  pytest
 
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
 
+# Update the ownership of the source files (had to use sudo above to work around
+# a possible inherited 'insteadof' from the host that forces use of ssh
+RUN sudo chown -R ${USERNAME}:${USERNAME} ${DEMO_DIR}
+
+# Get rosinstall_generator
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
 
 # Install libmongoc for development
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -70,28 +129,34 @@ RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCM
 
 # Get the source for the dependencies
 # RUN vcs import src < /tmp/demo_generated_pkgs.repos
-COPY --chown=${USERNAME}:${USERNAME} demos/lunar_pole_exploration_rover/docker/demo_manual_pkgs.repos /tmp/
+COPY --chown=${USERNAME}:${USERNAME} ./demo_manual_pkgs.repos /tmp/
 RUN vcs import src < /tmp/demo_manual_pkgs.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
-
-# Copy the "demos" and "simulation" repos into the workspace
-COPY demos ./src/demos
-COPY simulation ./src/simulation
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y \
 && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-&& /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # Build the demo
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 RUN sudo usermod -aG render $USERNAME
 
+# Add a couple sample GUI apps for testing
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get install -y \
+  firefox \
+  glmark2 \
+  libcanberra-gtk3-0 \
+  libpci-dev \
+  xauth \
+  xterm
+
 # Setup the entrypoint
-COPY demos/lunar_pole_exploration_rover/docker/entrypoint.sh /
+COPY ./entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]

@@ -48,59 +48,47 @@ This package and associated plugins and models were developped by [Robin Baran](
 
 ## Running the demo <a name="running_demo"></a>
 ### Building the docker <a name="building_docker"></a>
-To build the docker image, go to your ROS2 workspace. Make a spaceros workspace if you don't already have one:
+To build the docker image, go to the docker folder and run:
+
 ```bash
-mkdir -p ~spaceros_ws/src
-cd ~spaceros_ws
+cd docker
+./build.sh
 ```
 
-Clone the demos and simulation repos. Checkout both repos to the feature branch `feat/lunar_pole_exploration_rover`:
-```bash
-cd ~spaceros_ws
-git clone git@github.com:RBinsonB/demos.git
-git checkout feat/lunar_pole_exploration_rover
-cd ~spaceros_ws
-git clone git@github.com:RBinsonB/simulation.git
-git checkout feat/lunar_pole_exploration_rover
-```
+The build process will take about 30 minutes, depending on the host computer.
 
-Build the image:
-```bash
-cd ~spaceros_ws
-docker build -f demos/lunar_pole_exploration_rover/docker/Dockerfile -t lunar_rover_image .
-```
 
 ### Running the docker <a name="running_docker"></a>
-Run the following command before running the container:
+After building the image, you can see the newly-built image by running:
+
 ```bash
-xhost +local:docker
+docker image list
 ```
 
-Run the container by typing:
-```bash
-docker run --rm -it --name lunar_pole_exploration_rover \
---network host \
--e DISPLAY \
--e TERM \
--e QT_X11_NO_MITSHM=1 \
-lunar_rover_image
+The output will look something like this:
+
+```
+REPOSITORY              TAG                        IMAGE ID       CREATED        SIZE
+openrobotics/moveit2    latest                     6edb2edc9643   10 hours ago   15.5GB
+openrobotics/lunar_pole_exploration_rover_demo   latest                     629b13cf7b74   12 hours ago   7.8GB
+nvidia/cudagl           11.4.1-devel-ubuntu20.04   336416dfcbba   1 week ago     5.35GB
 ```
 
-If you have gpu
+The new image is named **openrobotics/lunar_pole_exploration_rover_demo:latest**.
+
+There is a run.sh script provided for convenience that will run the spaceros image in a container.
+
 ```bash
-docker run --rm -it --name lunar_pole_exploration_rover \
---network host \
---privileged \
---gpus all \
--e NVIDIA_VISIBLE_DEVICES=all \
--e NVIDIA_DRIVER_CAPABILITIES=graphics \
--e DISPLAY=$DISPLAY \
--e TERM \
--e QT_X11_NO_MITSHM=1 \
--e XAUTHORITY=$XAUTHORITY \
---mount type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix \
-lunar_rover_image
+./run.sh
 ```
+
+To enable hardware acceleration, use run_gpu.sh (requires a docker install not from snap)*
+
+```bash
+./run_gpu.sh
+```
+
+
 
 Once the container is running, launch the demo by typing the following command:
 ```bash
