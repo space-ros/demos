@@ -142,7 +142,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 # build demo
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
-  && colcon build --executo sequential --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+  && colcon build --executor sequential --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
 
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
