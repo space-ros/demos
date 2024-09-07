@@ -101,26 +101,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
 
-# Install libmongoc for development
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get install libmongoc-dev -y
-
-
-# Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
-RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
-RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
-RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
-
-
 
 # Generate repos file for  dependencies, excluding packages from Space ROS core.
 COPY --chown=${USERNAME}:${USERNAME} demo-pkgs.txt /tmp/
 COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
 RUN rosinstall_generator \
+  --upstream \
   --rosdistro ${ROSDISTRO} \
   --deps \
   --exclude-path ${SPACEROS_DIR}/src \
@@ -140,9 +126,11 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
+ENV MAKEFLAGS="-j1"
+
 # build demo
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
-  && colcon build --executor sequential --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
 
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128

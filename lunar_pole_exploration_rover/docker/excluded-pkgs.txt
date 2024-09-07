@@ -1,6 +1,5 @@
 fastrtps
 fastcdr
-generate_parameter_library
 rmw_fastrtps_cpp
 rmw_fastrtps_dynamic_cpp
 rmw_fastrtps_shared_cpp
