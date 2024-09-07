@@ -38,7 +38,7 @@ class TeleOpRover(Node):
         super().__init__('teleop_node')
         # Setup publishers
         self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
-        self.o3de_motion_publisher_ = self.create_publisher(Twist, '/curiosity/cmd_vel', 10)
+        self.o3de_motion_publisher_ = self.create_publisher(Twist, '/rover/cmd_vel', 10)
         # Setup services
         self.forward_srv = self.create_service(Empty, 'move_forward', self.move_forward_callback)
         self.stop_srv = self.create_service(Empty, 'move_stop', self.move_stop_callback)
@@ -61,7 +61,7 @@ class TeleOpRover(Node):
         self.get_logger().info("Moving forward")
         action = Twist()
         # action.linear.x = 2.0
-        action.linear.x = 0.5
+        action.linear.x = 1.5 # Not sure but negative value makes it move forward
         self.curr_action = action
         self.stopped = False
         return response
