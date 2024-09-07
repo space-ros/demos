@@ -48,10 +48,9 @@ This package and associated plugins and models were developped by [Robin Baran](
 
 ## Running the demo <a name="running_demo"></a>
 ### Building the docker <a name="building_docker"></a>
-To build the docker image, go to the docker folder and run:
+To build the docker image, go to the main folder of the lunar_pole_rover package and run:
 
 ```bash
-cd docker
 ./build.sh
 ```
 
