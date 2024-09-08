@@ -124,3 +124,7 @@ repositories:
     type: git
     url: https://github.com/ros2/yaml_cpp_vendor.git
     version: humble
+  xacro:
+    type: git
+    url: https://github.com/ros/xacro.git
+    version: ros2
