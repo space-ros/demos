@@ -107,6 +107,14 @@ def generate_launch_description():
                 '/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
                 '/model/lunar_pole_exploration_rover/rear_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
                 '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',
+                '/model/lunar_pole_exploration_rover/sensor/NavCam_left/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/NavCam_right/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/AftCam_left/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/AftCam_right/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/imu/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
             ],
             output='screen')
 
