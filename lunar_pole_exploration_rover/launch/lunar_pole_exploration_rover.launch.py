@@ -114,7 +114,10 @@ def generate_launch_description():
                 '/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
                 '/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
                 '/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_front/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
                 '/model/lunar_pole_exploration_rover/sensor/imu/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply@std_msgs/msg/Float32@ignition.msgs.Float',
+                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption@std_msgs/msg/Float32@ignition.msgs.Float',
             ],
             output='screen')
 
