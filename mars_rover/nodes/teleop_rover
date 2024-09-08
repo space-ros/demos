@@ -52,16 +52,17 @@ class TeleOpRover(Node):
     def timer_callback(self):
         """Periodically publish velocity of rover in 3D space as Twist messages."""
         if (not self.stopped):
-            self.o3de_motion_publisher_.publish(self.curr_action)
-            self.motion_publisher_.publish(self.curr_action)
             # Experimental
+            self.o3de_motion_publisher_.publish(self.curr_action)
+            # self.motion_publisher_.publish(self.curr_action)
+            
 
     def move_forward_callback(self, request, response):
         """Print message when moving forward."""
         self.get_logger().info("Moving forward")
         action = Twist()
         # action.linear.x = 2.0
-        action.linear.x = 1.5 # Not sure but negative value makes it move forward
+        action.linear.x = 1.0 # Not sure but negative value makes it move forward
         self.curr_action = action
         self.stopped = False
         return response
@@ -92,8 +93,9 @@ class TeleOpRover(Node):
         self.get_logger().info("Turning right")
         self.stopped = False
         action = Twist()
-        action.linear.x = 1.0
-        action.angular.z = -0.4
+        #action.linear.x = 1.0
+        action.linear.x = 0.5
+        action.angular.z = -1.5
         self.curr_action = action
         self.stopped = False
         return response
