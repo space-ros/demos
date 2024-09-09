@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>spaceros_gz_demos</name>
+  <version>0.0.1</version>
+  <description>ROS 2 Humble package for simulating environments relating to extraterrestrial exploration</description>
+  <maintainer email="daviddorf2023@u.northwestern.edu">David Dorf</maintainer>
+  <license>Apache License 2.0</license>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
