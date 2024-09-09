@@ -15,6 +15,7 @@ RUN mkdir -p ${HOME}/curiosity_ws/src
 WORKDIR ${HOME}/curiosity_ws
 
 COPY ./curiosity_rover_demo src/curiosity_rover_demo
+COPY ./curiosity_common src/curiosity_common
 COPY .defaults.yaml .defaults.yaml
 
 # Build the workspace
