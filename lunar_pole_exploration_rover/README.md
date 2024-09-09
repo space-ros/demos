@@ -254,6 +254,8 @@ The control nodes considers four different types of motion depending on the valu
 * **/model/lunar_pole_exploration_rover/odometry_with_covariance**(`nav_msgs/msg/OdometryWithCovariance`) -- Robot odometry
 * **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state** (`sensor_msgs/msg/BatterySate`) -- Publishes the current state of the battery `rechargeable_battery´
 * **/model/lunar_pole_exploration_rover/pose**(`geometry_msgs/msg/Pose`) -- Robot estimated pose from odometry
+* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply**(`std_msgs/msg/Float32`) -- Total power supply from external power source to the battery `rechargeable_battery`
+* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption**(`std_msgs/msg/Float32`) -- Total power comsumed from the battery `rechargeable_battery`
 * **aft_cam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam left camera info
 * **aft_cam_right/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam right camera info
 * **nav_cam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- NavCam left camera info
@@ -447,6 +449,8 @@ The plugin needs to be attached to a model. Example below:
 The sensor power system plugin pairs with the RechargeableBatteryPlugin allowing one to define for each sensor the power load it consumes from any battery in the model. Sensors can be deactivated to save power (as it is often the case on real space missions). When the battery is too low, the sensors managed by the plugin will also be deactivated. In addition, topics are exposed to disable the power load of each sensor consumption on demand. The topic uses the following format. 
 
  * **/model/`<model_name>`/sensor/`<sensor_name>`/activate** (`std_msgs/msg/Boolean`) -- Topic available to activate/deactivate the power consumption of sensor.
+ * **/model/`<model_name>`/battery/`<battery_name`>/total_power_supply**(`std_msgs/msg/Float32`) -- Total power supply from external power source to the battery
+ * **/model/`<model_name>`/battery/`<battery_name`>/total_power_consumption**(`std_msgs/msg/Float32`) --  Total power comsumed from the battery
 
 The model can have multiple batteries and each sensor consumes from any of those batteries. 
 
