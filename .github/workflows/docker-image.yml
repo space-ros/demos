@@ -19,8 +19,9 @@ jobs:
       run: |
             # find the build.sh scripts and execute them
             echo "Running all build.sh scripts in repo"
+            path=$(pwd)
             for f in $(find . -iname 'build.sh')
             do 
-              $f || exit 1
+              (cd $(dirname $f) && ./build.sh && cd $path) || (echo $f "Failed" && exit 1)
             done
             echo "Done running build.sh scripts"
