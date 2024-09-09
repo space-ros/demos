@@ -35,6 +35,8 @@ To start the demo, there are few dependencies that need to be installed. The fol
 
 This will start the demo in one terminal and gazebo in another terminal. To control the canadarm2, we provide ros2 services for the demo. You can control the rover using the following services.
 
+> NOTE: If you are using Isaac Sim, make sure to start the simulation in Isaac Sim before running the demo. You can find more information on how to start the simulation in Isaac Sim [here](https://github.com/space-ros/simulation/).
+
 1. Control arm of the canadarm
 
     ```bash
