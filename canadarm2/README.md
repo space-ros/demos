@@ -1,4 +1,4 @@
-# Curiosity Rover - Demo
+# SSRMS CanadArm2 - Demo
 
 This is a simple demo of controlling the canadarm using spaceROS.
 
@@ -18,19 +18,29 @@ To start the demo, there are few dependencies that need to be installed. The fol
 
 1. Clone the demo repository
     ```bash
-    git clone http://github.com/space-ros/demo.git
+    git clone https://github.com/space-ros/demos.git
     ```
 2. cd into the `canadarm2` directory
     ```bash
     cd canadarm2
     ```
-3. To build and run the demo, we use `Makefile`. Run the following command to build the docker image and run the container.
+3. To build the demo, we use `./build.sh`. You can do the following to build the demo.
     ```bash
     # To see the list of available commands
-    make help
+    ./build.sh help
+    ```
+4. To build the demo, you can use the following command.
+    ```bash
+    # To build the demos for the canadarm2
+    ./build.sh
 
-    # To build and run the demo
-    make run
+    # Cleanup the build
+    ./build.sh clean
+    ```
+5. To run the demo, you can use the following command.
+    ```bash
+    # To run the demo
+    ./run.sh
     ```
 
 This will start the demo in one terminal and gazebo in another terminal. To control the canadarm2, we provide ros2 services for the demo. You can control the rover using the following services.
