@@ -21,6 +21,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <sdf/sdf.hh>
 
 #include <gz/msgs.hh>
 #include <gz/msgs/any.pb.h>
@@ -60,7 +61,9 @@ namespace gz::sim::plugins
   {
   public:
     // Gz setup variables
-    gz::transport::Node _node;
+    gz::transport::Node  _node;
+    gz::msgs::Time       _timeMsg;
+    gz::transport::Node::Publisher _pub;
 
     std::string _worldName;
     std::string _sunModelName{"sun_sphere"};
@@ -105,15 +108,15 @@ namespace gz::sim::plugins
 
     /* NOTE : Considering sky color of a planet as a function of solar altitude */
 
-    float EARTHNIGHT[4] = {0.0, 0.0, 0.0, 1.0};
-    float EARTHNOON[4] = {0.5294, 0.8078, 0.9216, 1.0};
-    float EARTHDUSKDAWN[4] = {0.546, 0.45, 0.3423, 1.0};
+    float EARTHNIGHT   [4] = {0.0,    0.0,    0.0,    1.0};
+    float EARTHNOON    [4] = {0.5294, 0.8078, 0.9216, 1.0};
+    float EARTHDUSKDAWN[4] = {0.546,  0.45,   0.3423, 1.0};
 
     float *EARTHSKYCOLOR[3] = {&EARTHNIGHT[0], &EARTHDUSKDAWN[0], &EARTHNOON[0]};
 
-    float MARSNIGHT[4] = {0.02, 0.02, 0.05, 1.0};
-    float MARSNOON[4] = {1, 0.412, 0.05, 1.0};
-    float MARSDUSKDAWN[4] = {0.85, 0.45, 0.30, 1.0};
+    float MARSNIGHT   [4] = {0.02, 0.02,  0.05, 1.0};
+    float MARSNOON    [4] = {1,    0.412, 0.05, 1.0};
+    float MARSDUSKDAWN[4] = {0.85, 0.45,  0.30, 1.0};
 
     float *MARSSKYCOLOR[3] = {&MARSNIGHT[0], &MARSDUSKDAWN[0], &MARSNOON[0]};
 
@@ -160,6 +163,11 @@ gz::sim::plugins::DayLightManager::DayLightManager() : GuiSystem(),
   this->R_next = (this->_dataPtr->_selectPlanet[2])[0];
   this->G_next = (this->_dataPtr->_selectPlanet[2])[1];
   this->B_next = (this->_dataPtr->_selectPlanet[2])[2];
+
+  // publish time on daylightmanager/time/sec topic
+  this->_dataPtr->_pub = this->_dataPtr->_node.Advertise<gz::msgs::Time>("daylightmanager/time/sec");
+  this->_dataPtr->_timeMsg.set_sec(this->_timeOfDayMin * 60);
+  this->_dataPtr->_pub.Publish(this->_dataPtr->_timeMsg);
 
   // Connect with gz GUI application
   gz::gui::App()->findChild<gz::gui::MainWindow *>()->installEventFilter(this);
@@ -354,6 +362,10 @@ void gz::sim::plugins::DayLightManager::SetSunPosition()
       gz::sim::plugins::DayLightManager::setBgColor();
 
     this->_dataPtr->_updateSky = true;
+
+    // publish data 
+    this->_dataPtr->_timeMsg.set_sec(this->_timeOfDayMin * 60);
+    this->_dataPtr->_pub.Publish(this->_dataPtr->_timeMsg);
 
     // Increment time
     this->_timeOfDayMin += 1;
