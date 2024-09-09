@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <model name="moon">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <heightmap>
+            <uri>dem/Shoemaker_final_adj_5mpp_surf_2048.tif</uri>
+            <size>20000 20000 1789</size>
+            <pos>0 0 0</pos>
+            <material>
+              <friction>
+                <ode>
+                  <mu>0.8</mu>  <!-- Static friction coefficient -->
+                  <mu2>0.6</mu2> <!-- Sliding friction coefficient -->
+                </ode>
+              </friction>
+            </material>
+          </heightmap>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <heightmap>
+            <use_terrain_paging>false</use_terrain_paging>
+            <texture>
+              <diffuse>materials/textures/moon_diffuse.png</diffuse>
+              <normal>materials/textures/combined_normal_map_2048.png</normal>
+              <size>20000  20000 1789</size>
+            </texture>
+            <uri>dem/Shoemaker_final_adj_5mpp_surf_2048.tif</uri>
+            <size>20000  20000 1789</size>
+            <pos>0 0 0</pos>
+            <material>
+              <specular>0.01 0.01 0.01 1</specular>
+              <diffuse>0.8 0.8 0.8 1</diffuse>
+              <ambient>0.7 0.7 0.7 1</ambient>
+              <emissive>0 0 0 1</emissive>
+              <roughness>0.9</roughness>
+            </material>
+          </heightmap>
+        </geometry>
+      </visual>
+    </link>
+
+
+
+    <link name="stars">
+      <pose>0 0 0 0 0 0</pose>
+      <visual name="stars">
+        <geometry>
+          <mesh>
+            <uri>meshes/Stars.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <emissive>1 1 1 1</emissive>
+        </material>
+      </visual>
+    </link>
+
+    <link name="earth">
+      <pose>0 0 10000 0 0 0</pose>
+      <visual name="earth">
+        <geometry>
+          <mesh>
+            <uri>meshes/Earth.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Earth.jpg</albedo_map>
+              <emissive_map>materials/textures/Earth.jpg</emissive_map>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+  </model>
+</sdf>
+
+
+
