@@ -20,7 +20,7 @@ run-control-demo() {
     xterm $XTERM_CONFIG -T 'CanadArm2 Demo' -e "docker run -it --rm \
         -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
         $DOCKER_IMAGE \
-        bash -c 'source ~/.bashrc && ros2 launch canadarm_demo canadarm.launch.py'" &
+        bash -c 'source /home/spaceros-user/canadarm_ws/install/setup.bash && ros2 launch canadarm_demo canadarm.launch.py'" &
 }
 
 check_docker() {

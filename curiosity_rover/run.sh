@@ -20,7 +20,7 @@ run-control-demo() {
     xterm $XTERM_CONFIG -T 'Curiosity Rover Demo' -e "docker run -it --rm \
         -e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
         $DOCKER_IMAGE \
-        bash -c 'source ~/.bashrc && ros2 launch curiosity_rover_demo mars_rover.launch.py'" &
+        bash -c 'source /home/spaceros-user/curiosity_ws/install/setup.bash && ros2 launch curiosity_rover_demo mars_rover.launch.py'" &
 }
 
 check_docker() {
