@@ -1,0 +1,9 @@
+<library path="trick_ros2_control">
+  <class name="trick_ros2_control/TrickSystem"
+         type="trick_ros2_control::TrickSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      ros2_control hardware interface.
+    </description>
+  </class>
+</library>

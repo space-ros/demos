@@ -1,0 +1,27 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: simulation
+    relative_path: models/canadarm/urdf/SSRMS_Canadarm2.urdf
+  srdf:
+    relative_path: config/SSRMS_Canadarm2.srdf
+  package_settings:
+    author_name: Dharini Dutia
+    author_email: dharini@openrobotics.org
+    generated_timestamp: 1672757808
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity

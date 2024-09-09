@@ -1,0 +1,295 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="SSRMS_Canadarm2">
+  <xacro:include filename="$(find trick_canadarm_moveit_config)/config/SSRMS_Canadarm2.ros2_control.xacro" />
+  <xacro:SSRMS_Canadarm2_ros2_control name="TrickSystem" />
+
+  <link name="world"/>
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="Base_SSRMS"/>
+    <!-- Rotate Frame to Match the frames on Fig. 13 in Paper -->
+    <origin rpy="3.1416 0.0 0.0" xyz="0.5 0.0 1.5"/>
+  </joint>
+  <!-- SSRMS_Canadarm2 Dummy Base Body-->
+  <link name="Base_SSRMS">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.5"/>
+      <mass value="243.66"/>
+      <inertia ixx="44.413" ixy="0" ixz="0" iyy="44.413" iyz="0" izz="9.336"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/ee.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/ee.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Dummy Joint Joining Base to Body B1 -->
+  <joint name="Base_Joint" type="revolute">
+    <parent link="Base_SSRMS"/>
+    <child link="B1"/>
+    <!-- Rotate Frame to Match the frames on Fig. 13 in Paper -->
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!--Manipulator-->
+  <!-- Link 1 -->
+  <link name="B1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 0 -0.175"/>
+      <mass value="105.98"/>
+      <inertia ixx="12.19" ixy="0" ixz="0" iyy="12.19" iyz="0" izz="3.061"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -1.5708 0" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -1.5708 0" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint 1: Shoulder Roll Joint -->
+  <joint name="Shoulder_Roll" type="revolute">
+    <parent link="B1"/>
+    <child link="B2"/>
+    <origin rpy="0 0 0" xyz="0.25082 0 -0.175"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 2 -->
+  <link name="B2">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.175 0 0"/>
+      <mass value="105.98"/>
+      <inertia ixx="3.061" ixy="0" ixz="0" iyy="12.13" iyz="0" izz="12.13"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.175 0 -0.25082"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.175 0 -0.25082"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint 2: Shoulder Yaw Joint -->
+  <joint name="Shoulder_Yaw" type="revolute">
+    <parent link="B2"/>
+    <child link="B3"/>
+    <origin rpy="0 0 0" xyz="0.175 0 -0.25082"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 3 -->
+  <link name="B3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="4.0 0 -0.175"/>
+      <mass value="314.88"/>
+      <inertia ixx="15.41" ixy="0" ixz="0" iyy="2094.71" iyz="0" izz="2103.19"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -1.5708 0" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -1.5708 0" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="-1.5708 0 -1.5708" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/long_link_1_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="-1.5708 0 -1.5708" xyz="0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/long_link_1_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 1.5708 0" xyz="7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 1.5708 0" xyz="7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 0 1.5708" xyz="7.61164 0 -0.35"/>
+      <geometry>
+        <cylinder length="0.5" radius="0.165"/>
+      </geometry>
+    </visual>
+  </link>
+  <!-- Joint 4: Elbow Pitch Joint -->
+  <joint name="Elbow_Pitch" type="revolute">
+    <parent link="B3"/>
+    <child link="B4"/>
+    <origin rpy="0 0 0" xyz="7.61164 0 -0.6"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 5 -->
+  <link name="B4">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.6 0 -0.175"/>
+      <mass value="279.2"/>
+      <inertia ixx="9.522" ixy="0" ixz="0" iyy="1966.28" iyz="0" izz="1966.28"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 1.5708 0" xyz="-0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/link_joint_v2_1.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 1.5708 0" xyz="-0.25082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/link_joint_v2_1.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="1.57 -3.14 1.57" xyz="-7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/long_link_2_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="1.57 -3.14 1.57" xyz="-7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/long_link_2_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin rpy="0 -1.57 0" xyz="-7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -1.57 0" xyz="-7.36082 0 -0.175"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint 5: Wrist Pitch Joint -->
+  <joint name="Wrist_Pitch" type="revolute">
+    <parent link="B4"/>
+    <child link="B5"/>
+    <origin rpy="0 0 0" xyz="-7.61164 0 -0.35"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 6 -->
+  <link name="B5">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="105.98"/>
+      <inertia ixx="8.0386" ixy="0" ixz="0" iyy="8.305" iyz="0" izz="3.061"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -3.14 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -3.14 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint 6: Wrist Yaw Joint -->
+  <joint name="Wrist_Yaw" type="revolute">
+    <parent link="B5"/>
+    <child link="B6"/>
+    <origin rpy="0 0 0" xyz="-0.175 0 -0.25082"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 7 -->
+  <link name="B6">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="105.98"/>
+      <inertia ixx="3.061" ixy="0" ixz="0" iyy="12.13" iyz="0" izz="12.13"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/joint_v3_0.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Joint 7: Wrist Roll Joint -->
+  <joint name="Wrist_Roll" type="revolute">
+    <parent link="B6"/>
+    <child link="EE_SSRMS"/>
+    <origin rpy="0 0 0" xyz="-0.25082 0 -0.175"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="2332" lower="-4.71239" upper="4.71239" velocity="0.0698132"/>
+  </joint>
+  <!-- Link 8 -->
+  <link name="EE_SSRMS">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+      <mass value="243.66"/>
+      <inertia ixx="44.41" ixy="0" ixz="0" iyy="44.41" iyz="0" izz="9.336"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 -3.1415 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/ee.dae" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 -3.1415 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://simulation/models/canadarm/meshes/ee.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- Import SSRMS_Canadarm2 urdf file -->
+
+  
+</robot>
+<!-- URDF Created from information in the following Paper:
+
+Nguyen, Phung Khac, and Peter C. Hughes. "Teleoperation: from the space shuttle to the space station." Progress in astronautics and aeronautics 161 (1994): 353-353.
+
+The link CoM locations (with respect to link frame) are set to zero as the inertia tensor is defined with respect to the link frame in the paper.
+
+ -->
