@@ -9,19 +9,15 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
-  <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
   <depend>rclcpp</depend>
   <depend>rclpy</depend>
-  <depend>action_msgs</depend>
+  <depend>canadarm_common</depend>
 
   <exec_depend>ament_index_python</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>std_msgs</exec_depend>
-
-  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <test_depend>ament_lint_auto</test_depend>
