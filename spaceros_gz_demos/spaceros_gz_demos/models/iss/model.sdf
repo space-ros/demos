@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="iss">
+    <static>true</static>
+    <pose>109.23 1.43 -61.82 1.59 0.05 -1.55</pose>
+    <link name="body">
+      <collision name="ISS_Surface">
+        <geometry>
+          <mesh>
+            <uri>model://iss/resources/iss.glb</uri>
+            <scale>1000 1000 1000</scale>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="ISS_Visual">
+        <geometry>
+          <mesh>
+            <uri>model://iss/resources/iss.glb</uri>
+            <scale>1000 1000 1000</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

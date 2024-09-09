@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+    <model name="martian_surface">
+        <static>true</static>
+        <pose>40 0 -25 1.57 0 0</pose>
+        <link name="base_link">
+            <collision name="base_link_collision">
+                <geometry>
+                    <mesh>
+                        <uri>models://martian_surface/resources/martian_surface.glb</uri>
+                        <scale>100 100 100</scale>
+                    </mesh>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>0.5</mu>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+            <visual name="base_link_visual">
+                <geometry>
+                    <mesh>
+                        <uri>models://martian_surface/resources/martian_surface.glb</uri>
+                        <scale>100 100 100</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+</sdf>

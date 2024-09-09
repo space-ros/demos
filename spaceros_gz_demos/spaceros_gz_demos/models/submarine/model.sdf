@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+    <model name="submarine">
+      <link name="body">
+        <pose>0 0 0 1.57 0 0.8</pose>
+        <inertial>
+          <mass>800</mass>
+          <inertia>
+            <ixx>1000</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1000</iyy>
+            <iyz>0</iyz>
+            <izz>1000</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://submarine/resources/submarine.glb</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision1">
+          <pose>2 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.2 5</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="collision2">
+          <pose>-2 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.2 5</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="collision3">
+          <pose>0 0 5 0 1.57 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.2 5</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="collision4">
+          <pose>0 0 -5 0 1.57 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.2 5</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <sensor name="sonar" type="gpu_ray">
+          <pose>0 -2 0 1.57 0 0</pose>
+          <update_rate>10</update_rate>
+          <topic>sonar</topic>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>1875</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.1415926535897931</min_angle>
+                <max_angle>3.1415926535897931</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>16</samples>
+                <resolution>1</resolution>
+                <min_angle>0</min_angle>
+                <max_angle>1.57</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.10000000000000001</min>
+              <max>130</max>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </ray>
+        </sensor>
+      </link>
+
+      <link name="right_propeller">
+        <inertial>
+          <mass>1e-6</mass>
+        </inertial>
+        <pose>1.4 -1.6 -0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.4 0.05 0.2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+
+      <joint name="right_propeller_joint" type="revolute">
+        <parent>body</parent>
+        <child>right_propeller</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+12</lower>
+            <upper>1e+12</upper>
+            <effort>1e6</effort>
+            <velocity>100</velocity>
+          </limit>
+        </axis>
+      </joint>
+
+      <plugin
+        filename="gz-sim-thruster-system"
+        name="gz::sim::systems::Thruster">
+        <joint_name>right_propeller_joint</joint_name>
+        <thrust_coefficient>0.004</thrust_coefficient>
+        <fluid_density>1000</fluid_density>
+        <propeller_diameter>0.2</propeller_diameter>
+        <max_thrust_cmd>300</max_thrust_cmd>
+        <min_thrust_cmd>0</min_thrust_cmd>
+      </plugin>
+
+      <link name="left_propeller">
+        <inertial>
+          <mass>1e-6</mass>
+        </inertial>
+        <pose>-1.4 -1.6 -0.3 0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.4 0.05 0.2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+
+      <joint name="left_propeller_joint" type="revolute">
+        <parent>body</parent>
+        <child>left_propeller</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+12</lower>
+            <upper>1e+12</upper>
+            <effort>1e6</effort>
+            <velocity>100</velocity>
+          </limit>
+        </axis>
+      </joint>
+
+      <plugin
+        filename="gz-sim-thruster-system"
+        name="gz::sim::systems::Thruster">
+        <joint_name>left_propeller_joint</joint_name>
+        <thrust_coefficient>0.004</thrust_coefficient>
+        <fluid_density>1000</fluid_density>
+        <propeller_diameter>0.2</propeller_diameter>
+        <max_thrust_cmd>300</max_thrust_cmd>
+        <min_thrust_cmd>0</min_thrust_cmd>
+      </plugin>
+
+      <plugin
+          filename="gz-sim-odometry-publisher-system"
+          name="gz::sim::systems::OdometryPublisher">
+      </plugin>
+
+      <plugin
+        filename="gz-sim-buoyancy-engine-system"
+        name="gz::sim::systems::BuoyancyEngine">
+        <link_name>body</link_name>
+        <namespace>submarine</namespace>
+        <min_volume>-30.0</min_volume>
+        <neutral_volume>0</neutral_volume>
+        <default_volume>0</default_volume>
+        <max_volume>30.00</max_volume>
+        <max_inflation_rate>0.5</max_inflation_rate>
+      </plugin>
+
+    </model>
+</sdf>
