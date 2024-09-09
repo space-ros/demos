@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ORG=openrobotics
-IMAGE=space_robots_demo
+ORG=baroloteam
+IMAGE=freisa_on_mars
 TAG=latest
 
 VCS_REF=""
@@ -20,3 +20,5 @@ docker build -t $ORG/$IMAGE:$TAG \
 
 echo ""
 echo "##### Done! #####"
+
+# EOF
