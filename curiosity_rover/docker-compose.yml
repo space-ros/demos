@@ -44,3 +44,18 @@ services:
         "-c",
         "source /home/spaceros-user/curiosity_ws/install/setup.bash && ros2 launch curiosity_rover_demo mars_rover.launch.py",
       ]
+  curiosity_demo_isaacsim:
+    image: osrf/space-ros:curiosity_demo
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1 # important to show error messages if a ros service crashes!
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    network_mode: host
+    command:
+      [
+        "bash",
+        "-c",
+        "source /home/spaceros-user/curiosity_ws/install/setup.bash && ros2 launch curiosity_rover_demo mars_rover.launch.py environment:=isaacsim",
+      ]
