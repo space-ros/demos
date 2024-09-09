@@ -15,6 +15,7 @@ RUN mkdir -p ${HOME}/canadarm_ws/src
 WORKDIR ${HOME}/canadarm_ws
 
 COPY ./canadarm_demo src/canadarm_demo
+COPY ./canadarm_common src/canadarm_common
 COPY .defaults.yaml .defaults.yaml
 
 # Build the workspace
