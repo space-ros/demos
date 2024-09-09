@@ -3,10 +3,9 @@
 
 import rclpy  # type: ignore
 from rclpy.node import Node  # type: ignore
-from builtin_interfaces.msg import Duration  # type: ignore
-
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint  # type: ignore
 from std_srvs.srv import Empty  # type: ignore
+
+from curiosity_common.sim.arm_control import GazeboJointController, IsaacJointController  # type: ignore
 
 
 class MoveArm(Node):
@@ -14,55 +13,50 @@ class MoveArm(Node):
 
     def __init__(self):
         super().__init__("arm_node")
-        self.arm_publisher_ = self.create_publisher(
-            JointTrajectory, "/arm_joint_trajectory_controller/joint_trajectory", 10
-        )
         self.open_srv = self.create_service(Empty, "open_arm", self.open_arm_callback)
         self.close_srv = self.create_service(
             Empty, "close_arm", self.close_arm_callback
         )
 
-        self.open = True
+        self.declare_parameter(
+            "environment",
+            rclpy.Parameter.Type.STRING,
+        )
 
-    def open_arm_callback(self, request, response):  # pylint: disable=unused-argument
-        """Open the arm of the curiosity rover."""
-        self.open = True
-        traj = JointTrajectory()
-        traj.joint_names = [
+        self._environment = (
+            self.get_parameter("environment").get_parameter_value().string_value
+        )
+
+        if self._environment == "gazebosim":
+            self._controller = GazeboJointController(
+                self, "/arm_joint_trajectory_controller/joint_trajectory"
+            )
+        elif self._environment == "isaacsim":
+            self._controller = IsaacJointController(
+                self, "/curiosity/arm/joint_command"
+            )
+
+        self._joint_names = [
             "arm_01_joint",
             "arm_02_joint",
             "arm_03_joint",
             "arm_04_joint",
             "arm_tools_joint",
         ]
+        self._open_positions = [0.0, -0.5, 3.0, 1.0, 0.0]
+        self._close_positions = [-1.57, -0.4, -1.1, -1.57, -1.57]
 
-        point1 = JointTrajectoryPoint()
-        point1.positions = [0.0, -0.5, 3.0, 1.0, 0.0]
-        point1.time_from_start = Duration(sec=4)
+        self.open = True
 
-        traj.points.append(point1)
-        self.arm_publisher_.publish(traj)
+    def open_arm_callback(self, request, response):  # pylint: disable=unused-argument
+        """Open the arm."""
+        self._controller.set_joint_states(self._joint_names, self._open_positions)
 
         return response
 
     def close_arm_callback(self, request, response):  # pylint: disable=unused-argument
-        """Close the arm of the curiosity rover."""
-        self.open = False
-        traj = JointTrajectory()
-        traj.joint_names = [
-            "arm_01_joint",
-            "arm_02_joint",
-            "arm_03_joint",
-            "arm_04_joint",
-            "arm_tools_joint",
-        ]
-
-        point1 = JointTrajectoryPoint()
-        point1.positions = [-1.57, -0.4, -1.1, -1.57, -1.57]
-        point1.time_from_start = Duration(sec=4)
-
-        traj.points.append(point1)
-        self.arm_publisher_.publish(traj)
+        """Close the arm."""
+        self._controller.set_joint_states(self._joint_names, self._close_positions)
 
         return response
 
