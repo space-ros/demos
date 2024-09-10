@@ -1,4 +1,6 @@
-# demo_manual_pkgs.repos
+# freisa_on_mars/demo_manual_pkgs.repos
+#
+# Adapted from https://github.com/space-ros/docker/blob/main/space_robots
 
 repositories:
   demos:
@@ -52,6 +54,23 @@ repositories:
 #   version: 113782d
 
   # === Extra repositories required by freisa_on_mars ===
-  # TODO
+  mini_pupper_ros:
+    type: git
+    url: https://github.com/B-AROL-O/mini_pupper_ros.git
+    version: ros2-dev
+
+  # From https://github.com/B-AROL-O/mini_pupper_ros/blob/ros2-dev/.minipupper.repos
+  champ/champ:
+    type: git
+    url: https://github.com/mangdangroboticsclub/champ.git
+    version: ros2
+  champ/champ_teleop:
+    type: git
+    url: https://github.com/chvmp/champ_teleop.git
+    version: ros2
+  ldlidar_stl_ros:
+    type: git
+    url: https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
+    version: master
 
 # EOF
