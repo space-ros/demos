@@ -21,8 +21,8 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Define a few key variables
 ENV DEMO_DIR=${HOME_DIR}/demos_ws
-ENV IGNITION_VERSION fortress
-ENV GZ_VERSION fortress
+ENV IGNITION_VERSION=fortress
+ENV GZ_VERSION=fortress
 
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
