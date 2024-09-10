@@ -11,7 +11,7 @@ The key elements of the simulation is the integration of specifically developped
 This package and associated plugins and models were developped by [Robin Baran](https://github.com/RBinsonB) and [Stevedan Ogochukwu Omodolor Omodia](https://github.com/stevedanomodolor) for the NASA Space ROS Sim Summer Sprint Challenge.
 
     Challenge Name: NASA Space ROS Sim Summer Sprint Challenge
-    Team lead Freelancer name: @RBinsonB
+    Team lead Freelancer name: @RBinson
     Submission title: Lunar Pole Exploration Rover & Plugins
 
 # Table of contents
