@@ -11,3 +11,8 @@ Submissions to this repo should include:
     - - See example here: https://github.com/space-ros/docker/blob/main/space_robots/run.sh
 
 Please refer to the [dockerfile repo](https://github.com/space-ros/docker/tree/main/space_robots) for instructions on running the existing demos
+
+______________________________
+
+## Changes made to Repository
+See ReadME in `spot_ros2_ign` package. The `spot_ros2_ign` submodule was added, an adaption of champ quadruped robot to ROS2 and Ignition Gazebo. Previously, the Boston Dynamics Spot robot was only simulated using ROS2 with Gazebo Classic, which goes end-of-life in January 2025. This package, modified from quadruped_ros2, simulates the Spot robot in Ignition Gazebo, a newer version of Gazebo. This combination of simulating the Spot robot with ROS2 and Ignition Gazebo on an open-source platform has not been done yet. This package also publishes an Rviz panel where the robot is visible and able to be controlled with its joints.
