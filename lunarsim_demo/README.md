@@ -1,8 +1,55 @@
 # LunarSim Demo
 [![Licence](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)\
+<img src="./LunarSim.png" alt="Alt text" width="692" height="422">
+
 This folder containts three ROS2 packages for to enable simulation in a lunar environment, including a lunar gazebo world using a Digital Elevation Model (DEM) and a plugin for a dynamic sun model based on Ephemeris data.
 
-Instructions for building this package can be found in the space-ros-docker repo.
+# Space ROS Lunar Sim Demo Docker Image
+
+The Space ROS Lunar Sim Demo docker image uses the spaceros docker image (*osrf/space-ros:latest*) as its base image.
+The Dockerfile installs all of the prerequisite system dependencies along with the demo source code, then builds the Space ROS Lunar Sim Demo.
+
+This demo includes a Gazebo simulation of the lunar environment (specfically around the Shackleton crater near the south pole). It uses
+Digital Elevation Models (DEMs) from the Lunar Orbiter Laser Altimeter (LOLA) to accurately simulate the lunar surface in a specific region. It also contains a dynamic model of the Sun that moves according to Ephemeris data.  
+
+## Building the Demo Docker
+
+The demo image builds on top of the `spaceros` image.
+To build the docker image, first ensure the `spaceros` base image is available either by [building it locally](https://github.com/space-ros/space-ros) or pulling it.
+
+Then build `lunar_sim` demo images:
+
+```bash
+cd lunarsim_demo
+./build.sh
+```
+
+## Running the Demo Docker
+
+run the following to allow GUI passthrough:
+```bash
+xhost +local:docker
+```
+
+Then run:
+
+```bash
+./run.sh
+```
+
+Depending on the host computer, you might need to remove the ```--gpus all``` flag in ```run.sh```, which uses your GPUs.
+
+## Running the Demo
+
+Launch the demo:
+
+```bash
+source install/setup.bash
+ros2 launch lunarsim_gz_bringup lunarsim_world.launch.py
+```
+
+This will launch the gazebo lunar world, spawn the rover and start teleop. This will be a new terminal window which enables you to control the rover as per the instructions in the terminal window.
+
 
 ## lunar_sun_gz_plugin
 This package contains a gazebo plugin to move an actor and create a light source at the location of the actor. 
