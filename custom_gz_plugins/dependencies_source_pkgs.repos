@@ -98,7 +98,7 @@ repositories:
   simulation:
     type: git
     url: https://github.com/jasmeet0915/simulation
-    version: real_data_planet_models
+    version: plugin_models
   warehouse_ros:
     type: git
     url: https://github.com/moveit/warehouse_ros.git

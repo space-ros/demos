@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/nxfrst/x-storage/atom_robotics/space_ros_submissions/space_ros_ws/install/mars_rover/local/lib/python3.10/dist-packages",
+        "/home/nxfrst/x-storage/atom_robotics/space_ros_submissions/space_ros_ws/install/canadarm/local/lib/python3.10/dist-packages",
+        "/home/nxfrst/x-storage/combat_robotics/arista_test_ws/install/arista_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/nxfrst/x-storage/atom_robotics/space_ros_submissions/space_ros_ws/install/mars_rover/local/lib/python3.10/dist-packages",
+        "/home/nxfrst/x-storage/atom_robotics/space_ros_submissions/space_ros_ws/install/canadarm/local/lib/python3.10/dist-packages",
+        "/home/nxfrst/x-storage/combat_robotics/arista_test_ws/install/arista_interfaces/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

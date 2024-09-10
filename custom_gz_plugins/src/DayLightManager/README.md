@@ -29,6 +29,15 @@ The Daylight Manager plugin for Gazebo simulates the Sun's trajectory based on t
 
 
 # GUI 
+The GUI provides an interface to control the scene the sun's trajectory.
+- Select Planet
+- Configure latitude 
+- Set current time
+- Change time speed constant
+- X and Y origin offset
+- Radius of distance from the origin to the sun
+- Chekbox to change the background scene
+
 <img src="assets/GUI.png" alt="Sun Trajectory GUI" width="50%">
 
 
