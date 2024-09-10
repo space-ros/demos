@@ -1,0 +1,9 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/Govax99/demos.git
+    version: feature/ingenuity-demo
+  simulation:
+    type: git
+    url: https://github.com/Govax99/simulation.git
+    version: feature/mars_helicopter

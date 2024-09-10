@@ -1,0 +1,48 @@
+- ros_topic_name: "/rotor_bottom_revolute/angular_velocity"
+  gz_topic_name: "/rotor_bottom_revolute/angular_velocity"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_top_revolute/angular_velocity"
+  gz_topic_name: "/rotor_top_revolute/angular_velocity"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_bottom_revolute/collective"
+  gz_topic_name: "/rotor_bottom_revolute/collective"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_top_revolute/collective"
+  gz_topic_name: "/rotor_top_revolute/collective"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_bottom_revolute/longitudinal_cyclic"
+  gz_topic_name: "/rotor_bottom_revolute/longitudinal_cyclic"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_top_revolute/longitudinal_cyclic"
+  gz_topic_name: "/rotor_top_revolute/longitudinal_cyclic"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+
+- ros_topic_name: "/rotor_bottom_revolute/lateral_cyclic"
+  gz_topic_name: "/rotor_bottom_revolute/lateral_cyclic"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/rotor_top_revolute/lateral_cyclic"
+  gz_topic_name: "/rotor_top_revolute/lateral_cyclic"
+  ros_type_name: "std_msgs/msg/Float64"
+  gz_type_name: "ignition.msgs.Double"
+  direction: ROS_TO_GZ
