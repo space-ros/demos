@@ -68,7 +68,7 @@ class RunDemo(Node):
     def move_forward_callback(self, request, response):
         self.get_logger().info("Moving forward")
         action = Twist()
-        action.linear.x = 2.0
+        action.linear.x = 1.0
         self.curr_action = action
         self.stopped = False
         return response
@@ -121,7 +121,7 @@ class RunDemo(Node):
     def rotate_on_place_callback(self, request, response):
         self.get_logger().info("Rotating on place")
         action = Twist()
-        action.angular.z = 0.8
+        action.angular.z = 0.4
         self.curr_action = action
         self.stopped = False
         return response
@@ -131,7 +131,7 @@ class RunDemo(Node):
         action = Twist()
         action.linear.x = 0.1
         action.linear.y = 0.8
-        action.angular.z = 0.8
+        action.angular.z = 0.4
         self.curr_action = action
         self.stopped = False
         return response
