@@ -1,0 +1,14 @@
+# demo_manual_pkgs.repos
+
+repositories:
+  demos:
+    type: git
+    # FIXME: Update url/version once <https://github.com/space-ros/demos/pull/56> is merged
+    #  url: https://github.com/space-ros/demos.git
+    url: https://github.com/B-AROL-O/space-ros-demos.git
+    #  version: main
+    #  version: freisa_on_mars
+    version: dev-gmacario
+  # TODO
+
+# EOF
