@@ -10,3 +10,5 @@ control_toolbox
 ros_warehouse
 mongo
 ackermann_msgs
+rviz_common
+image_transport
