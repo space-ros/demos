@@ -1,6 +1,4 @@
 # demo_manual_pkgs.repos
-#
-# Adapted from https://github.com/space-ros/docker/blob/main/space_robots/demo_manual_pkgs.repos
 
 repositories:
   demos:
@@ -11,6 +9,10 @@ repositories:
     #  version: main
     #  version: freisa_on_mars
     version: dev-gmacario
+
+  # === Repositories used by space_robots ===
+  # See https://github.com/space-ros/docker/blob/main/space_robots/demo_manual_pkgs.repos
+
 # gz_ros2_control:
 #   type: git
 #   url: https://github.com/ros-controls/gz_ros2_control.git
@@ -48,5 +50,8 @@ repositories:
 #   url: https://github.com/swri-robotics/gps_umd.git
 #   path: gps_msgs
 #   version: 113782d
+
+  # === Extra repositories required by freisa_on_mars ===
+  # TODO
 
 # EOF
