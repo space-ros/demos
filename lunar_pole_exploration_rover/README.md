@@ -95,6 +95,7 @@ ros2 launch lunar_pole_exploration_rover lunar_pole_exploration_rover.launch.py
 ```
 
 ### Controlling the rover <a name="controlling_rover"></a>
+**Like the Curiosity demo, the Gazebo simulation may run slowly (reat-time factor of 5%) when simulating cameras if no hardware acceleration is present**
 
 #### Setup <a name="setup_rover"></a>
 
@@ -211,6 +212,8 @@ It features a similar sensor suit of the real VIPER rover. Detailed characterist
 - A pair of monochrome cameras for navigation, NavCam, mounted on the rover mast. Each camera has 70° x 70° FOV and the image sensors have 2048 ×
 2048 pixels. The camera can pan 360° and tilt vertically in both directions at a maximum angle of 75°.
 - A pair of monochrome cameras for the aft blind spots, AftCam, facing back. Each camera has 110° x 110° FOV and the image sensors have 2048 ×
+2048 pixels.
+- A set of four monochrome cameras, on in each wheel well. Each camera has 110° x 110° FOV and the image sensors have 2048 ×
 2048 pixels.
 - An IMU.
 - An Odometry plugin to simulate wheel encoders.
