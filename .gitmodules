@@ -1,0 +1,4 @@
+[submodule "spot_ros2_ign"]
+	path = spot_ros2_ign
+	url = https://github.com/diyaagarwal21/spot_ros2_ign.git
+	branch = SpaceROS-Challenge
