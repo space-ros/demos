@@ -69,12 +69,13 @@ WORKDIR ${DEMO_DIR}
 COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
 RUN vcs import src < /tmp/demo_manual_pkgs.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
 
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get update -y \
-# && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y \
+&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+
 # && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-# && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # # Build the demo
 # RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
