@@ -189,7 +189,7 @@
         </visual>
 
       </link>
-      <-- Without script plug does not move actor -->
+
       <script>
         <loop>true</loop>
         <delay_start>0.000000</delay_start>

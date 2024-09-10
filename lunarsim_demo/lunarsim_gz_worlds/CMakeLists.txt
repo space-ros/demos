@@ -25,7 +25,7 @@ endif()
 
 # Install launch files.
 install(
-  DIRECTORY src launch world models
+  DIRECTORY launch world models
   DESTINATION share/${PROJECT_NAME}/
 )
 

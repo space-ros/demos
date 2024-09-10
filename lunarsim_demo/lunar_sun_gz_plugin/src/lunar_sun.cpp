@@ -55,7 +55,7 @@ public:
   this->actorEntity =
     ecm.EntityByComponents(gazebo::components::Name("animated_sun"));
 
-  LoadCSV("/home/spaceros-user/demos_ws/src/lunarsim_demo/lunar_sun_gz_plugin/horizons_az_el.csv");
+  LoadCSV("/home/spaceros-user/demos_ws/src/lunar_sun_gz_plugin/horizons_az_el.csv");
 
   ignition::math::Pose3d startPose(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
   // Position the light above the ground
