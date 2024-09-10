@@ -1,0 +1,21 @@
+robot_3:
+  controller_manager:
+    ros__parameters:
+      update_rate: 100  # Hz
+
+      forward_velocity_controller:
+        type: forward_command_controller/ForwardCommandController
+        
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+  forward_velocity_controller:
+    ros__parameters:
+      joints:
+        - robot_3_Solar1_joint
+        - robot_3_Solar2_joint
+      interface_name: velocity
+      command_interfaces:
+        - velocity
+      state_interfaces:
+        - velocity
