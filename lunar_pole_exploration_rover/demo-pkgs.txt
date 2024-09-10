@@ -12,3 +12,4 @@ mongo
 ackermann_msgs
 rviz_common
 image_transport
+interactive_markers
