@@ -164,6 +164,9 @@ Follow these passages to build the docker image and start a docker container.
 
 4. (optional) Additional terminals can be opened by executing ```./open_cmd.sh```
 
+5. **PLEASE MOVE THE MODELS [ Lunar and Luanr_lander ] to .gazebo/models in Home** (https://github.com/Sanjay-j-p/simulation/tree/main/models)
+   
+
 # CADRE simulation launch.
 
 The CADRE demo can be started by executing the following commands:
@@ -178,7 +181,6 @@ In another terminal, run ```ros2 run robot_control joy.py```This will start GUI 
 # CADRE point clouds.
 
 In another terminal, run ```ros2 run robot_control mapping.py```This will start the point cloud node and publish topics.
-
 
 
 # License
