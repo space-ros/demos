@@ -69,7 +69,7 @@ You can adjust the sun’s position update frequency, which currently occurs eve
 ```
 
 ## lunarsim_gz_worlds
-This package contains the lunarsim world files, including the world sdf, DEM files, textures and tools for creating textures. It also contains the `display.launch.py` launch file, which launches gazebo with the lenarsim world by default (but does not spawn the rover). For detailed documentation on updating DEM model and textures see the space-ros lunarsim docs page.
+This package contains the lunarsim world files, including the world sdf, DEM files, textures and tools for creating textures. It also contains the `display.launch.py` launch file, which launches gazebo with the lunarsim world by default (but does not spawn the rover). For detailed documentation on updating DEM model and textures see the space-ros lunarsim docs page.
 
 ## lunarsim_gz_bringup
 This package contains launch and configuration files to launch the lunarsim world and spawn [leo_rover](https://github.com/LeoRover) with keyboard controls. The `spawn_leo_robot.launch.py` spawns the leo model, starts`gz_bridge` and `key_teleop`. The `gz_bridge` parameters can be modified in the `leo_ros_gz_bridge.yaml` file in the config directory.
