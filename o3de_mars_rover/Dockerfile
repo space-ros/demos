@@ -55,7 +55,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-
+RUN sudo sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 # Clone all space-ros sources
 RUN mkdir ${SPACEROS_DIR}/src \
@@ -74,19 +75,21 @@ RUN rosdep update
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt install -y ros-${ROS_DISTRO}-rmw-cyclonedds-cpp ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
+  sudo apt install -y \
+  ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-realtime-tools
 
-  
 # Clear Install folder, we will need to rebuild the workspace again
-# WORKDIR ${SPACEROS_DIR}
-# RUN sudo rm -rf install/
+WORKDIR ${SPACEROS_DIR}
+RUN sudo rm -rf install/
 
-# WORKDIR ${SPACEROS_DIR}/src
-# RUN sudo rm -rf rmw_cyclonedds_cpp
-# RUN sudo rm -rf realtime_tools
+WORKDIR ${SPACEROS_DIR}/src
+RUN sudo rm -rf rmw_cyclonedds_cpp
+RUN sudo rm -rf realtime_tools
 
-#WORKDIR ${SPACEROS_DIR}
-#RUN colcon build --packages-ignore test_rmw_implementation
+# Rebuild Space ROS workspace
+WORKDIR ${SPACEROS_DIR}
+RUN colcon build --packages-ignore test_rmw_implementation
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
