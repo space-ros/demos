@@ -15,7 +15,7 @@ Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Explo
 
 # Package Description and Purpose
 
-- This package simulates NASA’s CADRE mission, which focuses on mapping the Moon through a trio of autonomous rovers. The simulation is developed using ROS 2 and is part of an open-sourced lunar exploration initiative slated for Spring 2026.
+- This package simulates NASA’s CADRE mission, which focuses on mapping the Moon through a trio of autonomous rovers. The simulation is developed using ROS 2 and is part of NASA's lunar exploration initiative for Spring 2026.
 
   ![CADRE](assets/Offical_image.png)
   Image Credits: https://www.jpl.nasa.gov/missions/cadre
