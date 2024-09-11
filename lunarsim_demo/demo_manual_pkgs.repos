@@ -1,0 +1,23 @@
+repositories:
+  actuator_msgs:
+    type: git
+    url: https://github.com/rudislabs/actuator_msgs.git
+    version: main
+  ros_gz:
+    type: git
+    url: https://github.com/gazebosim/ros_gz.git
+    version: humble
+  vision_msgs:
+    type: git
+    url: https://github.com/ros-perception/vision_msgs.git
+    version: ros2
+  gps_msgs:
+    type: git
+    url: https://github.com/swri-robotics/gps_umd.git
+    path: gps_msgs
+    version: 113782d
+
+  leo_common-ros2:
+    type: git
+    url: https://github.com/LeoRover/leo_common-ros2.git
+    version: humble

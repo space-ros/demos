@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>lunarsim_gz_bringup</name>
+  <version>0.0.0</version>
+  <description>Bringup package for the Lunarsim simulation in ROS 2</description>
+  <maintainer email="founders@elementrobotics.space">elero-3</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  
+  <exec_depend>leo_description</exec_depend>
+  <exec_depend>lunarsim_gz_plugins</exec_depend>
+  <exec_depend>leo_gz_plugins</exec_depend>
+  <exec_depend>lunarsim_gz_worlds</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_cmake_black</test_depend>
+  <test_depend>ament_cmake_copyright</test_depend>
+  <test_depend>ament_cmake_lint_cmake</test_depend>
+  <test_depend>ament_cmake_mypy</test_depend>
+  <test_depend>ament_cmake_xmllint</test_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
