@@ -286,6 +286,7 @@ RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCM
 
 # Create demo_ws, setup packages, generate dependencies
 RUN mkdir -p ${DEMO_DIR}/src
+WORKDIR ${DEMO_DIR}
 COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
 COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
 RUN vcs import ${DEMO_DIR}/src < /tmp/o3de-robot-sim.repos 
@@ -303,12 +304,13 @@ RUN rosinstall_generator \
 # a possible inherited 'insteadof' from the host that forces use of ssh
 RUN sudo chown -R ${USERNAME}:${USERNAME} ${DEMO_DIR}
 
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get update -y \
-# && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-# && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-# && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y \
+&& /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
+&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+&& /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # # Build the demo_ws
 # RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
