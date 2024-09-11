@@ -13,3 +13,8 @@ ackermann_msgs
 rviz_common
 image_transport
 interactive_markers
+laser_geometry
+map_msgs
+point_cloud_transport
+resource_retriever
+visualization_msgs
