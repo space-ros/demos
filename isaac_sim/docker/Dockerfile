@@ -74,6 +74,7 @@ RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
     cd /home/$USERNAME/isaac_ws/src && \
     git clone https://github.com/AlexanderRex/curiosity_rover_description.git && \
     git clone https://github.com/AlexanderRex/mars_rover_control.git && \
+    git clone https://github.com/pojenwang/curiosity_sim.git && \
     cd /home/$USERNAME/isaac_ws && colcon build"
 
 # Set environment in bashrc for future sessions
