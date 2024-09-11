@@ -90,6 +90,7 @@ The CADRE rover topics:
 More Rovers can be added by using the following modification main.launch.xml:
 
 '#' - numbers
+
 Spawn coordinates[ x_,y_z_,roll_,pitch_yaw_]- location of the new rover
 
 ```xml
