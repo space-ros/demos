@@ -62,6 +62,12 @@ The plugin must be added to an actor named `animated_sun`, which can be done as 
 ```
 The suns trajectory is based on the `horizons_az_el.csv` file. Detailed documentation on updating this can be found on the space-ros lunarsim docs page.
 
+You can adjust the sun’s position update frequency, which currently occurs every hour, by modifying the waypoint_duration variable in lunar_sun.cpp:
+```
+  std::chrono::_V2::steady_clock::duration waypointDuration =
+    std::chrono::hours(1);
+```
+
 ## lunarsim_gz_worlds
 This package contains the lunarsim world files, including the world sdf, DEM files, textures and tools for creating textures. It also contains the `display.launch.py` launch file, which launches gazebo with the lenarsim world by default (but does not spawn the rover). For detailed documentation on updating DEM model and textures see the space-ros lunarsim docs page.
 
