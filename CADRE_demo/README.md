@@ -158,7 +158,11 @@ Follow these passages to build the docker image and start a docker container.
 
 1. Clone this repository, change the directory to demos\CADRE_demo
 
-2. Run the build script ```./build.sh```
+2. Run the build script 
+``````
+chmod +x build.sh
+./build.sh
+``````
 
 3. Start the container by executing ```./run.sh```
 
