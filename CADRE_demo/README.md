@@ -25,66 +25,66 @@ Future Work:
 
 
 The CADRE rover topics:
--/clicked_point
--/clock
--/goal_pose
--/initialpose
--/parameter_events
--/performance_metrics
--/robot_1/cmd_vel
--/robot_1/joint_states
--/robot_1/odom
--/robot_1/robot_1_camera/camera_info
--/robot_1/robot_1_camera/depth/camera_info
--/robot_1/robot_1_camera/depth/image_raw
--/robot_1/robot_1_camera/depth/image_raw/compressed
--/robot_1/robot_1_camera/depth/image_raw/compressedDepth
--/robot_1/robot_1_camera/depth/image_raw/theora
--/robot_1/robot_1_camera/image_raw
--/robot_1/robot_1_camera/image_raw/compressed
--/robot_1/robot_1_camera/image_raw/compressedDepth
--/robot_1/robot_1_camera/image_raw/theora
--/robot_1/robot_1_camera/points
--/robot_1_front/scan
--/robot_1_imu/data
--/robot_1_robot_description
--/robot_2/cmd_vel
--/robot_2/joint_states
--/robot_2/odom
--/robot_2/robot_2_camera/camera_info
--/robot_2/robot_2_camera/depth/camera_info
--/robot_2/robot_2_camera/depth/image_raw
--/robot_2/robot_2_camera/depth/image_raw/compressed
--/robot_2/robot_2_camera/depth/image_raw/compressedDepth
--/robot_2/robot_2_camera/depth/image_raw/theora
--/robot_2/robot_2_camera/image_raw
--/robot_2/robot_2_camera/image_raw/compressed
--/robot_2/robot_2_camera/image_raw/compressedDepth
--/robot_2/robot_2_camera/image_raw/theora
--/robot_2/robot_2_camera/points
--/robot_2_front/scan
--/robot_2_imu/data
--/robot_2_robot_description
--/robot_3/cmd_vel
--/robot_3/joint_states
--/robot_3/odom
--/robot_3/robot_3_camera/camera_info
--/robot_3/robot_3_camera/depth/camera_info
--/robot_3/robot_3_camera/depth/image_raw
--/robot_3/robot_3_camera/depth/image_raw/compressed
--/robot_3/robot_3_camera/depth/image_raw/compressedDepth
--/robot_3/robot_3_camera/depth/image_raw/theora
--/robot_3/robot_3_camera/image_raw
--/robot_3/robot_3_camera/image_raw/compressed
--/robot_3/robot_3_camera/image_raw/compressedDepth
--/robot_3/robot_3_camera/image_raw/theora
--/robot_3/robot_3_camera/points
--/robot_3_front/scan
--/robot_3_imu/data
--/robot_3_robot_description
--/rosout
--/tf
--/tf_static
+- /clicked_point
+- /clock
+- /goal_pose
+- /initialpose
+- /parameter_events
+- /performance_metrics
+- /robot_1/cmd_vel
+- /robot_1/joint_states
+- /robot_1/odom
+- /robot_1/robot_1_camera/camera_info
+- /robot_1/robot_1_camera/depth/camera_info
+- /robot_1/robot_1_camera/depth/image_raw
+- /robot_1/robot_1_camera/depth/image_raw/compressed
+- /robot_1/robot_1_camera/depth/image_raw/compressedDepth
+- /robot_1/robot_1_camera/depth/image_raw/theora
+- /robot_1/robot_1_camera/image_raw
+- /robot_1/robot_1_camera/image_raw/compressed
+- /robot_1/robot_1_camera/image_raw/compressedDepth
+- /robot_1/robot_1_camera/image_raw/theora
+- /robot_1/robot_1_camera/points
+- /robot_1_front/scan
+- /robot_1_imu/data
+- /robot_1_robot_description
+- /robot_2/cmd_vel
+- /robot_2/joint_states
+- /robot_2/odom
+- /robot_2/robot_2_camera/camera_info
+- /robot_2/robot_2_camera/depth/camera_info
+- /robot_2/robot_2_camera/depth/image_raw
+- /robot_2/robot_2_camera/depth/image_raw/compressed
+- /robot_2/robot_2_camera/depth/image_raw/compressedDepth
+- /robot_2/robot_2_camera/depth/image_raw/theora
+- /robot_2/robot_2_camera/image_raw
+- /robot_2/robot_2_camera/image_raw/compressed
+- /robot_2/robot_2_camera/image_raw/compressedDepth
+- /robot_2/robot_2_camera/image_raw/theora
+- /robot_2/robot_2_camera/points
+- /robot_2_front/scan
+- /robot_2_imu/data
+- /robot_2_robot_description
+- /robot_3/cmd_vel
+- /robot_3/joint_states
+- /robot_3/odom
+- /robot_3/robot_3_camera/camera_info
+- /robot_3/robot_3_camera/depth/camera_info
+- /robot_3/robot_3_camera/depth/image_raw
+- /robot_3/robot_3_camera/depth/image_raw/compressed
+- /robot_3/robot_3_camera/depth/image_raw/compressedDepth
+- /robot_3/robot_3_camera/depth/image_raw/theora
+- /robot_3/robot_3_camera/image_raw
+- /robot_3/robot_3_camera/image_raw/compressed
+- /robot_3/robot_3_camera/image_raw/compressedDepth
+- /robot_3/robot_3_camera/image_raw/theora
+- /robot_3/robot_3_camera/points
+- /robot_3_front/scan
+- /robot_3_imu/data
+- /robot_3_robot_description
+- /rosout
+- /tf
+- /tf_static
 
 
 More Rovers can be added by using the following modifttcionin main.launch.xml:
