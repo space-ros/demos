@@ -1,0 +1,28 @@
+[workspace.package]
+authors = ["Andrej Orsula <orsula.andrej@gmail.com>"]
+description = "Procedurally generated environments for Space ROS"
+categories = ["science::robotics"]
+keywords = ["simulation", "robotics", "space"]
+readme = "README.md"
+license = "Apache-2.0"
+repository = "https://github.com/AndrejOrsula/spaceros_demos/tree/procgen_envs/spaceros_procgen_envs"
+edition = "2021"
+rust-version = "1.80"
+version = "0.1.0"
+publish = false
+
+[workspace]
+resolver = "2"
+members = ["crates/spaceros_procgen_envs", "crates/spaceros_procgen_envs_py"]
+
+[workspace.dependencies]
+spaceros_procgen_envs = { path = "crates/spaceros_procgen_envs", version = "0.1.0" }
+
+const_format = { version = "0.2", features = ["more_str_macros"] }
+figment = { version = "0.10", features = ["env", "test"] }
+pyo3 = { version = "0.22", features = ["abi3-py310", "auto-initialize"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1" }
+serde_yaml = { version = "0.9" }
+thiserror = { version = "1" }
+toml = { version = "0.8" }

@@ -1,0 +1,23 @@
+## Python
+**/__pycache__/
+**/.pytest_cache/
+**/*.pcd
+**/*.py[cod]
+**/*.pyc
+**/*$py.class
+
+## Rust
+target/
+**/*.rs.bk
+**/*.pdb
+**/.cargo/config.toml
+!.cargo/config.toml
+
+## Shared Objects
+**/*.so
+
+## Dump files
+**/core.*
+
+## Logs
+logs/

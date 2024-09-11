@@ -1,0 +1,49 @@
+[package]
+title = "Space ROS ProcGen Environments"
+description = "Regular experience for the Space ROS ProcGen Environments"
+version = "0.1.0"
+keywords = ["simulation", "robotics", "space"]
+
+
+[dependencies]
+## Inheritance
+"spaceros.headless" = {}
+
+## Basic UI
+"omni.kit.uiapp" = {}
+"omni.kit.window.stage" = {}
+
+## Menu bar
+"omni.kit.viewport.menubar.camera" = {}
+"omni.kit.viewport.menubar.display" = {}
+"omni.kit.viewport.menubar.render" = {}
+"omni.kit.viewport.menubar.settings" = {}
+
+## Property widgets
+"omni.kit.property.bundle" = {}
+
+## Basic manipulation
+"omni.kit.manipulator.camera" = {}
+"omni.kit.manipulator.prim" = {}
+"omni.kit.manipulator.selection" = {}
+
+
+[settings]
+## Name
+app.name = "Space ROS ProcGen Environments"
+app.window.title = "Space ROS ProcGen Environments"
+crashreporter.data.experience = "Space ROS ProcGen Environments"
+exts."omni.kit.window.modifier.titlebar".titleFormatString = "Space ROS ProcGen Environments"
+
+## Extensions
+app.exts.folders = [
+    "${app}",
+    "${exe-path}/exts",
+    "${exe-path}/extscore",
+    "${exe-path}/../exts",
+    "${exe-path}/../extscache",
+    "${exe-path}/../extsPhysics",
+    "${exe-path}/../isaacsim/exts",
+    "${exe-path}/../isaacsim/extscache",
+    "${exe-path}/../isaacsim/extsPhysics",
+]
