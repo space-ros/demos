@@ -3,6 +3,8 @@
 
 This demo shows how to use custom DEM data from LRO & MRO to create performant terrain with Gazebo **heightmaps**.
 
+It was made as part of **NASA Space ROS Sim Summer Sprint Challenge** by @martincerven
+
 
 
 ## Build container:
