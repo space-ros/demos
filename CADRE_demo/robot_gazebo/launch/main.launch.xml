@@ -36,8 +36,7 @@
             <arg name="yaw_spawn" value="-2.3"/>
     </include>
 
-    <node pkg="rviz2" exec="rviz2" name="rviz" output="screen">
-        <param name="config" value="$(find-pkg-share robot_description)/rviz/CADRE.rviz"/>
+    <node pkg="rviz2" exec="rviz2" name="rviz" output="screen" args="-d $(find-pkg-share robot_description)/rviz/CADRE.rviz">
     </node>
 
 <!-- 
