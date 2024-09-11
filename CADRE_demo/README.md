@@ -165,6 +165,10 @@ Follow these passages to build the docker image and start a docker container.
 4. (optional) Additional terminals can be opened by executing ```./open_cmd.sh```
 
 5. **PLEASE MOVE THE MODELS [ Lunar and Luanr_lander ] to .gazebo/models in Home** (https://github.com/Sanjay-j-p/simulation/tree/main/models)
+
+6.  **Please modify the locations in the robot.xacro for stl files. Rviz2 as Bug for not detecing Find package xml so i had to use hard location.**
+ current"file:///home/ros2/multi_space_ros/src/robot_description/meshes/ .stl"
+ ( https://github.com/Sanjay-j-p/demos/blob/main/CADRE_demo/robot_description/robot/robot.xacro)
    
 
 # CADRE simulation launch.
