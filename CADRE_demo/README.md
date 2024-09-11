@@ -20,6 +20,8 @@ Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Explo
   ![CADRE](assets/Offical_image.png)
   Image Credits: https://www.jpl.nasa.gov/missions/cadre
 
+    ![CADRE](assets/CADRE_video_-_cc_-_border.mp4)
+
 
 
 
