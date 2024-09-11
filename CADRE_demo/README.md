@@ -164,9 +164,17 @@ chmod +x build.sh
 ./build.sh
 ``````
 
-3. Start the container by executing ```./run.sh```
+3. Start the container by executing
 
-4. (optional) Additional terminals can be opened by executing ```./open_cmd.sh```
+```
+chmod +x run.sh
+./run.sh
+```
+
+4. (optional) Additional terminals can be opened by executing
+ ```chmod +x run.sh
+ ./open_cmd.sh
+ ```
 
 5. **PLEASE MOVE THE MODELS [ Lunar and Luanr_lander ] to .gazebo/models in Home** (https://github.com/Sanjay-j-p/simulation/tree/main/models)
 
