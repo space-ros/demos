@@ -313,96 +313,80 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # # Build the demo_ws
-# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
-#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # # Create O3DE/Projects and O3DE/Gems directory
-# RUN if [ -d "${O3DE_DIR}/Projects" ]; then rm -rf ${O3DE_DIR}/Gems; fi
-# RUN mkdir -p ${O3DE_DIR}/Projects
+RUN if [ -d "${O3DE_DIR}/Projects" ]; then rm -rf ${O3DE_DIR}/Gems; fi
+RUN mkdir -p ${O3DE_DIR}/Projects
 
-# RUN if [ -d "${O3DE_DIR}/Gems" ]; then rm -rf ${O3DE_DIR}/Gems; fi
-# RUN mkdir -p ${O3DE_DIR}/Gems
+RUN if [ -d "${O3DE_DIR}/Gems" ]; then rm -rf ${O3DE_DIR}/Gems; fi
+RUN mkdir -p ${O3DE_DIR}/Gems
 
-# # Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
-# WORKDIR ${O3DE_DIR}/Projects
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
+# Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
+WORKDIR ${O3DE_DIR}/Projects
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
 
-# WORKDIR ${O3DE_DIR}/Gems
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
+WORKDIR ${O3DE_DIR}/Gems
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
 
-# ## Symlink clang version to non-versioned clang and set cc to clang
-# # RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-# #     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+## Symlink clang version to non-versioned clang and set cc to clang
+RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
 # ####  Install Open 3D Engine   ####  
 
 # # Pull latest commit from development and build o3de. Note this does't build the whole engine
-# WORKDIR ${HOME_DIR}
+WORKDIR ${HOME_DIR}
 
 # # Install o3de engine (automatically pulls last commit from "development" branch)
-# RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
-#     && cd o3de \
-#     && git lfs install \
-#     && git lfs pull \
-#     && python/get_python.sh
+RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
+    && cd o3de \
+    && git lfs install \
+    && git lfs pull \
+    && python/get_python.sh
 
 # # Install o3de-extras (automatically pulls last commit from "development" branch)
 # # Contains ROS 2 Gem and other relevant assets
 
 # WORKDIR ${HOME_DIR}
-# RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
-#     && cd o3de-extras \
-#     && git lfs install \
-#     && git lfs pull
+RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
+    && cd o3de-extras \
+    && git lfs install \
+    && git lfs pull
 
-# WORKDIR ${HOME_DIR}/o3de
+WORKDIR ${HOME_DIR}/o3de
 
-# # Register RobotSim with this engine
-# #RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
-# RUN ./scripts/o3de.sh register --this-engine 
-# # Register ROS 2 Gem, Husarion robot, Curiosity rover and Mars Yard gem
-# # RUN ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+# Register RobotSim with this engine
+#RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
+RUN ./scripts/o3de.sh register --this-engine 
+RUN ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
 
-# RUN ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+# Register the Terrian gem which is located in o3de folder
+RUN ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
 
-# # Register the Terrian gem which is located in o3de folder
-# RUN ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
+# Register RobotSim project.
+# Project must be registered at the very end after all dependent gems are registered
+RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
 
-# # Register RobotSim project.
-# # Project must be registered at the very end after all dependent gems are registered
-# #RUN {O3DE_ENGINE}/scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
-# RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+# # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
+WORKDIR ${HOME_DIR}
 
-# # Move to project directory
-# WORKDIR ${HOME_DIR}
-# # Run cmake and build project (Warning takes about 10-15 mins)
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    sudo apt-get update -y && sudo apt-get install -y \
+    libunwind-dev
 
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#     sudo apt-get update -y && sudo apt-get install -y \
-#     libunwind-dev
+# Move to project directory
+WORKDIR ${PROJECT_PATH}
 
-# # Testing build by manually building out a ROS 2 Humble core
-# # RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-
-# # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-# #     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-# #     sudo apt-get update -y && sudo apt-get install -y \
-# #     ros-humble-ros-base
-
-# # # Move to project directory
-# WORKDIR ${PROJECT_PATH}
-
-# # Activate Cyclone DDS
-# ## ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+#Activate Cyclone DDS (not necessary with Space ROS)
+#ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
 
 # # Source space_ros, movit2 and demo_ws
 # RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
@@ -424,3 +408,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 # COPY ./entrypoint.sh /
 # ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["bash"]
+
+
+# # Testing build by manually building out a ROS 2 Humble core
+# # RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+# #     --mount=type=cache,target=/var/lib/apt,sharing=locked \
+# #     sudo apt-get update -y && sudo apt-get install -y \
+# #     ros-humble-ros-base
