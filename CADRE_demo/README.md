@@ -172,7 +172,8 @@ chmod +x run.sh
 ```
 
 4. (optional) Additional terminals can be opened by executing
- ```chmod +x open_cmd.sh
+ ```
+ chmod +x open_cmd.sh
  ./open_cmd.sh
  ```
 
@@ -212,7 +213,15 @@ With this, will start the gazebo simulator and Rviz with the three CADRE rovers 
 
 # CADRE GUI teleopration.
 
-In another terminal, run ```ros2 run robot_control joy.py```This will start GUI control for controlling individual Rovers.
+In another terminal,
+
+1. Excutable Premmsion for python files.
+```cd ~/CADRE_demo/src/robot_control/scripts/
+    chmod +x joy.py
+    chmod +x mapping.py
+```
+
+ 2. Run ```ros2 run robot_control joy.py```This will start GUI control for controlling individual Rovers.
 
 # CADRE point clouds [ **Added only for one rover due to Hardware limit** ].
 
