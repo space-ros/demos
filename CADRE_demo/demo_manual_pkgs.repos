@@ -2,11 +2,11 @@ repositories:
   demos:
     type: git
     url: https://github.com/Sanjay-j-p/demos.git
-    version: main/CADRE_exploration_rover
+    version: main
   simulation:
     type: git
     url: https://github.com/Sanjay-j-p/simulation.git
-    version: main/CADRE_exploration_rover_models
+    version: main
   realtime_tools:
     type: git
     url: https://github.com/ros-controls/realtime_tools.git
