@@ -61,6 +61,7 @@ Custom models made from real elevation data (From NASA's Planetary Data System) 
 This will run the container where you can launch the simulation.
 > If the container is running, you can use the same script/command in another terminal instance to attach a terminal into the docker.
 
+### GUI PLUGINS
 - Once the docker container is up, you can use the demo launch file to launch the simualtion using the following command.
 
 ```shell
@@ -68,6 +69,41 @@ ros2 launch custom_gz_plugins demo_world.launch.py
 ```
 > In order to user the GUI Plugin: DustManger or DayLightManger, use to menu option in the simulation (Top Right Corner) to load the plugin
 
+### System Plugins
+
+#### Vehicle Dust
+- Inside the docker container, navigate to the worlds directory using the following command
+```bash
+cd /home/spaceros-user/demos_ws/src/demos/custom_gz_plugins/worlds
+```
+- Use the follwing command to launch the world in GZ SIM
+
+```bash
+gz sim -r  vehicle_dust_demo.sdf
+```
+- Use the teleop GUI plugin in GZ SIM to drive the robot im order to see the dust effect in the simulation
+
+#### Drone Dust
+- Inside the docker container, navigate to the worlds directory using the following command
+```bash
+cd /home/spaceros-user/demos_ws/src/demos/custom_gz_plugins/worlds
+```
+- Use the follwing command to launch the world in GZ SIM
+
+```bash
+gz sim -r  vehicle_dust_demo.sdf
+```
+
+- Run the follwoing command to launch the ros-gz bridges
+```bash
+ros2 launch custom_gz_plugins ingenuity.launch.py
+```
+
+- Run the following command to start the teleop node of ingenuity.
+```bash
+ros2 run custom_gz_plugins inguenity_control
+```
+- Use the teleop node to fly the ingenuity robot im order to see the dust effect in the simulation
 
 
-
+> Note: These simulations are just to demonstate the plugins features so the dynamics and physics of the models might not be accurate.
