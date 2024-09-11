@@ -232,7 +232,8 @@ In another terminal,
 In another terminal, run 
 ```
 ros2 run robot_control mapping.py
-```This will start the point cloud node and publish topics.
+```
+This will start the point cloud node and publish topics.
 
 
 # License
