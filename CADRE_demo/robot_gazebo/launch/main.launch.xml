@@ -8,7 +8,7 @@
             <arg name="robot_file" value="robot.xacro"/>
             <arg name="x_spawn" value="0"/>
             <arg name="y_spawn" value="4.5"/>
-            <arg name="z_spawn" value="0"/>
+            <arg name="z_spawn" value="0.0"/>
             <arg name="roll_spawn" value="0.0"/>
             <arg name="pitch_spawn" value="0.0"/>
             <arg name="yaw_spawn" value="1.57"/>
@@ -19,7 +19,7 @@
             <arg name="robot_file" value="robot.xacro"/>
             <arg name="x_spawn" value="4.5"/>
             <arg name="y_spawn" value="0.0"/>
-            <arg name="z_spawn" value="0"/>
+            <arg name="z_spawn" value="0.0"/>
             <arg name="roll_spawn" value="0.0"/>
             <arg name="pitch_spawn" value="0.0"/>
             <arg name="yaw_spawn" value="0.0"/>
@@ -30,7 +30,7 @@
             <arg name="robot_file" value="robot.xacro"/>
             <arg name="x_spawn" value="-2.5"/>
             <arg name="y_spawn" value="-2.5"/>
-            <arg name="z_spawn" value="0"/>
+            <arg name="z_spawn" value="0.0"/>
             <arg name="roll_spawn" value="0.0"/>
             <arg name="pitch_spawn" value="0.0"/>
             <arg name="yaw_spawn" value="-2.3"/>
