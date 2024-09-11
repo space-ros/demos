@@ -331,9 +331,9 @@ WORKDIR ${O3DE_DIR}/Gems
 RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
 RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
 
-## Symlink clang version to non-versioned clang and set cc to clang
-RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+# ## Symlink clang version to non-versioned clang and set cc to clang
+RUN sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+    && sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
 # ####  Install Open 3D Engine   ####  
 
