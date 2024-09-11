@@ -59,7 +59,7 @@ Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Explo
 1. Tested the simulation on Windows Subsystem for Linux (WSL) and VMware Linux, ensuring compatibility for developers who do not wish to dual boot or have access to a Linux environment.
    
 - **Open-sourced :**
-1. Open-sourced SolidWorks CAD files and Blender files.
+1. Open-sourced SolidWorks CAD files and Blender files. (https://github.com/Sanjay-j-p/demos/tree/main/CADRE_demo/CAD_and_Blender_files)
 
 
 
