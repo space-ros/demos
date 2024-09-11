@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ORG=openrobotics
-IMAGE=openrobotics/lunar_pole_exploration_rover_demo
+IMAGE=lunar_pole_exploration_rover_demo
 TAG=latest
 
 VCS_REF=""
