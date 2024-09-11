@@ -22,7 +22,6 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth
       - isaac-cache:/home/spaceros-user/.isaac-sim-cache:rw
-      - ../curiosity_sim:/home/spaceros-user/curiosity_sim:rw
       - ../lidar_configs/CuriosityLidar.json:/usr/local/lib/python3.10/dist-packages/isaacsim/exts/omni.isaac.sensor/data/lidar_configs/CuriosityLidar.json:ro
     devices:
       - /dev/dri:/dev/dri
