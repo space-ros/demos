@@ -172,7 +172,7 @@ chmod +x run.sh
 ```
 
 4. (optional) Additional terminals can be opened by executing
- ```chmod +x run.sh
+ ```chmod +x open_cmd.sh
  ./open_cmd.sh
  ```
 
