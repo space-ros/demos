@@ -33,11 +33,12 @@ docker run --rm -it --name $CONTAINER_NAME \
     --network host \
     --volume=/tmp/.X11-unix:/tmp/.X11-unix \
     --device=/dev/dri:/dev/dri \
-    --volume "$XAUTHORITY:/.Xauthority" \
     -e DISPLAY \
     -e TERM \
     -e QT_X11_NO_MITSHM=1 \
     -e XAUTHORITY=/.Xauthority \
     $IMG_NAME
+
+#   --volume "$XAUTHORITY:/.Xauthority" \
 
 # EOF
