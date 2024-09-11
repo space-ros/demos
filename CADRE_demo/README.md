@@ -152,18 +152,18 @@ Follow these passages to build the docker image and start a docker container.
 
 4. (optional) Additional terminals can be opened by executing ```./open_cmd.sh```
 
-# Run CADRE demo
+# CADRE simulation launch.
 
 The CADRE demo can be started by executing the following commands:
 
 Run ```ros2 launch robot_gazebo main.launch.xml```. This launch file will start the gazebo simulator with the Three CADRE rovers in the Lunar world.
 
 
-# Run CADRE GUI teleopration.
+# CADRE GUI teleopration.
 
 In another terminal, run ```ros2 run robot_control joy.py```This will start GUI control for controlling individual Rovers.
 
-# Run CADRE point clouds.
+# CADRE point clouds.
 
 In another terminal, run ```ros2 run robot_control mapping.py```This will start the point cloud node and publish topics.
 
