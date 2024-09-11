@@ -27,7 +27,7 @@ ARG VERSION="preview"
 
 # Specify the docker image metadata
 LABEL org.label-schema.schema-version="1.0"
-LABEL org.label-schema.name="CADRE:Cooperative Autonomous Distributed Robotic Exploration"
+LABEL org.label-schema.name="CADRE demo:Cooperative Autonomous Distributed Robotic Exploration"
 LABEL org.label-schema.description="Three small rovers that will work together to explore the Moon for the NASA Space ROS Sim Summer Sprint Challenge"
 LABEL org.label-schema.vendor="Open Robotics"
 LABEL org.label-schema.version=${VERSION}
