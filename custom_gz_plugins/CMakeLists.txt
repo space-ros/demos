@@ -14,6 +14,8 @@ find_package(ament_cmake REQUIRED)
 add_subdirectory(src/DayLightManager)
 add_subdirectory(src/DustManager)
 add_subdirectory(src/VehicleDust)
+add_subdirectory(src/DroneDustPlguin)
+
 
 ## Install the launch directory
 install(
