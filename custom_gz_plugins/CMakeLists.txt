@@ -7,6 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -14,12 +18,18 @@ find_package(ament_cmake REQUIRED)
 add_subdirectory(src/DayLightManager)
 add_subdirectory(src/DustManager)
 add_subdirectory(src/VehicleDust)
-add_subdirectory(src/DroneDustPlguin)
+add_subdirectory(src/DroneDustPlugin)
 
+add_executable(inguenity_control nodes/inguenity_control.cpp)
+ament_target_dependencies(inguenity_control rclcpp std_msgs)
+
+install(TARGETS
+inguenity_control
+DESTINATION lib/${PROJECT_NAME})
 
 ## Install the launch directory
 install(
-  DIRECTORY launch
+  DIRECTORY launch worlds config
   DESTINATION share/${PROJECT_NAME}
 )
 
