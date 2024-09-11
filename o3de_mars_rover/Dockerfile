@@ -22,7 +22,7 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM openrobotics/moveit2:latest
+FROM osrf/space-ros:latest
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
@@ -40,6 +40,7 @@ LABEL org.label-schema.vcs-url="https://github.com/Mechazo11/space-ros-docker"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Define a key enviornment variables
+ENV MOVEIT2_DIR=${HOME_DIR}/moveit2
 ENV DEMO_DIR=${HOME_DIR}/demos_ws
 ENV IGNITION_VERSION fortress
 ENV GZ_VERSION fortress
@@ -54,261 +55,326 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-####  Install DEMO_WS   ####
 
-# Get rosinstall_generator
+
+# Clone all space-ros sources
+RUN mkdir ${SPACEROS_DIR}/src \
+  && vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/exact.repos
+
+### Delete CycloneDDS and install from apt to resolve cmake conflict ###
+
+
+
+### Delete CycloneDDS and install from apt to resolve cmake conflict ###
+
+
+####  Install MOVEIT2_WS   ####
+
+# Make sure the latest versions of packages are installed
 # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
 # the cache won't make it into the built image but will be maintained between steps.
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  python3-rosinstall-generator \
-  libboost-python-dev build-essential cmake libboost-all-dev libois-dev \
-  libzzip-dev libfreeimage-dev libfreetype6-dev libx11-dev libxt-dev libxaw7-dev \
-  libsdl2-dev libpugixml-dev libglew-dev qtbase5-dev libspdlog-dev libfmt-dev \
-  libignition-gazebo6-dev libssl-dev devscripts debian-keyring fakeroot debhelper \
-  libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen libtinyxml-dev \
-  libtinyxml2-dev python3-pyqt5 tzdata locales keyboard-configuration
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get dist-upgrade -y
+# RUN rosdep update
 
-# RUN apt-get install -y tzdata
-# RUN apt-get install -y locales
-# RUN apt-get install -y keyboard-configuration
+# # Install the various build and test tools
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt install -y \
+#   build-essential \
+#   clang-format \
+#   cmake \
+#   git \
+#   libbullet-dev \
+#   python3-colcon-common-extensions \
+#   python3-flake8 \
+#   python3-pip \
+#   python3-pytest-cov \
+#   python3-rosdep \
+#   python3-setuptools \
+#   python3-vcstool \
+#   wget
 
-RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && sudo dpkg-reconfigure --frontend=noninteractive locales \
-    && sudo update-locale LANG=en_US.UTF-8
+# # Install some pip packages needed for testing
+# RUN python3 -m pip install -U \
+#   argcomplete \
+#   flake8-blind-except \
+#   flake8-builtins \
+#   flake8-class-newline \
+#   flake8-comprehensions \
+#   flake8-deprecated \
+#   flake8-docstrings \
+#   flake8-import-order \
+#   flake8-quotes \
+#   pytest-repeat \
+#   pytest-rerunfailures \
+#   pytest
 
-# RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-# && dpkg-reconfigure --frontend=noninteractive locales \
-# && update-locale LANG=en_US.UTF-8
+# # Get the MoveIt2 source code
+# WORKDIR ${HOME_DIR}
+# RUN sudo git clone https://github.com/moveit/moveit2.git -b ${ROSDISTRO} moveit2/src
+# RUN cd ${MOVEIT2_DIR}/src \
+#   && sudo git clone https://github.com/moveit/moveit2_tutorials.git -b ${ROSDISTRO}
 
-ENV LANG=en_US.UTF-8
+# # Update the ownership of the source files (had to use sudo above to work around
+# # a possible inherited 'insteadof' from the host that forces use of ssh
+# RUN sudo chown -R ${USERNAME}:${USERNAME} ${MOVEIT2_DIR}
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y && sudo apt-get install -y \
-  bc \
-  bind9-utils \
-  binutils \
-  ca-certificates \
-  clang \
-  cmake \
-  file \
-  firewalld \
-  git \
-  git-lfs \
-  jq \
-  kbd \
-  kmod \
-  less \
-  lsb-release \
-  libglu1-mesa-dev \
-  libxcb-xinerama0 \
-  libfontconfig1-dev \
-  libcurl4-openssl-dev \
-  libnvidia-gl-470 \
-  libssl-dev \
-  libxcb-xkb-dev \
-  libxkbcommon-x11-dev \
-  libxkbcommon-dev \
-  libxcb-xfixes0-dev \
-  libxcb-xinput-dev \
-  libxcb-xinput0 \
-  libpcre2-16-0 \
-  lsof \
-  net-tools \
-  ninja-build \
-  pciutils \
-  python3-pip \
-  software-properties-common \
-  sudo \
-  tar \
-  unzip \
-  vim \
-  wget \
-  xz-utils
-  # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
+# # Get rosinstall_generator
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
+
+# # Generate repos file for moveit2 dependencies, excluding packages from Space ROS core.
+# COPY --chown=${USERNAME}:${USERNAME} moveit2-pkgs.txt /tmp/
+# COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+# RUN rosinstall_generator \
+#   --rosdistro ${ROSDISTRO} \
+#   --deps \
+#   --exclude-path ${SPACEROS_DIR}/src \
+#   --exclude $(cat /tmp/excluded-pkgs.txt) -- \
+#   -- $(cat /tmp/moveit2-pkgs.txt) \
+#   > /tmp/moveit2_generated_pkgs.repos
+
+# # Get the repositories required by MoveIt2, but not included in Space ROS
+# WORKDIR ${MOVEIT2_DIR}
+# RUN vcs import src < /tmp/moveit2_generated_pkgs.repos
+# COPY --chown=${USERNAME}:${USERNAME} moveit2_tutorials.repos /tmp/
+# RUN vcs import src < /tmp/moveit2_tutorials.repos
+
+# # Update the ownership of the source files (had to use sudo above to work around
+# # a possible inherited 'insteadof' from the host that forces use of ssh
+# RUN sudo chown -R ${USERNAME}:${USERNAME} ${MOVEIT2_DIR}
+
+# # Install system dependencies
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash' \
+#  && rosdep install --from-paths ../spaceros/src src --ignore-src --rosdistro ${ROSDISTRO} -r -y --skip-keys "console_bridge generate_parameter_library fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos diagnostic_aggregator diagnostic_updater joy qt_gui rqt_gui rqt_gui_py"
+
+# # Apply a patch to octomap_msgs to work around a build issue
+# COPY --chown=${USERNAME}:${USERNAME} octomap_fix.diff ./src/octomap_msgs
+# RUN cd src/octomap_msgs && git apply octomap_fix.diff
+
+# # Build MoveIt2
+# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+
+####  Install MOVEIT2_WS   ####
 
 
-RUN mkdir -p ${DEMO_DIR}/src
-WORKDIR ${DEMO_DIR}
 
-# Install libmongoc for development
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get install libmongoc-dev -y
 
-# Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
-RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
-RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
-RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
+####  Install DEMO_WS   ####
 
-# Get the source for the dependencies
-# RUN vcs import src < /tmp/demo_generated_pkgs.repos
-COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
-RUN vcs import src < /tmp/o3de-robot-sim.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
+# # Get rosinstall_generator
+# # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
+# # the cache won't make it into the built image but will be maintained between steps.
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+#   python3-rosinstall-generator \
+#   libboost-python-dev build-essential cmake libboost-all-dev libois-dev \
+#   libzzip-dev libfreeimage-dev libfreetype6-dev libx11-dev libxt-dev libxaw7-dev \
+#   libsdl2-dev libpugixml-dev libglew-dev qtbase5-dev libspdlog-dev libfmt-dev \
+#   libignition-gazebo6-dev libssl-dev devscripts debian-keyring fakeroot debhelper \
+#   libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen libtinyxml-dev \
+#   libtinyxml2-dev python3-pyqt5 tzdata locales keyboard-configuration
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y \
-&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-&& /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+# # RUN apt-get install -y tzdata
+# # RUN apt-get install -y locales
+# # RUN apt-get install -y keyboard-configuration
 
-# Build the demo_ws
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
-  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+# RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+#     && sudo dpkg-reconfigure --frontend=noninteractive locales \
+#     && sudo update-locale LANG=en_US.UTF-8
 
-# Create O3DE/Projects and O3DE/Gems directory
-RUN if [ -d "${O3DE_DIR}/Projects" ]; then rm -rf ${O3DE_DIR}/Gems; fi
-RUN mkdir -p ${O3DE_DIR}/Projects
+# # RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+# # && dpkg-reconfigure --frontend=noninteractive locales \
+# # && update-locale LANG=en_US.UTF-8
 
-RUN if [ -d "${O3DE_DIR}/Gems" ]; then rm -rf ${O3DE_DIR}/Gems; fi
-RUN mkdir -p ${O3DE_DIR}/Gems
+# ENV LANG=en_US.UTF-8
 
-# Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
-WORKDIR ${O3DE_DIR}/Projects
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y && sudo apt-get install -y \
+#   bc \
+#   bind9-utils \
+#   binutils \
+#   ca-certificates \
+#   clang \
+#   cmake \
+#   file \
+#   firewalld \
+#   git \
+#   git-lfs \
+#   jq \
+#   kbd \
+#   kmod \
+#   less \
+#   lsb-release \
+#   libglu1-mesa-dev \
+#   libxcb-xinerama0 \
+#   libfontconfig1-dev \
+#   libcurl4-openssl-dev \
+#   libnvidia-gl-470 \
+#   libssl-dev \
+#   libxcb-xkb-dev \
+#   libxkbcommon-x11-dev \
+#   libxkbcommon-dev \
+#   libxcb-xfixes0-dev \
+#   libxcb-xinput-dev \
+#   libxcb-xinput0 \
+#   libpcre2-16-0 \
+#   lsof \
+#   net-tools \
+#   ninja-build \
+#   pciutils \
+#   python3-pip \
+#   software-properties-common \
+#   sudo \
+#   tar \
+#   unzip \
+#   vim \
+#   wget \
+#   xz-utils
+#   # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
 
-WORKDIR ${O3DE_DIR}/Gems
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
+# RUN mkdir -p ${DEMO_DIR}/src
+# WORKDIR ${DEMO_DIR}
 
-## Symlink clang version to non-versioned clang and set cc to clang
-# RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-#     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+# # Install libmongoc for development
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get install libmongoc-dev -y
 
-####  Install Open 3D Engine   ####  
-# Install dependencies
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    sudo apt-get update -y && sudo apt-get install -y \
-    bc \
-    bind9-utils \
-    binutils \
-    ca-certificates \
-    clang \
-    cmake \
-    file \
-    firewalld \
-    git \
-    git-lfs \
-    jq \
-    kbd \
-    kmod \
-    less \
-    lsb-release \
-    libglu1-mesa-dev \
-    libxcb-xinerama0 \
-    libfontconfig1-dev \
-    libcurl4-openssl-dev \
-    libnvidia-gl-470 \
-    libssl-dev \
-    libxcb-xkb-dev \
-    libxkbcommon-x11-dev \
-    libxkbcommon-dev \
-    libxcb-xfixes0-dev \
-    libxcb-xinput-dev \
-    libxcb-xinput0 \
-    libpcre2-16-0 \
-    lsof \
-    net-tools \
-    ninja-build \
-    pciutils \
-    python3-pip \
-    software-properties-common \
-    sudo \
-    tar \
-    unzip \
-    vim \
-    wget \
-    xz-utils
-    # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
+# # Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
+# RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
+# RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
+# RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
 
-# Pull latest commit from development and build o3de. Note this does't build the whole engine
-WORKDIR ${HOME_DIR}
+# # Get the source for the dependencies
+# # RUN vcs import src < /tmp/demo_generated_pkgs.repos
+# COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
+# RUN vcs import src < /tmp/o3de-robot-sim.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
 
-# Install o3de engine (automatically pulls last commit from "development" branch)
-RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
-    && cd o3de \
-    && git lfs install \
-    && git lfs pull \
-    && python/get_python.sh
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y \
+# && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+# && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+# && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
-# Install o3de-extras (automatically pulls last commit from "development" branch)
-# Contains ROS 2 Gem and other relevant assets
+# # Build the demo_ws
+# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
-WORKDIR ${HOME_DIR}
-RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
-    && cd o3de-extras \
-    && git lfs install \
-    && git lfs pull
+# # Create O3DE/Projects and O3DE/Gems directory
+# RUN if [ -d "${O3DE_DIR}/Projects" ]; then rm -rf ${O3DE_DIR}/Gems; fi
+# RUN mkdir -p ${O3DE_DIR}/Projects
 
-WORKDIR ${HOME_DIR}/o3de
+# RUN if [ -d "${O3DE_DIR}/Gems" ]; then rm -rf ${O3DE_DIR}/Gems; fi
+# RUN mkdir -p ${O3DE_DIR}/Gems
 
-# Register RobotSim with this engine
-#RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
-RUN ./scripts/o3de.sh register --this-engine 
-# Register ROS 2 Gem, Husarion robot, Curiosity rover and Mars Yard gem
-# RUN ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-#     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-#     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-#     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+# # Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
+# WORKDIR ${O3DE_DIR}/Projects
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
 
-RUN ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+# WORKDIR ${O3DE_DIR}/Gems
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
 
-# Register the Terrian gem which is located in o3de folder
-RUN ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
+# ## Symlink clang version to non-versioned clang and set cc to clang
+# # RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+# #     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
-# Register RobotSim project.
-# Project must be registered at the very end after all dependent gems are registered
-#RUN {O3DE_ENGINE}/scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
-RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+# ####  Install Open 3D Engine   ####  
 
-# Move to project directory
-WORKDIR ${HOME_DIR}
-# Run cmake and build project (Warning takes about 10-15 mins)
+# # Pull latest commit from development and build o3de. Note this does't build the whole engine
+# WORKDIR ${HOME_DIR}
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    sudo apt-get update -y && sudo apt-get install -y \
-    libunwind-dev
+# # Install o3de engine (automatically pulls last commit from "development" branch)
+# RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
+#     && cd o3de \
+#     && git lfs install \
+#     && git lfs pull \
+#     && python/get_python.sh
 
-# Testing build by manually building out a ROS 2 Humble core
-# RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+# # Install o3de-extras (automatically pulls last commit from "development" branch)
+# # Contains ROS 2 Gem and other relevant assets
+
+# WORKDIR ${HOME_DIR}
+# RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
+#     && cd o3de-extras \
+#     && git lfs install \
+#     && git lfs pull
+
+# WORKDIR ${HOME_DIR}/o3de
+
+# # Register RobotSim with this engine
+# #RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
+# RUN ./scripts/o3de.sh register --this-engine 
+# # Register ROS 2 Gem, Husarion robot, Curiosity rover and Mars Yard gem
+# # RUN ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
+# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
+# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
+# #     && ${O3DE_ENGINE}/scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+
+# RUN ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+
+# # Register the Terrian gem which is located in o3de folder
+# RUN ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
+
+# # Register RobotSim project.
+# # Project must be registered at the very end after all dependent gems are registered
+# #RUN {O3DE_ENGINE}/scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+# RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+
+# # Move to project directory
+# WORKDIR ${HOME_DIR}
+# # Run cmake and build project (Warning takes about 10-15 mins)
 
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 #     --mount=type=cache,target=/var/lib/apt,sharing=locked \
 #     sudo apt-get update -y && sudo apt-get install -y \
-#     ros-humble-ros-base
+#     libunwind-dev
 
-# # Move to project directory
-WORKDIR ${PROJECT_PATH}
+# # Testing build by manually building out a ROS 2 Humble core
+# # RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-# Activate Cyclone DDS
-# ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+# # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+# #     --mount=type=cache,target=/var/lib/apt,sharing=locked \
+# #     sudo apt-get update -y && sudo apt-get install -y \
+# #     ros-humble-ros-base
 
-# Source space_ros, movit2 and demo_ws
-RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-  && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-  && /bin/bash -c 'source "${DEMO_DIR}/install/setup.bash"'
-  #&& cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
-  #&& cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
+# # # Move to project directory
+# WORKDIR ${PROJECT_PATH}
 
-#RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"'
+# # Activate Cyclone DDS
+# # ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
 
-RUN cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
-  && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
+# # Source space_ros, movit2 and demo_ws
+# RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+#   && /bin/bash -c 'source "${DEMO_DIR}/install/setup.bash"'
+#   #&& cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
+#   #&& cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
+# #RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"'
 
-
+# RUN cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
+#   && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
 # # Add the user to the render group so that the user can access /dev/dri/renderD128
 # # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
