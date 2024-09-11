@@ -24,11 +24,11 @@
     between -0.0349066 and 0.139626 radians(2 to 8 degrees)
     ign topic -t /angle_of_attack -m ignition.msgs.Double -p "data: 0.1"
 
-  Publish the longitudinal cyclic control:
+  Publish the lateral cyclic control:
     between -0.00001 to 0.00001
     ign topic -t /alpha_c -m ignition.msgs.Double -p "data: 0.00001"
 
-  Publish the lateral cyclic control:
+  Publish the longitudinal cyclic control:
     between -0.00001 to 0.00001
     ign topic -t /alpha_s -m ignition.msgs.Double -p "data: 0.00001"
 

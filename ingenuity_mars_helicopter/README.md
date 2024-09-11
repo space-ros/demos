@@ -19,10 +19,6 @@ Each folder is a ROS 2 package. Each package has their own README.md file explai
 
 ## Setup
 
-This project builds on `openrobotics/space_robots_demo` docker image. To build that docker image follow the instructions at this [README](https://github.com/space-ros/docker/blob/main/moveit2/README.md). To build that image, you also need to build the spaceros base image. You can access that [here](https://github.com/space-ros/space-ros).
-
-After ensuring you have the `openrobotics/space_robots_demo` docker image. Go ahead and clone this repo.
-
 1. Clone this repository:
    ```bash
    git clone git@github.com:BarisYazici/demos.git
@@ -132,6 +128,24 @@ graph TD
     class C,D spaceROS;
     class G visualization;
 ```
+
+## Topics
+
+The following table explains the key topics used in the Ingenuity Flight Simulator:
+
+| Topic Name | Description | Data Type | Direction |
+|------------|-------------|-----------|-----------|
+| `/angle_of_attack` | Controls the collective pitch of the rotor blades | `ignition.msgs.Double` | Input to Simulation |
+| `/alpha_c` | Lateral cyclic control input | `ignition.msgs.Double` | Input to Simulation |
+| `/alpha_s` | Longitudinal cyclic control input | `ignition.msgs.Double` | Input to Simulation |
+| `/desired_altitude` | Sets the target altitude for the flight controller | `ignition.msgs.Double` | Input to Controller |
+| `/imu` | Provides IMU sensor data from the Ingenuity model | `ignition.msgs.IMU` | Output from Simulation |
+| `/altimeter` | Provides altitude data from the Ingenuity model | `ignition.msgs.Altimeter` | Output from Simulation |
+| `/camera` | Provides camera feed from the Ingenuity model | `ignition.msgs.Image` | Output from Simulation |
+| `/wrench/ingenuity_model/blade_1` | Forces and torques applied to blade 1 | `ignition.msgs.Wrench` | Output from Simulation |
+| `/wrench/ingenuity_model/blade_2` | Forces and torques applied to blade 2 | `ignition.msgs.Wrench` | Output from Simulation |
+| `/wrench/ingenuity_model/blade_3` | Forces and torques applied to blade 3 | `ignition.msgs.Wrench` | Output from Simulation |
+| `/wrench/ingenuity_model/blade_4` | Forces and torques applied to blade 4 | `ignition.msgs.Wrench` | Output from Simulation |
 
 
 ## License
