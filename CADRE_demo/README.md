@@ -221,11 +221,18 @@ In another terminal,
     chmod +x mapping.py
 ```
 
- 2. Run ```ros2 run robot_control joy.py```This will start GUI control for controlling individual Rovers.
+ 2. Run
+  ```
+  ros2 run robot_control joy.py
+  ```
+ This will start GUI control for controlling individual Rovers.
 
 # CADRE point clouds [ **Added only for one rover due to Hardware limit** ].
 
-In another terminal, run ```ros2 run robot_control mapping.py```This will start the point cloud node and publish topics.
+In another terminal, run 
+```
+ros2 run robot_control mapping.py
+```This will start the point cloud node and publish topics.
 
 
 # License
