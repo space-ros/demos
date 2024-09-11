@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  curiosity_gui:
+    image: osrf/space-ros:curiosity_gui
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.GUI
+    # runtime: nvidia
+    environment:
+      - PYTHONUNBUFFERED=1 # important to show error messages if a ros service crashes!
+      - DISPLAY # for UI
+      - QT_X11_NO_MITSHM=1 #fix some QT bugs
+      - NVIDIA_VISIBLE_DEVICES=all # for docker-nvidia2
+      - NVIDIA_DRIVER_CAPABILITIES=all # for docker-nvidia2
+      - XDG_RUNTIME_DIR
+      - __NV_PRIME_RENDER_OFFLOAD=1
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - XAUTHORITY=$XAUTHORITY
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw # for UI
+      - /run/user:/run/user:ro # for UI
+    command:
+      [
+        "bash",
+        "-c",
+        "source /opt/ros/humble/setup.bash && source ~/curiosity_ws/install/setup.bash && ros2 launch curiosity_gazebo curiosity_gazebo.launch.py",
+      ]
+    network_mode: host
+    privileged: true # for UI
+  curiosity_demo:
+    image: osrf/space-ros:curiosity_demo
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1 # important to show error messages if a ros service crashes!
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    network_mode: host
+    command:
+      [
+        "bash",
+        "-c",
+        "source /home/spaceros-user/curiosity_ws/install/setup.bash && ros2 launch curiosity_rover_demo mars_rover.launch.py",
+      ]
