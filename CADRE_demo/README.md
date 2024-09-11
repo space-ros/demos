@@ -182,12 +182,32 @@ chmod +x run.sh
  current"file:///home/ros2/multi_space_ros/src/robot_description/meshes/ .stl"
  ( https://github.com/Sanjay-j-p/demos/blob/main/CADRE_demo/robot_description/robot/robot.xacro)
    
+## # CADRE simulation launch and run.
 
-# CADRE simulation launch.
+1. Source your ROS2 distribution. 
+```
+source /opt/ros/${ROS_DISTRO}/setup.bash
+```
 
-The CADRE demo can be started by executing the following commands:
+2. Build Your Workspace ex: CADRE_demo
 
-Run ```ros2 launch robot_gazebo main.launch.xml```. This launch file will start the gazebo simulator with the Three CADRE rovers in the Lunar world.
+```
+cd ~/CADRE_demo/
+colcon build --symlink-install
+```
+3. Source your workspace. 
+```
+source ~/CADRE_demo/install/setup.bash
+```
+
+4. Run the launch file.
+```
+ros2 launch robot_gazebo main.launch.xml
+```
+With this, will start the gazebo simulator and Rviz with the three CADRE rovers in the Lunar world.
+
+
+
 
 
 # CADRE GUI teleopration.
