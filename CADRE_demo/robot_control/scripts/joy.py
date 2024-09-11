@@ -28,24 +28,21 @@ class RobotControlApp:
     def __init__(self, root):
         self.root = root
         self.root.title("CADRE Control GUI")
-
         self.root.geometry("900x900")
-        
-        # ROS2 Node Initialization
         rclpy.init(args=None)
         self.robot_name = 'robot_1'
         self.node = RobotControlNode(self.robot_name, self.image_callback)
         self.bridge = CvBridge()
         self.shutdown_event = Event()
         
-        # Robot Selection
+       
         self.robot_var = tk.StringVar(value=self.robot_name)
         # ttk.Label(root, text="Select Robot:").grid(row=0, column=0, padx=10, pady=10)
         ttk.Radiobutton(root, text="Robot 1", variable=self.robot_var, value='robot_1', command=self.select_robot).grid(row=0, column=0, padx=5, pady=5)
         ttk.Radiobutton(root, text="Robot 2", variable=self.robot_var, value='robot_2', command=self.select_robot).grid(row=0, column=1, padx=5, pady=5)
         ttk.Radiobutton(root, text="Robot 3", variable=self.robot_var, value='robot_3', command=self.select_robot).grid(row=0, column=2, padx=5, pady=5)
         
-        # Joystick Controls
+    
         self.canvas = tk.Canvas(root, width=300, height=300, bg='lightgrey')
         self.canvas.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
         
@@ -71,7 +68,7 @@ class RobotControlApp:
         self.current_linear = 0
         self.current_angular = 0
 
-        # Camera Display
+    
         self.camera_label = tk.Label(root)
         self.camera_label.grid(row=1, column=3, padx=10, pady=10)
         self.image = None
@@ -89,9 +86,9 @@ class RobotControlApp:
             self.node = RobotControlNode(self.robot_name, self.image_callback)
 
     def stop_robot(self):
-        # Set linear and angular velocities to 0
+        
         self.node.update_velocity(0.0, 0.0)
-        # Reset joystick marker to the center
+      
         self.canvas.coords(self.joystick_marker, 
                            self.joystick_center[0]-10, 
                            self.joystick_center[1]-10, 
