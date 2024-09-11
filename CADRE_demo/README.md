@@ -56,10 +56,10 @@ Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Explo
    
     ![CADRE](assets/Gui_control.png)
 - **Cross-Platform Compatibility:**
-1. Tested the simulation on Windows Subsystem for Linux (WSL) and VMware Linux, ensuring compatibility for developers who do not wish to dual boot or have access to a Linux environment.
+1. Tested the simulation on Windows Subsystem for Linux (WSL) and VMware Linux, ensuring compatibility for developers who wish to avoid dual boot or having access to a Linux environment.
    
 - **Open-sourced :**
-1. Open-sourced SolidWorks CAD files and Blender files. (https://github.com/Sanjay-j-p/demos/tree/main/CADRE_demo/CAD_and_Blender_files)
+1. Open-sourced SolidWorks CAD files and Blender files for additional changes. (https://github.com/Sanjay-j-p/demos/tree/main/CADRE_demo/CAD_and_Blender_files)
 
 
 
