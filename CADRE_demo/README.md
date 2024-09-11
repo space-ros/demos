@@ -1,25 +1,57 @@
 # NASA Space ROS Sim Summer Sprint Challenge
 
+![CADRE](assets/image.png)
+Image Credits: https://www.freelancer.com/contest/NASA-Space-ROS-Sim-Summer-Sprint-Challenge-2417552/details
 
-Team Lead Freelancer Username: SanjayJP02
 
-Submission Title: CADRE Demo: Cooperative Autonomous Distributed Robotic Exploration
+
+
+
+Team Lead Freelancer Username: **SanjayJP02**
+
+Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Exploration**
 
 # Package Description and Purpose
 
 - This package simulates NASA’s CADRE mission, which focuses on mapping the Moon through a trio of autonomous rovers. The simulation is developed using ROS 2 and is part of an open-sourced lunar exploration initiative slated for Spring 2026.
 
+  ![CADRE](assets/Offical_image.png)
+  Image Credits: https://www.jpl.nasa.gov/missions/cadre
 
 
-The package consists of the following:
 
-- Lunar Landscape Design: Created a realistic lunar environment in Blender based on publicly available NASA Moon images.
-- CAD Model Development: Designed the CADRE rover model in SolidWorks and converted it into URDF format for ROS 2 Humble compatibility.
-- Simulation & Integration: Integrated the rover with IMU, LRF, and RGB-D sensors for lunar terrain mapping and exploration in Gazebo.
-- Teleoperation & Control: Built a Python-based GUI for rover teleoperation, featuring camera visualization and real-time control.
-- Cross-Platform Compatibility: Ensured simulation compatibility across WSL and VMware Linux for flexible development.
 
-Future Work:
+
+# The package consists of the following:
+
+
+- **Lunar Landscape Design:**
+  
+1. Created a realistic lunar environment using Blender, based on publicly available lunar images from NASA’s gallery (https://science.nasa.gov/gallery/moon-images/).
+2. Configured world parameters such as gravity, atmosphere, and pressure using data from NASA’s planetary factsheet for gazebo (https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html).
+   
+- **CAD Model Development:**
+  
+1. Constructed the CAD model of the CADRE rover from scratch using images and information from NASA JPL’s website (https://www.jpl.nasa.gov/missions/cadre).
+2. Implemented the model in SolidWorks and converted it to URDF format for use with ROS2 Humble.
+   
+- **Simulation and Integration:**
+1. Integrated rover controls, IMU, LRF, and RGBD sensors for lunar mapping within the simulation.
+2. Developed Python code to utilize point cloud data for mapping in relation to the Lander.
+   
+- **Teleoperation and Control:**
+1. Created a Python GUI for teleoperation control of individual rovers, including camera visualization.
+2. Set up ROS2 launch files to facilitate spawning multiple rovers as needed.
+   
+- **Cross-Platform Compatibility:**
+1. Tested the simulation on Windows Subsystem for Linux (WSL) and VMware Linux, ensuring compatibility for developers who do not wish to dual boot or have access to a Linux environment.
+   
+- **Open-sourced :**
+1. Open-sourced SolidWorks CAD files and Blender files.
+
+
+
+# Future Work:
 
 - Implementing reinforcement learning for coordinated mapping and exploration in Gazebo.
 
