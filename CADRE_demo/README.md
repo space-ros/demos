@@ -11,6 +11,8 @@ Team Lead Freelancer Username: **SanjayJP02**
 
 Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Exploration**
 
+ ![CADRE](assets/Gazebo_CADRE.png)
+
 # Package Description and Purpose
 
 - This package simulates NASA’s CADRE mission, which focuses on mapping the Moon through a trio of autonomous rovers. The simulation is developed using ROS 2 and is part of an open-sourced lunar exploration initiative slated for Spring 2026.
@@ -29,20 +31,29 @@ Submission Title: **CADRE Demo: Cooperative Autonomous Distributed Robotic Explo
   
 1. Created a realistic lunar environment using Blender, based on publicly available lunar images from NASA’s gallery (https://science.nasa.gov/gallery/moon-images/).
 2. Configured world parameters such as gravity, atmosphere, and pressure using data from NASA’s planetary factsheet for gazebo (https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html).
+
+ ![CADRE](assets/Lunar.png)
    
 - **CAD Model Development:**
   
 1. Constructed the CAD model of the CADRE rover from scratch using images and information from NASA JPL’s website (https://www.jpl.nasa.gov/missions/cadre).
 2. Implemented the model in SolidWorks and converted it to URDF format for use with ROS2 Humble.
+
+     ![CADRE](assets/solidworks.png)
    
 - **Simulation and Integration:**
 1. Integrated rover controls, IMU, LRF, and RGBD sensors for lunar mapping within the simulation.
 2. Developed Python code to utilize point cloud data for mapping in relation to the Lander.
+
+   
+    ![CADRE](assets/point_cloud.png)
    
 - **Teleoperation and Control:**
 1. Created a Python GUI for teleoperation control of individual rovers, including camera visualization.
 2. Set up ROS2 launch files to facilitate spawning multiple rovers as needed.
+
    
+    ![CADRE](assets/Gui_control.png)
 - **Cross-Platform Compatibility:**
 1. Tested the simulation on Windows Subsystem for Linux (WSL) and VMware Linux, ensuring compatibility for developers who do not wish to dual boot or have access to a Linux environment.
    
