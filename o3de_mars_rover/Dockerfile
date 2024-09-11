@@ -402,9 +402,6 @@ RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
 
 RUN cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
-# # RUN cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
-# #   && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
-
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
 RUN sudo usermod -aG render $USERNAME
