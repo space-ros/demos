@@ -87,7 +87,10 @@ The CADRE rover topics:
 - /tf_static
 
 
-More Rovers can be added by using the following modifttcionin main.launch.xml:
+More Rovers can be added by using the following modification main.launch.xml:
+
+'#' - numbers
+Spawn coordinates[ x_,y_z_,roll_,pitch_yaw_]- location of the new rover
 
 ```xml
 <include file="$(find-pkg-share robot_gazebo)/launch/spawn_with_control.launch.xml">
