@@ -1,0 +1,41 @@
+- ros_topic_name: "/tf"
+  gz_topic_name: "model/ingenuity_model/pose"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/joint_state"
+  gz_topic_name: "/world/ingenuity_world/model/ingenuity_model/joint_state"
+  ros_type_name: "sensor_msgs/msg/JointState"
+  gz_type_name: "gz.msgs.Model"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/wrench/blade_1"
+  gz_topic_name: "/wrench/ingenuity_model/blade_1"
+  ros_type_name: "geometry_msgs/msg/Wrench" 
+  gz_type_name: "ignition.msgs.Wrench"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/wrench/blade_2"
+  gz_topic_name: "/wrench/ingenuity_model/blade_2"
+  ros_type_name: "geometry_msgs/msg/Wrench" 
+  gz_type_name: "ignition.msgs.Wrench"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/wrench/blade_3"
+  gz_topic_name: "/wrench/ingenuity_model/blade_3"
+  ros_type_name: "geometry_msgs/msg/Wrench" 
+  gz_type_name: "ignition.msgs.Wrench"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/wrench/blade_4"
+  gz_topic_name: "/wrench/ingenuity_model/blade_4"
+  ros_type_name: "geometry_msgs/msg/Wrench" 
+  gz_type_name: "ignition.msgs.Wrench"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/camera"
+  gz_topic_name: "/camera"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "ignition.msgs.Image"
+  direction: GZ_TO_ROS
