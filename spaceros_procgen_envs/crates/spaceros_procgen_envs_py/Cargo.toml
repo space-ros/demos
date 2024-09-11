@@ -1,0 +1,21 @@
+[package]
+name = "spaceros_procgen_envs_py"
+description.workspace = true
+categories.workspace = true
+keywords.workspace = true
+readme.workspace = true
+license.workspace = true
+repository.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+spaceros_procgen_envs = { workspace = true }
+
+const_format = { workspace = true }
+pyo3 = { workspace = true }
