@@ -233,7 +233,7 @@ In another terminal, run
 ```
 ros2 run robot_control mapping.py
 ```
-This will start the point cloud node and publish tranformed depth topic.
+This will start the point cloud node and publishes tranformed depth topic.
 
 
 # License
