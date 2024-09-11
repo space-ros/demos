@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author/>
+      <authoring_tool>FBX COLLADA exporter</authoring_tool>
+      <comments/>
+    </contributor>
+    <created>2021-11-30T23:27:39Z</created>
+    <keywords/>
+    <modified>2021-11-30T23:27:39Z</modified>
+    <revision/>
+    <subject/>
+    <title/>
+    <unit meter="1000.000000" name="centimeter"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images>
+    <image id="MapFBXASC032FBXASC0353-image" name="MapFBXASC032FBXASC0353">
+      <init_from>../materials/textures/SunOpaque.png</init_from>
+    </image>
+  </library_images>
+  <library_materials>
+    <material id="Sun_ncl1_1" name="Sun_ncl1_1">
+      <instance_effect url="#Sun_ncl1_1-fx"/>
+    </material>
+  </library_materials>
+  <library_effects>
+    <effect id="Sun_ncl1_1-fx" name="Sun_ncl1_1">
+      <profile_COMMON>
+        <technique sid="standard">
+          <phong>
+            <emission>
+              <color sid="emission">0.000000  0.000000 0.000000 1.000000</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0.588000  0.588000 0.588000 1.000000</color>
+            </ambient>
+            <diffuse>
+              <texture texture="MapFBXASC032FBXASC0353-image" texcoord="CHANNEL0">
+                <extra>
+                  <technique profile="MAYA">
+                    <wrapU sid="wrapU0">TRUE</wrapU>
+                    <wrapV sid="wrapV0">TRUE</wrapV>
+                    <blend_mode>ADD</blend_mode>
+                  </technique>
+                </extra>
+              </texture>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.000000  0.000000 0.000000 1.000000</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">1.071773</float>
+            </shininess>
+            <reflective>
+              <color sid="reflective">0.000000  0.000000 0.000000 1.000000</color>
+            </reflective>
+            <reflectivity>
+              <float sid="reflectivity">1.000000</float>
+            </reflectivity>
+            <transparent opaque="RGB_ZERO">
+              <color sid="transparent">1.000000  1.000000 1.000000 1.000000</color>
+            </transparent>
+            <transparency>
+              <float sid="transparency">0.000000</float>
+            </transparency>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="Sun-lib" name="SunMesh">
+      <mesh>
+        <source id="Sun-POSITION">
+          <float_array id="Sun-POSITION-array" count="12">
+-128.854477 -128.842438 0.000013
+128.854477 -128.842438 0.000013
+-128.854446 128.842438 -0.000013
+128.854492 128.842468 -0.000013
+</float_array>
+          <technique_common>
+            <accessor source="#Sun-POSITION-array" count="4" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Sun-Normal0">
+          <float_array id="Sun-Normal0-array" count="18">
+0.000000 -0.000000 -1.000000
+0.000000 -0.000000 -1.000000
+0.000000 -0.000000 -1.000000
+0.000000 -0.000000 -1.000000
+0.000000 -0.000000 -1.000000
+0.000000 -0.000000 -1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Sun-Normal0-array" count="6" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Sun-UV0">
+          <float_array id="Sun-UV0-array" count="8">
+0.000000 0.000000
+1.000000 0.000000
+0.000000 1.000000
+1.000000 1.000000
+</float_array>
+          <technique_common>
+            <accessor source="#Sun-UV0-array" count="4" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Sun-VERTEX">
+          <input semantic="POSITION" source="#Sun-POSITION"/>
+        </vertices>
+        <triangles count="2" material="Sun_ncl1_1">
+          <input semantic="VERTEX" offset="0" source="#Sun-VERTEX"/>
+          <input semantic="NORMAL" offset="1" source="#Sun-Normal0"/>
+          <input semantic="TEXCOORD" offset="2" set="0" source="#Sun-UV0"/>
+          <p> 1 0 1 2 1 2 3 2 3 2 3 2 1 4 1 0 5 0</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Sun" name="Sun">
+      <node name="FDirect001" id="FDirect001" sid="FDirect001">
+        <matrix sid="matrix">0.049821 -0.000001 -1.902578 -0.149409 0.000000 1.903230 -0.000001 0.000000 1.902578 -0.000000 0.049821 10.576575 0.000000 0.000000 0.000000 1.000000</matrix>
+        <extra>
+          <technique profile="FCOLLADA">
+            <visibility>1.000000</visibility>
+          </technique>
+        </extra>
+        <node name="Sun" id="Sun" sid="Sun">
+          <matrix sid="matrix">0.016059 0.000000 -0.000000 0.000218 -0.000000 0.016059 0.000000 0.000039 0.000000 -0.000000 0.016059 64.656517 0.000000 0.000000 0.000000 1.000000</matrix>
+          <instance_geometry url="#Sun-lib">
+            <bind_material>
+              <technique_common>
+                <instance_material symbol="Sun_ncl1_1" target="#Sun_ncl1_1"/>
+              </technique_common>
+            </bind_material>
+          </instance_geometry>
+          <extra>
+            <technique profile="FCOLLADA">
+              <visibility>1.000000</visibility>
+            </technique>
+          </extra>
+        </node>
+      </node>
+      <extra>
+        <technique profile="MAX3D">
+          <frame_rate>30.000000</frame_rate>
+        </technique>
+        <technique profile="FCOLLADA">
+          <start_time>0.000000</start_time>
+          <end_time>3.966667</end_time>
+        </technique>
+      </extra>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Sun"/>
+  </scene>
+</COLLADA>
