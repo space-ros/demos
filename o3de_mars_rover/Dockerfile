@@ -73,10 +73,14 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   sudo apt-get dist-upgrade -y
 RUN rosdep update
 
+# rmw-cyclonedds and rmw-implementation later causes a fatal bug.
+# I have removed them in favor of having another top level workspace
+# which appears to solve this problem
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt install -y \
   ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-rmw-implementation \
   ros-${ROS_DISTRO}-realtime-tools
 
 # Clear Install folder, we will need to rebuild the workspace again
@@ -84,7 +88,8 @@ WORKDIR ${SPACEROS_DIR}
 RUN sudo rm -rf install/
 
 WORKDIR ${SPACEROS_DIR}/src
-RUN sudo rm -rf rmw_cyclonedds_cpp
+RUN sudo rm -rf rmw_cyclonedds_cpp 
+RUN sudo rm -rf rmw_cyclonedds
 RUN sudo rm -rf realtime_tools
 
 # Rebuild Space ROS workspace
@@ -386,16 +391,15 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 WORKDIR ${PROJECT_PATH}
 
 #Activate Cyclone DDS (not necessary with Space ROS)
-#ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+#ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp cd
 
 # # Source space_ros, movit2 and demo_ws
-# RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-#   && /bin/bash -c 'source "${DEMO_DIR}/install/setup.bash"'
-#   #&& cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
-#   #&& cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
-
-# #RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"'
+RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
+    && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+    && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+    && /bin/bash -c 'source "${DEMO_DIR}/install/setup.bash"' \
+    && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
+  # && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
 # RUN cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
 #   && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
@@ -408,12 +412,3 @@ WORKDIR ${PROJECT_PATH}
 # COPY ./entrypoint.sh /
 # ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["bash"]
-
-
-# # Testing build by manually building out a ROS 2 Humble core
-# # RUN sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-
-# # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-# #     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-# #     sudo apt-get update -y && sudo apt-get install -y \
-# #     ros-humble-ros-base
