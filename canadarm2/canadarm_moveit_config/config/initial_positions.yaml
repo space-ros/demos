@@ -1,0 +1,10 @@
+# Default initial positions for SSRMS_Canadarm2's ros2_control fake system
+
+initial_positions:
+  Base_Joint: 0
+  Elbow_Pitch: 0
+  Shoulder_Roll: 0
+  Shoulder_Yaw: 0
+  Wrist_Pitch: 0
+  Wrist_Roll: 0
+  Wrist_Yaw: 0

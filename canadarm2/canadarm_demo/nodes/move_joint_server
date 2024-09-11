@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Create an action server to move the arm to a specific position."""
+
+import rclpy  # type: ignore
+from rclpy.action import ActionServer  # type: ignore
+from rclpy.node import Node  # type: ignore
+
+from std_msgs.msg import Float64MultiArray  # type: ignore
+
+from canadarm_demo.action import MoveJoint
+
+
+class MoveJointActionServer(Node):
+    """Action server to move the arm to a specific position."""
+
+    def __init__(self):
+        super().__init__("move_joint_node")
+        self.arm_publisher_ = self.create_publisher(
+            Float64MultiArray, "canadarm_joint_controller/commands", 10
+        )
+
+        self._action_server = ActionServer(
+            self, MoveJoint, "movejoint", self.movejoint_callback
+        )
+
+        timer_period = 0.01  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        self.goal_joint_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    def movejoint_callback(self, goal_handle):
+        """Move the arm to a specific position."""
+        self.get_logger().info("Executing joint goal...")
+        self.goal_joint_pos = [float(i) for i in goal_handle.request.target]
+        goal_handle.succeed()
+        result = MoveJoint.Result()
+        return result
+
+    def move_joint(self):
+        """Move the arm to the goal position."""
+        target_val = Float64MultiArray()
+        target_val.data = self.goal_joint_pos
+        self.arm_publisher_.publish(target_val)
+
+    def timer_callback(self):
+        """Timer callback to move the arm to the goal position."""
+        self.move_joint()
+
+
+def main(args=None):
+    """Main function."""
+    rclpy.init(args=args)
+
+    move_joint_node = MoveJointActionServer()
+
+    rclpy.spin(move_joint_node)
+
+    move_joint_node.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

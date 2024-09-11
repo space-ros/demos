@@ -1,0 +1,64 @@
+<sdf version="1.5">
+  <world name="default">
+    <gui fullscreen="0">
+
+      <plugin filename="GzScene3D" name="3D View">
+        <ignition-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </ignition-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <background_color>0.9 0.753 0.66</background_color>
+        <camera_pose>-5.0 0.0 -6.0 0.0 0.0 0.0</camera_pose>
+      </plugin>
+
+      <plugin filename="ImageDisplay" name="Image Display">
+        <ignition-gui>
+          <property key="state" type="string">floating</property>
+        </ignition-gui>
+      </plugin>
+    </gui>
+
+    <server_config>
+    <plugins>
+        <plugin entity_name="*"
+                entity_type="world"
+                filename="ignition-gazebo-scene-broadcaster-system"
+                name="ignition::gazebo::systems::SceneBroadcaster">
+        </plugin>
+        <plugin entity_name="*"
+                entity_type="world"
+                filename="ignition-gazebo-sensors-system"
+                name="ignition::gazebo::systems::Sensors">
+        <render_engine>ogre2</render_engine>
+        </plugin>
+    </plugins>
+    </server_config>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- Martian Gravity-->
+    <gravity>0 0 -3.711</gravity>
+
+    <include>
+      <uri>model://curiosity_path</uri>
+      <name>curiosity_path</name>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

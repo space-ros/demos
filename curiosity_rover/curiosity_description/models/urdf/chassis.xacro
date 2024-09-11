@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<xacro:macro name="chassis_body" params="">
+
+		<!-- Used for fixing robot to Gazebo 'chassis' -->
+		<link name="base_footprint" />
+		<link name="base_link" />
+
+		<joint name="base_footprint_to_link" type="fixed">
+			<parent link="base_footprint"/>
+			<child link="base_link"/>
+		</joint>
+
+		<joint name="base_to_chassis" type="fixed">
+			<parent link="base_link"/>
+			<child link="chassis"/>
+			<origin rpy="0 0 1.57" xyz="0 0 0"/>
+		</joint>
+
+
+		<link name='chassis'>
+
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${chassisMass}"/>
+				<xacro:box_inertia m="${chassisMass}" x="${chassisWidth*scale_XYZ}" y="${chassisLength*scale_XYZ}" z="${chassisHeight*scale_XYZ}"/>
+			</inertial>
+
+		</link>
+
+
+	</xacro:macro>
+
+</robot>

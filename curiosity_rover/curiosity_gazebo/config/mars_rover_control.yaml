@@ -1,0 +1,116 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    arm_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    mast_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    wheel_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+    steer_position_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    wheel_tree_position_controller:
+      type: effort_controllers/JointGroupPositionController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+arm_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_01_joint
+      - arm_02_joint
+      - arm_03_joint
+      - arm_04_joint
+      - arm_tools_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+mast_joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - mast_p_joint
+      - mast_02_joint
+      - mast_cameras_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+wheel_velocity_controller:
+  ros__parameters:
+    joints:
+      - front_wheel_L_joint
+      - middle_wheel_L_joint
+      - back_wheel_L_joint
+      - front_wheel_R_joint
+      - middle_wheel_R_joint
+      - back_wheel_R_joint
+    interface_name: velocity
+
+
+steer_position_controller:
+  ros__parameters:
+    joints:
+      - suspension_steer_F_L_joint
+      - suspension_steer_B_L_joint
+      - suspension_steer_F_R_joint
+      - suspension_steer_B_R_joint
+    interface_name: position
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+wheel_tree_position_controller:
+  ros__parameters:
+    joints:
+      - suspension_arm_F_L_joint
+      - suspension_arm_B_L_joint
+      - suspension_arm_F_R_joint
+      - suspension_arm_B_R_joint
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+      - effort
+    gains:
+      suspension_arm_F_L_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B_L_joint:
+        p: 4200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_F_R_joint:
+        p: 2200.0
+        i: 10.0
+        d: 10.0
+      suspension_arm_B_R_joint:
+        p: 4200.0
+        i: 10.0
+        d: 10.0
+    enable:
+      suspension_arm_F_L_joint:
+        status: 1
+      suspension_arm_B_L_joint:
+        status: 1
+      suspension_arm_F_R_joint:
+        status: 1
+      suspension_arm_B_R_joint:
+        status: 1
