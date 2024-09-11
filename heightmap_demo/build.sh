@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ORG=openrobotics
-IMAGE=space_robots_demo
+IMAGE=heightmap_demo
 TAG=latest
 
 VCS_REF=""

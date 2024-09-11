@@ -1,18 +1,23 @@
 # Heightmap demo
 
 
-This demo shows how to use custom DEM data from LRO & MRO to create performant terrain with Gazebo heightmaps.
+This demo shows how to use custom DEM data from LRO & MRO to create performant terrain with Gazebo **heightmaps**.
 
 
 
-Usage:
+## Build container:
 
 ```
 cd heightmap_demo
+./build.sh
+```
 
-export GZ_SIM_RESOURCE_PATH=`pwd`/heightmap_demo/models:$GZ_SIM_RESOURCE_PATH
+## Run container:
 
-gz sim -v 4 "heightmap_demo/apollo_16.sdf"
+```
+export GZ_SIM_RESOURCE_PATH=`pwd`/models:$GZ_SIM_RESOURCE_PATH
+
+gz sim -v 4 "apollo_16.sdf"
 ```
 
 
