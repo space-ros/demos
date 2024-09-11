@@ -197,106 +197,111 @@ WORKDIR ${MOVEIT2_DIR}
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
 
-
 ####  Install MOVEIT2_WS   ####
 
 
 
 ####  Install DEMO_WS   ####
+WORKDIR ${HOME_DIR}
 
-# # Get rosinstall_generator
-# # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
-# # the cache won't make it into the built image but will be maintained between steps.
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#   python3-rosinstall-generator \
-#   libboost-python-dev build-essential cmake libboost-all-dev libois-dev \
-#   libzzip-dev libfreeimage-dev libfreetype6-dev libx11-dev libxt-dev libxaw7-dev \
-#   libsdl2-dev libpugixml-dev libglew-dev qtbase5-dev libspdlog-dev libfmt-dev \
-#   libignition-gazebo6-dev libssl-dev devscripts debian-keyring fakeroot debhelper \
-#   libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen libtinyxml-dev \
-#   libtinyxml2-dev python3-pyqt5 tzdata locales keyboard-configuration
+# Install dependencies
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  python3-rosinstall-generator \
+  libboost-python-dev build-essential cmake libboost-all-dev libois-dev \
+  libzzip-dev libfreeimage-dev libfreetype6-dev libx11-dev libxt-dev libxaw7-dev \
+  libsdl2-dev libpugixml-dev libglew-dev qtbase5-dev libspdlog-dev libfmt-dev \
+  libignition-gazebo6-dev libssl-dev devscripts debian-keyring fakeroot debhelper \
+  libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen libtinyxml-dev \
+  libtinyxml2-dev python3-pyqt5 tzdata locales keyboard-configuration
 
-# # RUN apt-get install -y tzdata
-# # RUN apt-get install -y locales
-# # RUN apt-get install -y keyboard-configuration
+RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && sudo dpkg-reconfigure --frontend=noninteractive locales \
+    && sudo update-locale LANG=en_US.UTF-8
 
-# RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-#     && sudo dpkg-reconfigure --frontend=noninteractive locales \
-#     && sudo update-locale LANG=en_US.UTF-8
-
-# # RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-# # && dpkg-reconfigure --frontend=noninteractive locales \
-# # && update-locale LANG=en_US.UTF-8
-
+# TODO delete
+# RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+# && dpkg-reconfigure --frontend=noninteractive locales \
+# && update-locale LANG=en_US.UTF-8
 # ENV LANG=en_US.UTF-8
 
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get update -y && sudo apt-get install -y \
-#   bc \
-#   bind9-utils \
-#   binutils \
-#   ca-certificates \
-#   clang \
-#   cmake \
-#   file \
-#   firewalld \
-#   git \
-#   git-lfs \
-#   jq \
-#   kbd \
-#   kmod \
-#   less \
-#   lsb-release \
-#   libglu1-mesa-dev \
-#   libxcb-xinerama0 \
-#   libfontconfig1-dev \
-#   libcurl4-openssl-dev \
-#   libnvidia-gl-470 \
-#   libssl-dev \
-#   libxcb-xkb-dev \
-#   libxkbcommon-x11-dev \
-#   libxkbcommon-dev \
-#   libxcb-xfixes0-dev \
-#   libxcb-xinput-dev \
-#   libxcb-xinput0 \
-#   libpcre2-16-0 \
-#   lsof \
-#   net-tools \
-#   ninja-build \
-#   pciutils \
-#   python3-pip \
-#   software-properties-common \
-#   sudo \
-#   tar \
-#   unzip \
-#   vim \
-#   wget \
-#   xz-utils
-#   # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y && sudo apt-get install -y \
+  bc \
+  bind9-utils \
+  binutils \
+  ca-certificates \
+  clang \
+  cmake \
+  file \
+  firewalld \
+  git \
+  git-lfs \
+  jq \
+  kbd \
+  kmod \
+  less \
+  lsb-release \
+  libglu1-mesa-dev \
+  libxcb-xinerama0 \
+  libfontconfig1-dev \
+  libcurl4-openssl-dev \
+  libnvidia-gl-470 \
+  libssl-dev \
+  libxcb-xkb-dev \
+  libxkbcommon-x11-dev \
+  libxkbcommon-dev \
+  libxcb-xfixes0-dev \
+  libxcb-xinput-dev \
+  libxcb-xinput0 \
+  libpcre2-16-0 \
+  lsof \
+  net-tools \
+  ninja-build \
+  pciutils \
+  python3-pip \
+  software-properties-common \
+  sudo \
+  tar \
+  unzip \
+  vim \
+  wget \
+  xz-utils
+  # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
 
-# RUN mkdir -p ${DEMO_DIR}/src
-# WORKDIR ${DEMO_DIR}
+# Install libmongoc for development
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get install libmongoc-dev -y
 
-# # Install libmongoc for development
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get install libmongoc-dev -y
+# Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
+RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
+RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
+RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
 
-# # Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
-# RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
-# RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
-# RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
+# Create demo_ws, setup packages, generate dependencies
+RUN mkdir -p ${DEMO_DIR}/src
+COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
+COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+RUN vcs import ${DEMO_DIR}/src < /tmp/o3de-robot-sim.repos 
 
-# # Get the source for the dependencies
-# # RUN vcs import src < /tmp/demo_generated_pkgs.repos
-# COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
-# RUN vcs import src < /tmp/o3de-robot-sim.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
+# # Generate the repos file for o3de-robot-sim dependencies, excluding packages from Space ROS core
+RUN rosinstall_generator \
+  --rosdistro ${ROSDISTRO} \
+  --deps \
+  --exclude-path ${SPACEROS_DIR}/src \
+  --exclude $(cat /tmp/excluded-pkgs.txt) -- \
+  -- $(cat /tmp/o3de-robot-sim.repos) \
+  > /tmp/o3de_robot_sim_generated_pkgs.repos
+
+# Update the ownership of the source files (had to use sudo above to work around
+# a possible inherited 'insteadof' from the host that forces use of ssh
+RUN sudo chown -R ${USERNAME}:${USERNAME} ${DEMO_DIR}
 
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 #   --mount=type=cache,target=/var/lib/apt,sharing=locked \
