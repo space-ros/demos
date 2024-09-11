@@ -178,7 +178,7 @@ Run ```ros2 launch robot_gazebo main.launch.xml```. This launch file will start 
 
 In another terminal, run ```ros2 run robot_control joy.py```This will start GUI control for controlling individual Rovers.
 
-# CADRE point clouds.
+# CADRE point clouds [ **Added only for one rover due to Hardware limit** ].
 
 In another terminal, run ```ros2 run robot_control mapping.py```This will start the point cloud node and publish topics.
 
