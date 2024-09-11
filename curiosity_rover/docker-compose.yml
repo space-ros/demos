@@ -37,7 +37,7 @@ services:
               count: 1
               capabilities: [gpu]
   curiosity_demo:
-    image: osrf/space-ros:canadarm_demo
+    image: osrf/space-ros:curiosity_demo
     build:
       context: ./
       dockerfile: ./Dockerfile

@@ -6,13 +6,7 @@ This is a simple demo of controlling the canadarm using spaceROS.
 
 To start the demo, there are few dependencies that need to be installed. The following steps will guide you through the installation process.
 
-1. You will need ROS Humble on your host system. If it is not already installed, you can follow the instructions [here](https://docs.ros.org/en/humble/Installation.html).
-2. You will need Gazebo Sim installed on your system. If not, you can follow the instructions [here](https://gazebosim.org/docs/all/getstarted/).
-3. You will need docker installed on your system. If not, you can follow the instructions [here](https://docs.docker.com/get-docker/).
-4. Install xterm for running the demo. You can install it using the following command.
-    ```bash
-    sudo apt-get install xterm
-    ```
+1. You will need docker installed on your system. If not, you can follow the instructions [here](https://docs.docker.com/get-docker/).
 
 ### How to run the demo
 
@@ -24,22 +18,14 @@ To start the demo, there are few dependencies that need to be installed. The fol
     ```bash
     cd canadarm2
     ```
-3. To build the demo, we use `./build.sh`. You can do the following to build the demo.
-    ```bash
-    # To see the list of available commands
-    ./build.sh help
-    ```
-4. To build the demo, you can use the following command.
+3. To build the demo, you can use the following command.
     ```bash
     # To build the demos for the canadarm2
     ./build.sh
-
-    # Cleanup the build
-    ./build.sh clean
     ```
-5. To run the demo, you can use the following command.
+4. To run the demo, you can use the following command.
     ```bash
-    # To run the demo
+    # To run the demos for the canadarm2
     ./run.sh
     ```
 

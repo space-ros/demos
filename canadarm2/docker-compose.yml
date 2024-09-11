@@ -2,7 +2,7 @@ version: "3"
 
 services:
   canadarm_gui:
-    image: osrf/space-ros:gui
+    image: osrf/space-ros:canadarm_gui
     build:
       context: ./
       dockerfile: ./Dockerfile.GUI
