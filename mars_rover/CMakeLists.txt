@@ -44,8 +44,8 @@ install(PROGRAMS
   nodes/move_arm
   nodes/move_mast
   nodes/move_wheel
-  #nodes/run_demo
-  nodes/teleop_rover
+  nodes/run_demo  # To run the Gazebo rover demo
+  nodes/teleop_rover  # To run O3DE rover demo
   nodes/odom_tf_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
