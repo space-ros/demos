@@ -50,7 +50,23 @@ def generate_launch_description():
         executable="run_isaac_demo.py",
         output='screen'
     )
-
+    
     nodes.append(run_node)
+
+    rviz_teleop_pkg_path = get_package_share_directory('mars_rover_teleop')
+    rviz_config_file = Path(rviz_teleop_pkg_path, 'config', 'rviz_with_teleop.rviz')
+    logger.info("RVIZ config file:: {}".format(rviz_config_file))
+    
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', str(rviz_config_file)]  # '-d' tells RViz to use the provided config file
+    )
+
+    nodes.append(rviz_node)
+
+    
 
     return LaunchDescription(nodes)
