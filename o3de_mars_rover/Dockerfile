@@ -63,7 +63,30 @@ RUN mkdir ${SPACEROS_DIR}/src \
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
+# Update rosdep
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get dist-upgrade -y
+RUN rosdep update
 
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt install -y ros-${ROS_DISTRO}-rmw-cyclonedds-cpp ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
+
+  
+# Clear Install folder, we will need to rebuild the workspace again
+# WORKDIR ${SPACEROS_DIR}
+# RUN sudo rm -rf install/
+
+# WORKDIR ${SPACEROS_DIR}/src
+# RUN sudo rm -rf rmw_cyclonedds_cpp
+# RUN sudo rm -rf realtime_tools
+
+#WORKDIR ${SPACEROS_DIR}
+#RUN colcon build --packages-ignore test_rmw_implementation
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
@@ -362,7 +385,7 @@ RUN mkdir ${SPACEROS_DIR}/src \
 # WORKDIR ${PROJECT_PATH}
 
 # # Activate Cyclone DDS
-# # ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+# ## ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
 
 # # Source space_ros, movit2 and demo_ws
 # RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
