@@ -15,14 +15,12 @@ echo "##### Building Space ROS Demo Docker Image #####"
 echo ""
 
 # get the folder of the script
-# DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# DOKCERDIR="$DIR/Dockerfile"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 docker build -t $ORG/$IMAGE:$TAG \
     --build-arg VCS_REF="$VCS_REF" \
-    --build-arg VERSION="$VERSION" $DIR \
-    -f $DOKCERDIR
+    --build-arg VERSION="$VERSION" \
+    $DIR  # Dockerfile is in the current directory, no need for -f
 
 echo ""
 echo "##### Done! #####"
-
