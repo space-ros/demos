@@ -5,7 +5,7 @@
    ```bash
    rviz2 -d <path/to/rviz_with_teleop.rviz>
    ```
-3. Config file **config > rviz_teleop_sensors.rviz** loads RViz2 with the plugin as well as sensor data.
+3. Config file **config > rviz_teleop_sensors.rviz** loads RViz2 with the teleop plugin, camera window as well as lidar data.
    ```bash
    rviz2 -d <path/to/rviz_teleop_sensors.rviz>
    ```

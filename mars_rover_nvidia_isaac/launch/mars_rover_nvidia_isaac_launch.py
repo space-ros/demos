@@ -54,7 +54,7 @@ def generate_launch_description():
     nodes.append(run_node)
 
     rviz_teleop_pkg_path = get_package_share_directory('mars_rover_teleop')
-    rviz_config_file = Path(rviz_teleop_pkg_path, 'config', 'rviz_with_teleop.rviz')
+    rviz_config_file = Path(rviz_teleop_pkg_path, 'config', 'rviz_teleop_sensors.rviz')
     logger.info("RVIZ config file:: {}".format(rviz_config_file))
     
     rviz_node = Node(

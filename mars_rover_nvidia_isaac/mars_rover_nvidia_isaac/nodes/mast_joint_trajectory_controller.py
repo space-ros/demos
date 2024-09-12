@@ -21,7 +21,7 @@ class MastArmController(Node):
         self.joints_ = joints.split(",")
 
         # Publisher for JointState
-        self.mast_publisher_ = self.create_publisher(JointState, '/mast_joint_position', 10)
+        self.mast_publisher_ = self.create_publisher(JointState, '/mast_joint_state_controller/commands', 10)
 
         # Services for controlling the mast
         self.mast_open_srv = self.create_service(Empty, 'mast_open', self.mast_open_callback)

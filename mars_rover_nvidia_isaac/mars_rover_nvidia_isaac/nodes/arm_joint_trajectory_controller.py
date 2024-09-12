@@ -20,7 +20,7 @@ class ArmController(Node):
         self.joints_ = joints.split(",")
 
         # Publisher for JointState
-        self.arm_publisher_ = self.create_publisher(JointState, '/arm_joint_position', 10)
+        self.arm_publisher_ = self.create_publisher(JointState, '/arm_joint_state_controller/commands', 10)
 
         # Services for controlling the arm
         self.open_srv = self.create_service(Empty, 'open_arm', self.open_arm_callback)
