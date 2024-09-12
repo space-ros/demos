@@ -5,7 +5,7 @@
 #   docker
 #   an X server
 
-IMG_NAME=openrobotics/CADRE_demo
+IMG_NAME=openrobotics/cadre_demo
 
 xhost +local:docker
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ORG=openrobotics
-IMAGE=CADRE_demo
+IMAGE=cadre_demo
 TAG=latest
 
 VCS_REF=""

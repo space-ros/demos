@@ -5,7 +5,7 @@
 #   docker
 #   an X server
 
-IMG_NAME=openrobotics/CADRE_demo
+IMG_NAME=openrobotics/cadre_demo
 
 # Replace `/` with `_` to comply with docker container naming
 # And append `_runtime`
