@@ -38,14 +38,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Define environment variables for Classic Gazebo
 ENV DEMO_DIR=${HOME_DIR}/demos_ws
-ENV GAZEBO_VERSION=11  # Use Classic Gazebo 11
+ENV GAZEBO_VERSION=11 
 ENV GAZEBO_MODEL_PATH=/root/.gazebo/models
 ENV GAZEBO_RESOURCE_PATH=/root/.gazebo
 ENV GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
 ENV GAZEBO_MASTER_URI=http://localhost:11345
 ENV GAZEBO_IP=127.0.0.1
 ENV ROS_DISTRO=humble
-
+USER root
 # Prepare the workspace
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
@@ -70,7 +70,7 @@ RUN apt-get install -y \
   wget
 
 # Install Gazebo 11 (Classic Gazebo) and ROS 2 integration packages
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
   gazebo11 \
   libgazebo11-dev \
   ros-${ROS_DISTRO}-gazebo-ros-pkgs \
