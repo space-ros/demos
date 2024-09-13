@@ -11,7 +11,7 @@ VERSION=preview
 set -eo pipefail
 
 echo ""
-echo "##### Building Space ROS Demo Docker Image #####"
+echo "##### Building freisa_on_mars Demo Docker Image #####"
 echo ""
 
 docker build -t $ORG/$IMAGE:$TAG \

@@ -27,7 +27,7 @@ ENV GZ_VERSION=fortress
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-# === BEGIN space-ros/docker/moveit2/Dockerfile ===
+# === BEGIN Adaptation from space-ros/docker/moveit2/Dockerfile ===
 
 # Define key locations
 ENV MOVEIT2_DIR=${HOME_DIR}/moveit2
@@ -57,27 +57,56 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
 
 # Generate repos file for moveit2 dependencies, excluding packages from Space ROS core.
-# COPY --chown=${USERNAME}:${USERNAME} moveit2-pkgs.txt /tmp/
-# COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
-# RUN rosinstall_generator \
-#   --rosdistro ${ROSDISTRO} \
-#   --deps \
-#   --exclude-path ${SPACEROS_DIR}/src \
-#  --exclude $(cat /tmp/excluded-pkgs.txt) -- \
-#   -- $(cat /tmp/moveit2-pkgs.txt) \
-#   > /tmp/moveit2_generated_pkgs.repos
-
+WORKDIR ${MOVEIT2_DIR}
+COPY --chown=${USERNAME}:${USERNAME} moveit2-pkgs.txt /tmp/
+COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+RUN rosinstall_generator \
+  --rosdistro ${ROSDISTRO} \
+  --deps \
+  --exclude $(cat /tmp/excluded-pkgs.txt) -- \
+  -- $(cat /tmp/moveit2-pkgs.txt) \
+  > /tmp/moveit2_generated_pkgs.repos
+  
 # Get the repositories required by MoveIt2, but not included in Space ROS
 WORKDIR ${MOVEIT2_DIR}
-# RUN vcs import src < /tmp/moveit2_generated_pkgs.repos
-# RUN cp src/moveit2_tutorials.repos /tmp/
-#i RUN vcs import src < /tmp/moveit2_tutorials.repos
+RUN vcs import src < /tmp/moveit2_generated_pkgs.repos
+# COPY --chown=${USERNAME}:${USERNAME} src/moveit2_tutorials.repos /tmp/
+# RUN vcs import src < /tmp/moveit2_tutorials.repos
 
 # Update the ownership of the source files (had to use sudo above to work around
 # a possible inherited 'insteadof' from the host that forces use of ssh
-RUN sudo chown -R ${USER}:${USER} ${MOVEIT2_DIR}
+RUN sudo chown -R ${USERNAME}:${USERNAME} ${MOVEIT2_DIR}
 
-# === END space-ros/docker/moveit2/Dockerfile ===
+RUN touch DEBUG-02.txt
+
+# # Install system dependencies
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash' \
+#  && rosdep install --from-paths ../spaceros/src src --ignore-src --rosdistro ${ROSDISTRO} -r -y --skip-keys "console_bridge generate_parameter_library fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos diagnostic_aggregator diagnostic_updater joy qt_gui rqt_gui rqt_gui_py"
+
+# # Apply a patch to octomap_msgs to work around a build issue
+# COPY --chown=${USERNAME}:${USERNAME} octomap_fix.diff ./src/octomap_msgs
+# RUN cd src/octomap_msgs && git apply octomap_fix.diff
+
+# # Build MoveIt2
+# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+
+# # Add a couple sample GUI apps for testing
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get install -y \
+#   firefox \
+#   glmark2 \
+#   libcanberra-gtk3-0 \
+#   libpci-dev \
+#   xauth \
+#   xterm
+
+# === END Adaptation from space-ros/docker/moveit2/Dockerfile ===
+
+RUN touch DEBUG-11.txt
 
 # TODO(anyone): remove demo-pkgs.txt, no packages left after exclusions
 # Generate repos file for demo dependencies, excluding packages from Space ROS core.
@@ -94,6 +123,8 @@ RUN sudo chown -R ${USER}:${USER} ${MOVEIT2_DIR}
 
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
+
+RUN touch DEBUG-12.txt
 
 # Install libmongoc for development
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -113,6 +144,8 @@ RUN cd mongo-cxx-driver-r3.6.7/build \
   && cmake --build . \
   && sudo cmake --build . --target install
 
+RUN touch DEBUG-15.txt
+
 # # Get the source for the dependencies
 # # RUN vcs import src < /tmp/demo_generated_pkgs.repos
 # COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
@@ -130,6 +163,8 @@ RUN cd mongo-cxx-driver-r3.6.7/build \
 # RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
 #   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
 #   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+
+RUN touch DEBUG-21.txt
 
 # # Add the user to the render group so that the user can access /dev/dri/renderD128
 # RUN sudo usermod -aG render $USERNAME
