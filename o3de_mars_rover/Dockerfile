@@ -60,9 +60,30 @@ RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sud
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
-# rmw-cyclonedds and rmw-implementation later causes a fatal bug.
-# I have removed them in favor of having another top level workspace
-# which appears to solve this problem
+# Clear Install folder, we will need to rebuild the workspace again
+WORKDIR ${SPACEROS_DIR}
+RUN sudo rm -rf install/
+
+# Delete problematic packages
+WORKDIR ${SPACEROS_DIR}/src
+RUN sudo rm -rf rmw_cyclonedds_cpp
+RUN sudo rm -rf rmw_implementation  
+RUN sudo rm -rf rmw_cyclonedds
+RUN sudo rm -rf realtime_tools
+
+WORKDIR ${SPACEROS_DIR}
+
+# Update rosdep
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get dist-upgrade -y
+RUN rosdep update
+
+# TODO open a PR to resolve rmw-cyclonedds and rmw-implementation causing .
+# Install them back from apt
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt install -y \
@@ -70,24 +91,71 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   ros-${ROS_DISTRO}-rmw-implementation \
   ros-${ROS_DISTRO}-realtime-tools
 
-# Clear Install folder, we will need to rebuild the workspace again
-WORKDIR ${SPACEROS_DIR}
-RUN sudo rm -rf install/
-
-WORKDIR ${SPACEROS_DIR}/src
-RUN sudo rm -rf rmw_cyclonedds_cpp
-RUN sudo rm -rf rmw_implementation  
-RUN sudo rm -rf rmw_cyclonedds
-RUN sudo rm -rf realtime_tools
-
 # Rebuild Space ROS workspace
-WORKDIR ${SPACEROS_DIR}
 RUN /bin/bash -c 'source /opt/ros/humble/setup.bash \ 
     && colcon build --packages-ignore test_rmw_implementation'
 
+# Ensure proper permission for all files in SPACEROS_DIR
+RUN sudo chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}
+
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
-### Delete demo repo, redownload correct one build the DEMO_WS again ###
+### Delete DEMO_WS repo, redownload correct one build the DEMO_WS again ###
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  python3-rosinstall-generator \
+  libboost-python-dev build-essential cmake libboost-all-dev libois-dev \
+  libzzip-dev libfreeimage-dev libfreetype6-dev libx11-dev libxt-dev libxaw7-dev \
+  libsdl2-dev libpugixml-dev libglew-dev qtbase5-dev libspdlog-dev libfmt-dev \
+  libignition-gazebo6-dev libssl-dev devscripts debian-keyring fakeroot debhelper \
+  libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen libtinyxml-dev \
+  libtinyxml2-dev python3-pyqt5 tzdata locales keyboard-configuration
+
+RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
+    && sudo dpkg-reconfigure --frontend=noninteractive locales \
+    && sudo update-locale LANG=en_US.UTF-8
+
+    RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    sudo apt-get update -y && sudo apt-get install -y \
+    bc bind9-utils binutils ca-certificates clang cmake \
+    file firewalld git git-lfs jq kbd kmod less \
+    lsb-release \
+    libglu1-mesa-dev \
+    libxcb-xinerama0 \
+    libfontconfig1-dev \
+    libcurl4-openssl-dev \
+    libnvidia-gl-470 \
+    libssl-dev \
+    libxcb-xkb-dev \
+    libxkbcommon-x11-dev \
+    libxkbcommon-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xinput-dev \
+    libxcb-xinput0 \
+    libpcre2-16-0 \
+    lsof \
+    net-tools \
+    ninja-build \
+    pciutils \
+    python3-pip \
+    software-properties-common \
+    sudo \
+    tar \
+    unzip \
+    vim \
+    wget \
+    xz-utils
+    # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
+  
+
+WORKDIR ${DEMO_DIR}
+RUN sudo rm -rf install/
+RUN sudo rm -rf build/
+RUN sudo rm -rf log/
+
+
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
