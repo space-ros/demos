@@ -11,6 +11,21 @@ IMG_NAME=baroloteam/freisa_on_mars
 # And append `_runtime`
 CONTAINER_NAME="$(tr '/' '_' <<< "$IMG_NAME")"
 
+# Sanity checks
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY=:0
+    echo "Warning: DISPLAY undefined, set to $DISPLAY"
+fi
+if [ -z "$TERM" ]; then
+    export TERM=xterm
+    echo "Warning: TERM undefined, set to $TERM"
+fi
+if [ -z "$XAUTHORITY" ]; then
+    export XAUTHORITY=~/.Xauthority
+    echo "Warning: XAUTHORITY undefined, set to $XAUTHORITY"
+    xauth extract \- $DISPLAY >>$XAUTHORITY
+fi
+
 # Start the container
 #
 # --rm: delete container after exiting
@@ -32,6 +47,7 @@ CONTAINER_NAME="$(tr '/' '_' <<< "$IMG_NAME")"
 docker run --rm -it --name $CONTAINER_NAME \
     --network host \
     --volume=/tmp/.X11-unix:/tmp/.X11-unix \
+    --volume "$XAUTHORITY:/.Xauthority" \
     --device=/dev/dri:/dev/dri \
     -e DISPLAY \
     -e TERM \
@@ -39,6 +55,5 @@ docker run --rm -it --name $CONTAINER_NAME \
     -e XAUTHORITY=/.Xauthority \
     $IMG_NAME
 
-#   --volume "$XAUTHORITY:/.Xauthority" \
 
 # EOF
