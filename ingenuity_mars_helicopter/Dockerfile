@@ -14,10 +14,14 @@
 
 FROM osrf/space-ros:latest
 
+# Set Bash as the default shell
+SHELL ["/bin/bash", "-c"]
+
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV INGENUITY_DIR=${HOME_DIR}/ingenuity_helicopter
+WORKDIR ${INGENUITY_DIR}
 
 RUN sudo apt-get update && \
     DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --no-install-recommends \
@@ -82,6 +86,13 @@ COPY ingenuity_description ${INGENUITY_DIR}/src/ingenuity_description
 COPY ./entrypoint.sh ${INGENUITY_DIR}/entrypoint.sh
 
 RUN sudo chown -R ${USERNAME}:${USERNAME} ${INGENUITY_DIR}
+
+RUN export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp && \
+    source /home/spaceros-user/spaceros/install/setup.bash && \
+    source /opt/ros/humble/setup.bash && \
+    cd /home/spaceros-user/ingenuity_helicopter && \
+    colcon build --packages-select helicopter_flight_control helicopter_flight_simulation ingenuity_description ingenuity_bringup
+
 
 RUN sudo chmod +x ${INGENUITY_DIR}/entrypoint.sh
 
