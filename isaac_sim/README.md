@@ -101,22 +101,20 @@ In the first terminal, enter the Docker container(if not already) and launch Isa
    ```
    python ~/curiosity_sim/scripts/gale_crater_scene.py 
    ```
-- For spawning Curiosity in the **test ground** environment
+- For spawning Curiosity in the **test ground** (under development) environment
    ```
    python ~/curiosity_sim/scripts/test_scene.py
    ```
-Note: DO NOT source demos_ws/install in this terminal (that launches Isaac Sim).
+Note: When launching Isaac Sim for the first time it can take several minutes because of shader compilation.
 
 
 In the second terminal, enter the Docker container and launch the control system:
 ```bash
-source ~/demos_ws/install/setup.bash
 ros2 launch mars_rover_control mars_rover_control.launch.py
 ```
 
 In the third terminal, for manual control using the keyboard:
 ```bash
-source ~/demos_ws/install/setup.bash
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 Note: this terminal needs to be focused during keyboard control
@@ -192,3 +190,8 @@ The following table provides links to detailed documentation on various componen
 | [Curiosity Description](./docs/curiosity_description.md) | Description and overview of the Curiosity rover model used in the simulation.|
 | [Curiosity Control](./docs/curiosity_control.md)   | Detailed documentation on the control system of the Curiosity rover using ROS2 and action graphs.     |
 | [Curiosity Sensors](./docs/curiosity_sensors.md)   | Explanation of the sensors used in the simulation, including Lidar, camera, and odometry configurations. |
+```
+Challenge Name: NASA Space ROS Sim Summer Sprint Challenge
+Team Lead Freelancer User Name: pojenwang
+Submission Title: Space-ROS-NVIDIA-Isaac-Sim Curiosity's Sulfur Stone Discovery
+```
