@@ -27,12 +27,57 @@ ENV GZ_VERSION=fortress
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
+# === BEGIN space-ros/docker/moveit2/Dockerfile ===
+
+# Define key locations
+ENV MOVEIT2_DIR=${HOME_DIR}/moveit2
+
+# Make sure the latest versions of packages are installed
+# Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
+# the cache won't make it into the built image but will be maintained between steps.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get dist-upgrade -y
+RUN rosdep update
+
+# Get the MoveIt2 source code
+WORKDIR ${HOME_DIR}
+RUN git clone https://github.com/moveit/moveit2.git -b ${ROSDISTRO} moveit2/src
+RUN cd ${MOVEIT2_DIR}/src \
+  && git clone https://github.com/moveit/moveit2_tutorials.git -b ${ROSDISTRO}
+
 # Get rosinstall_generator
 # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
 # the cache won't make it into the built image but will be maintained between steps.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
+
+# Generate repos file for moveit2 dependencies, excluding packages from Space ROS core.
+# COPY --chown=${USERNAME}:${USERNAME} moveit2-pkgs.txt /tmp/
+# COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+# RUN rosinstall_generator \
+#   --rosdistro ${ROSDISTRO} \
+#   --deps \
+#   --exclude-path ${SPACEROS_DIR}/src \
+#  --exclude $(cat /tmp/excluded-pkgs.txt) -- \
+#   -- $(cat /tmp/moveit2-pkgs.txt) \
+#   > /tmp/moveit2_generated_pkgs.repos
+
+# Get the repositories required by MoveIt2, but not included in Space ROS
+WORKDIR ${MOVEIT2_DIR}
+# RUN vcs import src < /tmp/moveit2_generated_pkgs.repos
+# RUN cp src/moveit2_tutorials.repos /tmp/
+#i RUN vcs import src < /tmp/moveit2_tutorials.repos
+
+# Update the ownership of the source files (had to use sudo above to work around
+# a possible inherited 'insteadof' from the host that forces use of ssh
+RUN sudo chown -R ${USER}:${USER} ${MOVEIT2_DIR}
+
+# === END space-ros/docker/moveit2/Dockerfile ===
 
 # TODO(anyone): remove demo-pkgs.txt, no packages left after exclusions
 # Generate repos file for demo dependencies, excluding packages from Space ROS core.
@@ -50,35 +95,40 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
 
-
-# # Install libmongoc for development
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get install libmongoc-dev -y
-
-# # Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
-# RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
-# RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
-# RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local && sudo cmake --build . --target EP_mnmlstc_core && cmake --build . && sudo cmake --build . --target install
-
-# Get the source for the dependencies
-# RUN vcs import src < /tmp/demo_generated_pkgs.repos
-COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
-RUN vcs import src < /tmp/demo_manual_pkgs.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
-
+# Install libmongoc for development
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y \
-&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+  sudo apt-get install libmongoc-dev -y
 
-# && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+# Compile mongo cxx driver https://mongocxx.org/mongocxx-v3/installation/linux/
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get install libssl-dev build-essential devscripts debian-keyring fakeroot \
+       debhelper cmake libboost-dev libsasl2-dev libicu-dev libzstd-dev doxygen -y
+RUN wget https://github.com/mongodb/mongo-cxx-driver/releases/download/r3.6.7/mongo-cxx-driver-r3.6.7.tar.gz
+RUN tar -xzf mongo-cxx-driver-r3.6.7.tar.gz
+RUN cd mongo-cxx-driver-r3.6.7/build \
+  && cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local \
+  && sudo cmake --build . --target EP_mnmlstc_core \
+  && cmake --build . \
+  && sudo cmake --build . --target install
+
+# # Get the source for the dependencies
+# # RUN vcs import src < /tmp/demo_generated_pkgs.repos
+# COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
+# RUN vcs import src < /tmp/demo_manual_pkgs.repos \
+#   && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
+
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y \
+#   && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+#   && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # # Build the demo
-# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+# RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
 #   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # # Add the user to the render group so that the user can access /dev/dri/renderD128
