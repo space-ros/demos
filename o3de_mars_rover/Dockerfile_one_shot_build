@@ -88,13 +88,15 @@ WORKDIR ${SPACEROS_DIR}
 RUN sudo rm -rf install/
 
 WORKDIR ${SPACEROS_DIR}/src
-RUN sudo rm -rf rmw_cyclonedds_cpp 
+RUN sudo rm -rf rmw_cyclonedds_cpp
+RUN sudo rm -rf rmw_implementation  
 RUN sudo rm -rf rmw_cyclonedds
 RUN sudo rm -rf realtime_tools
 
 # Rebuild Space ROS workspace
 WORKDIR ${SPACEROS_DIR}
-RUN colcon build --packages-ignore test_rmw_implementation
+RUN /bin/bash -c 'source /opt/ros/humble/setup.bash \ 
+    && colcon build --packages-ignore test_rmw_implementation'
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
@@ -390,9 +392,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 # Move to project directory
 WORKDIR ${PROJECT_PATH}
 
-#Activate Cyclone DDS (not necessary with Space ROS)
-#ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp cd
-
 # # Source space_ros, movit2 and demo_ws
 RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
     && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
@@ -400,17 +399,14 @@ RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
 
 RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
     && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
-  
-  # && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
-# RUN cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON \
-#   && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
+RUN cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
-# # Add the user to the render group so that the user can access /dev/dri/renderD128
-# # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
-# RUN sudo usermod -aG render $USERNAME
+# Add the user to the render group so that the user can access /dev/dri/renderD128
+# /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
+RUN sudo usermod -aG render $USERNAME
 
-# # Setup the entrypoint
-# COPY ./entrypoint.sh /
-# ENTRYPOINT ["/entrypoint.sh"]
-# CMD ["bash"]
+# Setup the entrypoint
+COPY ./entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
