@@ -1,0 +1,17 @@
+repositories:
+  isaac_ros2_utils:
+    type: git
+    url: https://github.com/AlexanderRex/isaac_ros2_utils.git
+    version: main
+  curiosity_rover_description:
+    type: git
+    url: https://github.com/AlexanderRex/curiosity_rover_description.git
+    version: main
+  mars_rover_control:
+    type: git
+    url: https://github.com/AlexanderRex/mars_rover_control.git
+    version: main
+  ros2_controllers:
+    type: git
+    url: https://github.com/tonylitianyu/ros2_controllers.git
+    version: effort_group_position_controller_2
