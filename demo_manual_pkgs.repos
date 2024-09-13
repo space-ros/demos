@@ -1,0 +1,9 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/magnivia4Consulting/demos.git
+    version: main
+  simulation:
+    type: git
+    url: https://github.com/magnivia4Consulting/simulation.git
+    version: main
