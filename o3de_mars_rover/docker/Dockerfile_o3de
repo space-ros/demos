@@ -23,7 +23,7 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM openrobotics/space_robots_demo:latest
+FROM openrobotics/space_robot_demo:latest
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
