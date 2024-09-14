@@ -100,7 +100,8 @@ RUN sudo chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}
 
 ### Delete CycloneDDS and install from apt to resolve cmake conflict ###
 
-### Delete DEMO_WS repo, redownload correct one build the DEMO_WS again ###
+### Install all dependencies for demo_ws and O3DE ###
+
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -116,46 +117,65 @@ RUN sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
     && sudo dpkg-reconfigure --frontend=noninteractive locales \
     && sudo update-locale LANG=en_US.UTF-8
 
-    RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    sudo apt-get update -y && sudo apt-get install -y \
-    bc bind9-utils binutils ca-certificates clang cmake \
+    sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    bc \
+    bind9-utils binutils ca-certificates clang cmake \
     file firewalld git git-lfs jq kbd kmod less \
-    lsb-release \
-    libglu1-mesa-dev \
-    libxcb-xinerama0 \
-    libfontconfig1-dev \
-    libcurl4-openssl-dev \
-    libnvidia-gl-470 \
-    libssl-dev \
-    libxcb-xkb-dev \
-    libxkbcommon-x11-dev \
-    libxkbcommon-dev \
-    libxcb-xfixes0-dev \
-    libxcb-xinput-dev \
-    libxcb-xinput0 \
-    libpcre2-16-0 \
-    lsof \
-    net-tools \
-    ninja-build \
-    pciutils \
-    python3-pip \
-    software-properties-common \
-    sudo \
-    tar \
-    unzip \
-    vim \
-    wget \
-    xz-utils
+    lsb-release libglu1-mesa-dev libxcb-xinerama0 libfontconfig1-dev \
+    libcurl4-openssl-dev libnvidia-gl-470 libssl-dev libxcb-xkb-dev \
+    libxkbcommon-x11-dev libxkbcommon-dev libxcb-xfixes0-dev \
+    libxcb-xinput-dev libxcb-xinput0 \
+    libpcre2-16-0 lsof net-tools ninja-build pciutils \
+    python3-pip software-properties-common \
+    sudo tar unzip vim wget xz-utils
     # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
-  
 
+### Install all dependencies for demo_ws and O3DE ###
+
+## Delete DEMO_WS repo, redownload correct one build the DEMO_WS again ###
 WORKDIR ${DEMO_DIR}
 RUN sudo rm -rf install/
 RUN sudo rm -rf build/
 RUN sudo rm -rf log/
 
+# WORKDIR ${DEMO_DIR}
+# Override what is necessary
+COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
+COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
 
+# Delete space-ros/demo repo and replace it with Mechazo11/demo repo
+# that contains the modified mars_rover launch file to drive rover
+# TODO come up with a better solution so as not to disturb other projects in space-ros/demo repo
+WORKDIR ${DEMO_DIR}/src
+RUN sudo rm -rf demos/
+WORKDIR ${DEMO_DIR}
+
+# RUN vcs import ${DEMO_DIR}/src < /tmp/o3de-robot-sim.repos 
+# RUN rosinstall_generator \
+#   --rosdistro ${ROSDISTRO} \
+#   --deps \
+#   --exclude-path ${SPACEROS_DIR}/src \
+#   --exclude $(cat /tmp/excluded-pkgs.txt) -- \
+#   -- $(cat /tmp/o3de-robot-sim.repos) \
+#   > /tmp/o3de_robot_sim_generated_pkgs.repos
+
+# Update the ownership of the source files (had to use sudo above to work around
+# a possible inherited 'insteadof' from the host that forces use of ssh
+RUN sudo chown -R ${USERNAME}:${USERNAME} ${DEMO_DIR}
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y \
+&& /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
+&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+&& /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+
+# # Build the demo_ws
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
