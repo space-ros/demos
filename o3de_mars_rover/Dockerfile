@@ -136,30 +136,19 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 ## Delete DEMO_WS repo, redownload correct one build the DEMO_WS again ###
 WORKDIR ${DEMO_DIR}
-RUN sudo rm -rf install/
-RUN sudo rm -rf build/
-RUN sudo rm -rf log/
+RUN sudo rm -rf install/ build/ log/
 
 # WORKDIR ${DEMO_DIR}
 # Override what is necessary
-COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
-COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+# COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
+# COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
 
 # Delete space-ros/demo repo and replace it with Mechazo11/demo repo
 # that contains the modified mars_rover launch file to drive rover
 # TODO come up with a better solution so as not to disturb other projects in space-ros/demo repo
 WORKDIR ${DEMO_DIR}/src
-RUN sudo rm -rf demos/
+RUN sudo rm -rf demos/ && git clone --branch main --single-branch https://github.com/Mechazo11/space-ros-demos.git
 WORKDIR ${DEMO_DIR}
-
-# RUN vcs import ${DEMO_DIR}/src < /tmp/o3de-robot-sim.repos 
-# RUN rosinstall_generator \
-#   --rosdistro ${ROSDISTRO} \
-#   --deps \
-#   --exclude-path ${SPACEROS_DIR}/src \
-#   --exclude $(cat /tmp/excluded-pkgs.txt) -- \
-#   -- $(cat /tmp/o3de-robot-sim.repos) \
-#   > /tmp/o3de_robot_sim_generated_pkgs.repos
 
 # Update the ownership of the source files (had to use sudo above to work around
 # a possible inherited 'insteadof' from the host that forces use of ssh
@@ -177,85 +166,82 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
-# Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
-WORKDIR ${O3DE_DIR}/Projects
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
+# # Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
+# WORKDIR ${O3DE_DIR}/Projects
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
 
-WORKDIR ${O3DE_DIR}/Gems
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
-RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
+# WORKDIR ${O3DE_DIR}/Gems
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
+# RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
 
-# ## Symlink clang version to non-versioned clang and set cc to clang
-RUN sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-    && sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+# # ## Symlink clang version to non-versioned clang and set cc to clang
+# RUN sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+#     && sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
-# ####  Install Open 3D Engine   ####  
+# # ####  Install Open 3D Engine   ####  
 
-# # Pull latest commit from development and build o3de. Note this does't build the whole engine
-WORKDIR ${HOME_DIR}
-
-# # Install o3de engine (automatically pulls last commit from "development" branch)
-RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
-    && cd o3de \
-    && git lfs install \
-    && git lfs pull \
-    && python/get_python.sh
-
-# # Install o3de-extras (automatically pulls last commit from "development" branch)
-# # Contains ROS 2 Gem and other relevant assets
-
+# # # Pull latest commit from development and build o3de. Note this does't build the whole engine
 # WORKDIR ${HOME_DIR}
-RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
-    && cd o3de-extras \
-    && git lfs install \
-    && git lfs pull
 
-WORKDIR ${HOME_DIR}/o3de
+# # # Install o3de engine (automatically pulls last commit from "development" branch)
+# RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
+#     && cd o3de \
+#     && git lfs install \
+#     && git lfs pull \
+#     && python/get_python.sh
 
-# Register RobotSim with this engine
-#RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
-RUN ./scripts/o3de.sh register --this-engine 
-RUN ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem
+# # # Install o3de-extras (automatically pulls last commit from "development" branch)
+# # # Contains ROS 2 Gem and other relevant assets
 
-# Register the Terrian gem which is located in o3de folder
-RUN ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
+# # WORKDIR ${HOME_DIR}
+# RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
+#     && cd o3de-extras \
+#     && git lfs install \
+#     && git lfs pull
 
-# Register RobotSim project.
-# Project must be registered at the very end after all dependent gems are registered
-RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+# WORKDIR ${HOME_DIR}/o3de
 
-# # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
-WORKDIR ${HOME_DIR}
+# # Register RobotSim with this engine
+# #RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
+# RUN ./scripts/o3de.sh register --this-engine \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
+#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem \
+#     && ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
 
-# Install more essential binaries gazebo-msgs from binary
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    sudo apt-get update -y && sudo apt-get install -y \
-    libunwind-dev ros-${ROS_DISTRO}-gazebo-ros-pkgs
+# # Register RobotSim project.
+# # Project must be registered at the very end after all dependent gems are registered
+# RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
 
-# Move to project directory
-WORKDIR ${PROJECT_PATH}
+# # # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
+# WORKDIR ${HOME_DIR}
 
-# Source ROS2, Space Ros, Movit2 and Demo_ws
-RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
-    && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-    && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"'
+# # Install more essential binaries gazebo-msgs from binary
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#     --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#     sudo apt-get update -y && sudo apt-get install -y \
+#     libunwind-dev ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
+# # Move to project directory
+# WORKDIR ${PROJECT_PATH}
 
+# # Source ROS2, Space Ros, Movit2 and Demo_ws
+# RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
+#     && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+#     && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"'
 
-RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
-    && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
+# RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
+#     && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
 
+# RUN cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
-# Add the user to the render group so that the user can access /dev/dri/renderD128
-# /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
-RUN sudo usermod -aG render $USERNAME
+# # Add the user to the render group so that the user can access /dev/dri/renderD128
+# # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
+# RUN sudo usermod -aG render $USERNAME
 
-# Setup the entrypoint
-COPY ./entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["bash"]
+# # Setup the entrypoint
+# COPY ./entrypoint.sh /
+# ENTRYPOINT ["/entrypoint.sh"]
+# CMD ["bash"]
