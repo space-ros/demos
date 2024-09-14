@@ -1,0 +1,42 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/space-ros/demos.git
+    version: main
+  gz_ros2_control:
+    type: git
+    url: https://github.com/ros-controls/gz_ros2_control.git
+    version: humble
+  qt_gui_core:
+    type: git
+    url: https://github.com/ros-visualization/qt_gui_core.git
+    version: humble
+  ros2_controllers:
+    type: git
+    url: https://github.com/tonylitianyu/ros2_controllers.git
+    version: effort_group_position_controller_2
+  actuator_msgs:
+    type: git
+    url: https://github.com/rudislabs/actuator_msgs.git
+    version: main
+  ros_gz:
+    type: git
+    url: https://github.com/gazebosim/ros_gz.git
+    version: humble
+  simulation:
+    type: git
+    url: https://github.com/space-ros/simulation.git
+    version: main
+  ros-humble-warehouse-ros-mongo:
+    type: git
+    url: https://github.com/moveit/warehouse_ros_mongo.git
+    version: ros2
+  vision_msgs:
+    type: git
+    url: https://github.com/ros-perception/vision_msgs.git
+    version: ros2
+  gps_msgs:
+    type: git
+    url: https://github.com/swri-robotics/gps_umd.git
+    path: gps_msgs
+    version: 113782d
