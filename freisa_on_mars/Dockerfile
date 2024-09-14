@@ -1,6 +1,10 @@
-# freisa_on_mars/Dockerfile
+# ==========================================================================
+# File: freisa_on_mars/Dockerfile
 #
-# Adapted from https://github.com/space-ros/docker/blob/main/space_robots/Dockerfile
+# Adapted from
+# * https://github.com/space-ros/docker/blob/main/moveit2/Dockerfile
+# * https://github.com/space-ros/docker/blob/main/space_robots/Dockerfile
+# ==========================================================================
 
 FROM osrf/space-ros:latest
 # FROM openrobotics/moveit2:latest
@@ -79,19 +83,23 @@ RUN sudo chown -R ${USERNAME}:${USERNAME} ${MOVEIT2_DIR}
 
 RUN touch DEBUG-02.txt
 
-# # Install system dependencies
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash' \
-#  && rosdep install --from-paths ../spaceros/src src --ignore-src --rosdistro ${ROSDISTRO} -r -y --skip-keys "console_bridge generate_parameter_library fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos diagnostic_aggregator diagnostic_updater joy qt_gui rqt_gui rqt_gui_py"
+RUN mkdir -p ../spaceros/src # HACK
 
-# # Apply a patch to octomap_msgs to work around a build issue
-# COPY --chown=${USERNAME}:${USERNAME} octomap_fix.diff ./src/octomap_msgs
-# RUN cd src/octomap_msgs && git apply octomap_fix.diff
+# Install system dependencies
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash' \
+  && rosdep install --from-paths ../spaceros/src src --ignore-src \
+     --rosdistro ${ROSDISTRO} -r -y --skip-keys \
+     "console_bridge generate_parameter_library fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos diagnostic_aggregator diagnostic_updater joy qt_gui rqt_gui rqt_gui_py"
 
-# # Build MoveIt2
-# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
-#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+# Apply a patch to octomap_msgs to work around a build issue
+COPY --chown=${USERNAME}:${USERNAME} octomap_fix.diff ./src/octomap_msgs
+RUN cd src/octomap_msgs && git apply octomap_fix.diff
+
+# Build MoveIt2
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
 
 # # Add a couple sample GUI apps for testing
 # RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
