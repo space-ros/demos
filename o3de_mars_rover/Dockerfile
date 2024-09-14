@@ -231,18 +231,24 @@ RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAM
 # # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
 WORKDIR ${HOME_DIR}
 
+# Install more essential binaries gazebo-msgs from binary
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     sudo apt-get update -y && sudo apt-get install -y \
-    libunwind-dev
+    libunwind-dev ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
 # Move to project directory
 WORKDIR ${PROJECT_PATH}
 
-# # Source space_ros, movit2 and demo_ws
+# Source ROS2, Space Ros, Movit2 and Demo_ws
 RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
     && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
     && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"'
+
+
+
+RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
+    && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
 
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
