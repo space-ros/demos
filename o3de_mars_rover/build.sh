@@ -27,24 +27,24 @@ docker build -t $ORG/$IMAGE1:$TAG -f $DOCKER_DIR/Dockerfile_moveit2 \
 echo ""
 echo "##### Done! #####"
 
-echo ""
-echo "##### Building space_robots_demo image #####"
+# echo ""
+# echo "##### Building space_robots_demo image #####"
 
-docker build -t $ORG/$IMAGE2:$TAG -f $DOCKER_DIR/Dockerfile_space_robots \
-    --build-arg VCS_REF="$VCS_REF" \
-    --build-arg VERSION="$VERSION" .
+# docker build -t $ORG/$IMAGE2:$TAG -f $DOCKER_DIR/Dockerfile_space_robots \
+#     --build-arg VCS_REF="$VCS_REF" \
+#     --build-arg VERSION="$VERSION" .
 
-echo ""
-echo "##### Done! #####"
+# echo ""
+# echo "##### Done! #####"
 
-echo ""
-echo "##### Building o3de curiosity rover demo docker image #####"
-echo ""
+# echo ""
+# echo "##### Building o3de curiosity rover demo docker image #####"
+# echo ""
 
-docker build -t $ORG/$IMAGE3:$TAG -f $DOCKER_DIR/Dockerfile_o3de \
-    --build-arg VCS_REF="$VCS_REF" \
-    --build-arg VERSION="$VERSION" .
+# docker build -t $ORG/$IMAGE3:$TAG -f $DOCKER_DIR/Dockerfile_o3de \
+#     --build-arg VCS_REF="$VCS_REF" \
+#     --build-arg VERSION="$VERSION" .
 
-echo ""
-echo "##### Done! #####"
+# echo ""
+# echo "##### Done! #####"
 

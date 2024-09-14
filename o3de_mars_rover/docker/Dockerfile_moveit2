@@ -42,6 +42,17 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN mkdir ${SPACEROS_DIR}/src \
   && vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/exact.repos
 
+# Need to rebuild Space ros source here to solve this issue 
+
+WORKDIR ${SPACEROS_DIR}
+RUN sudo rm -rf install/
+# Copied from Earthfile in space-ros/space-ros
+RUN colcon build \
+        --cmake-args \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        --no-warn-unused-cli
+
 # Define key locations
 ENV MOVEIT2_DIR=${HOME_DIR}/moveit2
 
