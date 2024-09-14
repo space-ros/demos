@@ -13,8 +13,9 @@
 # limitations under the License.
 #
 # A Docker configuration script to build the o3de_curiosit_docker image that showcases Open 3D Engine
-# in simulating a Curiositry rover traversing through a test ground inspired by the NASA JPL Mars Yard
+# in simulating a Curiosity rover traversing through a test ground inspired by the NASA JPL Mars Yard
 # O3DE docker file based on https://github.com/husarion/o3de-docker/blob/main/Dockerfile
+# Requirements: openrobotics/space_robots_demo image
 #
 #
 # The script provides the following build arguments:
@@ -166,82 +167,82 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
-# # Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
-# WORKDIR ${O3DE_DIR}/Projects
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
+# Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
+WORKDIR ${O3DE_DIR}/Projects
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/RobotSim.git
 
-# WORKDIR ${O3DE_DIR}/Gems
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
-# RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
+WORKDIR ${O3DE_DIR}/Gems
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/NasaCuriosityRoverGem.git
+RUN git clone --branch nasa_submission https://github.com/Mechazo11/MarsYardGem.git
 
-# # ## Symlink clang version to non-versioned clang and set cc to clang
-# RUN sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-#     && sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+# ## Symlink clang version to non-versioned clang and set cc to clang
+RUN sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+    && sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
-# # ####  Install Open 3D Engine   ####  
+# ####  Install Open 3D Engine   ####  
 
-# # # Pull latest commit from development and build o3de. Note this does't build the whole engine
+# # Pull latest commit from development and build o3de. Note this does't build the whole engine
+WORKDIR ${HOME_DIR}
+
+# # Install o3de engine (automatically pulls last commit from "development" branch)
+RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
+    && cd o3de \
+    && git lfs install \
+    && git lfs pull \
+    && python/get_python.sh
+
+# # Install o3de-extras (automatically pulls last commit from "development" branch)
+# # Contains ROS 2 Gem and other relevant assets
+
 # WORKDIR ${HOME_DIR}
+RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
+    && cd o3de-extras \
+    && git lfs install \
+    && git lfs pull
 
-# # # Install o3de engine (automatically pulls last commit from "development" branch)
-# RUN git clone --single-branch -b development https://github.com/o3de/o3de.git \
-#     && cd o3de \
-#     && git lfs install \
-#     && git lfs pull \
-#     && python/get_python.sh
+WORKDIR ${HOME_DIR}/o3de
 
-# # # Install o3de-extras (automatically pulls last commit from "development" branch)
-# # # Contains ROS 2 Gem and other relevant assets
+# Register RobotSim with this engine
+#RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
+RUN ./scripts/o3de.sh register --this-engine \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
+    && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem \
+    && ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
 
-# # WORKDIR ${HOME_DIR}
-# RUN git clone --single-branch -b development https://github.com/o3de/o3de-extras.git \
-#     && cd o3de-extras \
-#     && git lfs install \
-#     && git lfs pull
+# Register RobotSim project.
+# Project must be registered at the very end after all dependent gems are registered
+RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
 
-# WORKDIR ${HOME_DIR}/o3de
+# # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
+WORKDIR ${HOME_DIR}
 
-# # Register RobotSim with this engine
-# #RUN ${O3DE_ENGINE}/scripts/o3de.sh register --this-engine 
-# RUN ./scripts/o3de.sh register --this-engine \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/ROS2 \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/RosRobotSample \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_EXTRAS}/Gems/WarehouseSample \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/NasaCuriosityRoverGem \
-#     && ./scripts/o3de.sh register --gem-path ${O3DE_DIR}/Gems/MarsYardGem \
-#     && ./scripts/o3de.sh register --gem-path ${HOME_DIR}/o3de/Gems/Terrain
+# Install more essential binaries gazebo-msgs from binary
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    sudo apt-get update -y && sudo apt-get install -y \
+    libunwind-dev ros-${ROS_DISTRO}-gazebo-ros-pkgs
 
-# # Register RobotSim project.
-# # Project must be registered at the very end after all dependent gems are registered
-# RUN ./scripts/o3de.sh register --project-path ${O3DE_DIR}/Projects/${PROJECT_NAME}
+# Move to project directory
+WORKDIR ${PROJECT_PATH}
 
-# # # Move to project directory and run cmake and build project (Warning takes about 10-15 mins)
-# WORKDIR ${HOME_DIR}
+# Source ROS2, Space Ros, Movit2 and Demo_ws
+RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
+    && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+    && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"'
 
-# # Install more essential binaries gazebo-msgs from binary
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#     sudo apt-get update -y && sudo apt-get install -y \
-#     libunwind-dev ros-${ROS_DISTRO}-gazebo-ros-pkgs
+RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
+    && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
 
-# # Move to project directory
-# WORKDIR ${PROJECT_PATH}
+RUN cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
 
-# # Source ROS2, Space Ros, Movit2 and Demo_ws
-# RUN /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
-#     && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-#     && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"'
+# Add the user to the render group so that the user can access /dev/dri/renderD128
+# /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
+RUN sudo usermod -aG render $USERNAME
 
-# RUN /bin/bash -c 'source ${DEMO_DIR}/install/setup.bash \
-#     && cmake -B build/linux -G "Ninja Multi-Config" -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_SYMBOLS=ON -DAZ_USE_PHYSX5:BOOL=ON'
-
-# RUN cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets
-
-# # Add the user to the render group so that the user can access /dev/dri/renderD128
-# # /dev/dri/renderD128 gives access to hardware-accelerated rendering tool such as GPU
-# RUN sudo usermod -aG render $USERNAME
-
-# # Setup the entrypoint
-# COPY ./entrypoint.sh /
-# ENTRYPOINT ["/entrypoint.sh"]
-# CMD ["bash"]
+# Setup the entrypoint
+COPY ./entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
