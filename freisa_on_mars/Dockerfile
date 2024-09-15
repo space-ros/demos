@@ -60,6 +60,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
 
+RUN mkdir -p ${SPACEROS_DIR}/src # HACK
+
+RUN touch DEBUG-01.txt
+
 # Generate repos file for moveit2 dependencies, excluding packages from Space ROS core.
 WORKDIR ${MOVEIT2_DIR}
 COPY --chown=${USERNAME}:${USERNAME} moveit2-pkgs.txt /tmp/
@@ -67,6 +71,7 @@ COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
 RUN rosinstall_generator \
   --rosdistro ${ROSDISTRO} \
   --deps \
+  --exclude-path ${SPACEROS_DIR}/src \
   --exclude $(cat /tmp/excluded-pkgs.txt) -- \
   -- $(cat /tmp/moveit2-pkgs.txt) \
   > /tmp/moveit2_generated_pkgs.repos
@@ -74,16 +79,14 @@ RUN rosinstall_generator \
 # Get the repositories required by MoveIt2, but not included in Space ROS
 WORKDIR ${MOVEIT2_DIR}
 RUN vcs import src < /tmp/moveit2_generated_pkgs.repos
-# COPY --chown=${USERNAME}:${USERNAME} src/moveit2_tutorials.repos /tmp/
-# RUN vcs import src < /tmp/moveit2_tutorials.repos
+COPY --chown=${USERNAME}:${USERNAME} moveit2_tutorials.repos /tmp/
+RUN vcs import src < /tmp/moveit2_tutorials.repos
 
 # Update the ownership of the source files (had to use sudo above to work around
 # a possible inherited 'insteadof' from the host that forces use of ssh
 RUN sudo chown -R ${USERNAME}:${USERNAME} ${MOVEIT2_DIR}
 
 RUN touch DEBUG-02.txt
-
-RUN mkdir -p ../spaceros/src # HACK
 
 # Install system dependencies
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
