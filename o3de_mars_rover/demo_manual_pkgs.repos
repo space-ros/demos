@@ -1,7 +1,7 @@
 repositories:
   demos:
     type: git
-    url: https://github.com/space-ros/demos.git
+    url: https://github.com/Mechazo11/space-ros-demos.git
     version: main
   gz_ros2_control:
     type: git

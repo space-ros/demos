@@ -42,6 +42,50 @@ ENV GZ_VERSION fortress
 
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+
+### Delete CycloneDDS and install from apt to resolve cmake conflict ###
+RUN sudo sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
+# Clear Install folder, we will need to rebuild the workspace again
+# WORKDIR ${SPACEROS_DIR}
+# RUN sudo rm -rf install/
+
+# # Delete problematic packages
+# WORKDIR ${SPACEROS_DIR}/src
+# RUN sudo rm -rf rmw_cyclonedds_cpp
+# RUN sudo rm -rf rmw_implementation  
+# RUN sudo rm -rf rmw_cyclonedds
+# RUN sudo rm -rf realtime_tools
+
+# WORKDIR ${SPACEROS_DIR}
+
+# # Update rosdep
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get update -y
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt-get dist-upgrade -y
+# RUN rosdep update
+
+# # TODO open a PR to resolve rmw-cyclonedds and rmw-implementation causing .
+# # Install them back from apt
+# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
+#   sudo apt install -y \
+#   ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+#   ros-${ROS_DISTRO}-rmw-implementation \
+#   ros-${ROS_DISTRO}-realtime-tools
+
+# # Rebuild Space ROS workspace
+# RUN /bin/bash -c 'source /opt/ros/humble/setup.bash \ 
+#     && colcon build --packages-ignore test_rmw_implementation'
+
+# # Ensure proper permission for all files in SPACEROS_DIR
+# RUN sudo chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}
+# 09/15 This patch has been already added into moveit2 image
 
 # Get rosinstall_generator
 # Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
@@ -83,11 +127,13 @@ RUN cd mongo-cxx-driver-r3.6.7/build && cmake .. -DCMAKE_BUILD_TYPE=Release -DCM
 # Get the source for the dependencies
 # RUN vcs import src < /tmp/demo_generated_pkgs.repos
 COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
+# NOTE! the "demo" repo is referring Mechazo11/space-ros-demos not space-ros/demos
 RUN vcs import src < /tmp/demo_manual_pkgs.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y \
+&& /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
 && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
 && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
