@@ -157,23 +157,23 @@ RUN cd mongo-cxx-driver-r3.6.7/build \
 
 RUN touch DEBUG-15.txt
 
-# # Get the source for the dependencies
-# # RUN vcs import src < /tmp/demo_generated_pkgs.repos
-# COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
-# RUN vcs import src < /tmp/demo_manual_pkgs.repos \
-#   && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
+# Get the source for the dependencies
+# RUN vcs import src < /tmp/demo_generated_pkgs.repos
+COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
+RUN vcs import src < /tmp/demo_manual_pkgs.repos \
+  && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' 
 
-# RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-#   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-#   sudo apt-get update -y \
-#   && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-#   && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  sudo apt-get update -y \
+  && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
+  && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
+  && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 # # Build the demo
 # RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
 #   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 RUN touch DEBUG-21.txt
 
