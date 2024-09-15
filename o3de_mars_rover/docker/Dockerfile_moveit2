@@ -40,8 +40,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Patch to solve rmw_cyclone_dds and rmw_implementation bug and control_toolbox finding fastrtps-cpp
 # TODO raise Issue, why fastrtps-cpp is available?
-RUN sudo apt-get remove ros-$ROS_DISTRO-rmw-fastrtps-cpp
-RUN source /opt/ros/humble/setup.bash
+# RUN source /opt/ros/humble/setup.bash
+# RUN sudo apt-get remove ros-$ROS_DISTRO-rmw-fastrtps-cpp
 
 # TODO temporary solution, move these away from moveit2 after fix is done to base image
 # Clone all space-ros sources
