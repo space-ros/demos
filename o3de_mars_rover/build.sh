@@ -37,14 +37,14 @@ docker build -t $ORG/$IMAGE2:$TAG -f $DOCKER_DIR/Dockerfile_space_robots \
 echo ""
 echo "##### Done! #####"
 
-echo ""
-echo "##### Building o3de curiosity rover demo docker image #####"
-echo ""
+# echo ""
+# echo "##### Building o3de curiosity rover demo docker image #####"
+# echo ""
 
-docker build -t $ORG/$IMAGE3:$TAG -f $DOCKER_DIR/Dockerfile_o3de \
-    --build-arg VCS_REF="$VCS_REF" \
-    --build-arg VERSION="$VERSION" .
+# docker build -t $ORG/$IMAGE3:$TAG -f $DOCKER_DIR/Dockerfile_o3de \
+#     --build-arg VCS_REF="$VCS_REF" \
+#     --build-arg VERSION="$VERSION" .
 
-echo ""
-echo "##### Done! #####"
+# echo ""
+# echo "##### Done! #####"
 

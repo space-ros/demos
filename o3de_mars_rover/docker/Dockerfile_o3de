@@ -88,39 +88,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     sudo tar unzip vim wget xz-utils
     # && rm -rf /var/lib/apt/lists/* #  TODO need to figure out how to use this correctly
 
-### Install all dependencies for demo_ws and O3DE ###
-
-## Delete DEMO_WS repo, redownload correct one build the DEMO_WS again ###
-WORKDIR ${DEMO_DIR}
-RUN sudo rm -rf install/ build/ log/
-
-# WORKDIR ${DEMO_DIR}
-# Override what is necessary
-# COPY --chown=${USERNAME}:${USERNAME} o3de-robot-sim.repos /tmp/
-# COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
-
-# Delete space-ros/demo repo and replace it with Mechazo11/demo repo
-# that contains the modified mars_rover launch file to drive rover
-# TODO come up with a better solution so as not to disturb other projects in space-ros/demo repo
-WORKDIR ${DEMO_DIR}/src
-RUN sudo rm -rf demos/ && git clone --branch main --single-branch https://github.com/Mechazo11/space-ros-demos.git
-WORKDIR ${DEMO_DIR}
-
-# Update the ownership of the source files (had to use sudo above to work around
-# a possible inherited 'insteadof' from the host that forces use of ssh
-RUN sudo chown -R ${USERNAME}:${USERNAME} ${DEMO_DIR}
-
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y \
-&& /bin/bash -c 'source "/opt/ros/humble/setup.bash"' \
-&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-&& /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
-
-# # Build the demo_ws
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
-  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+### Install all dependencies for O3DE ###
 
 # Git clone RobotSim, NasaMarsRoverGem and MarsYardGem
 WORKDIR ${O3DE_DIR}/Projects

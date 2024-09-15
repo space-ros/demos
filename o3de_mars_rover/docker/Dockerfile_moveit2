@@ -38,6 +38,11 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Patch to solve rmw_cyclone_dds and rmw_implementation bug and control_toolbox finding fastrtps-cpp
+# TODO raise Issue, why fastrtps-cpp is available?
+RUN sudo apt-get remove ros-$ROS_DISTRO-rmw-fastrtps-cpp
+RUN source /opt/ros/humble/setup.bash
+
 # TODO temporary solution, move these away from moveit2 after fix is done to base image
 # Clone all space-ros sources
 RUN mkdir ${SPACEROS_DIR}/src \
@@ -83,22 +88,6 @@ RUN /bin/bash -c 'source /opt/ros/humble/setup.bash \
 
 # Ensure proper permission for all files in SPACEROS_DIR
 RUN sudo chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}
-
-
-# TODO raise Issue, why fastrtps-cpp is available?
-# RUN sudo apt-get remove ros-$ROS_DISTRO-rmw-fastrtps-cpp
-# RUN source /opt/ros/humble/setup.bash
-
-# Need to rebuild Space ros source here to solve this issue 
-
-# WORKDIR ${SPACEROS_DIR}
-# RUN sudo rm -rf install/
-# # Copied from Earthfile in space-ros/space-ros
-# RUN colcon build \
-#         --cmake-args \
-#         -DCMAKE_BUILD_TYPE=Release \
-#         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-#         --no-warn-unused-cli
 
 # Define key locations
 ENV MOVEIT2_DIR=${HOME_DIR}/moveit2
