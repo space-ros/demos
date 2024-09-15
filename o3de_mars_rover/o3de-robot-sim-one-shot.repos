@@ -1,0 +1,107 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/Mechazo11/space-ros-demos.git
+    version: main
+  gz_ros2_control:
+    type: git
+    url: https://github.com/ros-controls/gz_ros2_control.git
+    version: humble
+  qt_gui_core:
+    type: git
+    url: https://github.com/ros-visualization/qt_gui_core.git
+    version: humble
+  ros2_controllers:
+    type: git
+    url: https://github.com/tonylitianyu/ros2_controllers.git
+    version: effort_group_position_controller_2
+  actuator_msgs:
+    type: git
+    url: https://github.com/rudislabs/actuator_msgs.git
+    version: main
+  ros-humble-warehouse-ros-mongo:
+    type: git
+    url: https://github.com/ros-planning/warehouse_ros_mongo.git
+    version: ros2
+  vision_msgs:
+    type: git
+    url: https://github.com/ros-perception/vision_msgs.git
+    version: ros2
+  gps_msgs:
+    type: git
+    url: https://github.com/swri-robotics/gps_umd.git
+    path: gps_msgs
+    version: 113782d
+  simulation:
+    type: git
+    url: https://github.com/Mechazo11/space-ros-simulation.git
+    version: fix_chassis_dae
+  gazebo_ros_pkgs:
+    type: git
+    url: https://github.com/ros-simulation/gazebo_ros_pkgs.git
+    version: ros2
+  image_common:
+    type: git
+    url: https://github.com/ros-perception/image_common.git
+    version: humble
+  warehouse_ros:
+    type: git
+    url: https://github.com/ros-planning/warehouse_ros.git
+    version: ros2
+  angles:
+    type: git
+    url: https://github.com/ros/angles.git
+    version: ros2
+  yaml_cpp_vendor:
+    type: git
+    url: https://github.com/ros2/yaml_cpp_vendor.git
+    version: humble
+  rviz:
+    type: git
+    url: https://github.com/ros2/rviz
+    version: humble
+  resource_retriever:
+    type: git
+    url: https://github.com/ros/resource_retriever.git
+    version: humble
+  control_toolbox:
+    type: git
+    url: https://github.com/ros-controls/control_toolbox.git
+    version: ros2-master
+  filters:
+    type: git
+    url: https://github.com/ros/filters.git
+    version: ros2
+  realtime_tools:
+    type: git
+    url: https://github.com/ros-controls/realtime_tools.git
+    version: master
+  geometric_shapes:
+    type: git
+    url: https://github.com/moveit/geometric_shapes.git
+    version: ros2
+  RSL:
+    type: git
+    url: https://github.com/PickNikRobotics/RSL.git
+    version: main
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control
+    version: humble
+  srdfdom:
+    type: git
+    url: https://github.com/moveit/srdfdom
+    version: ros2
+  interactive_markers:
+    type: git
+    url: https://github.com/ros-visualization/interactive_markers
+    version: humble
+  laser_geometry:
+    type: git
+    url: https://github.com/ros-perception/laser_geometry.git
+    version: humble
+  ros_gz:
+    type: git
+    url: https://github.com/gazebosim/ros_gz.git
+    version: humble
+  

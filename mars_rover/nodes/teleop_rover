@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+
+"""
+Implementation of the TeleOpRover class.
+
+This node acts as an interface between user sent service call to publishing
+twist message that is then subscribed too by the controller
+
+Primary author:
+Space-ROS
+
+Docstrings and comments added by:
+Azmyin Md. Kamal,
+Ph.D. student in MIE, iCORE Lab,
+Louisiana State University, Louisiana, USA
+
+Date: August 29th, 2024
+Version: 1.0
+AI: ChatGPT 4.o
+
+"""
+
+# Imports
+import rclpy
+from rclpy.node import Node
+
+# from std_msgs.msg import String, Float64MultiArray
+from geometry_msgs.msg import Twist
+
+# import math
+# from random import randint
+from std_srvs.srv import Empty
+
+class TeleOpRover(Node):
+    """Node that converts user's service request / input device commands to Twist messages."""
+
+    def __init__(self) -> None:
+        super().__init__('teleop_node')
+        # Setup publishers
+        self.motion_publisher_ = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.o3de_motion_publisher_ = self.create_publisher(Twist, '/rover/cmd_vel', 10)
+        # Setup services
+        self.forward_srv = self.create_service(Empty, 'move_forward', self.move_forward_callback)
+        self.stop_srv = self.create_service(Empty, 'move_stop', self.move_stop_callback)
+        self.left_srv = self.create_service(Empty, 'turn_left', self.turn_left_callback)
+        self.right_srv = self.create_service(Empty, 'turn_right', self.turn_right_callback)
+        self.stopped = True
+        timer_period = 0.1
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.curr_action = Twist()
+
+    def timer_callback(self):
+        """Periodically publish velocity of rover in 3D space as Twist messages."""
+        if (not self.stopped):
+            # Experimental
+            self.o3de_motion_publisher_.publish(self.curr_action)
+            # self.motion_publisher_.publish(self.curr_action)
+            
+
+    def move_forward_callback(self, request, response):
+        """Print message when moving forward."""
+        self.get_logger().info("Moving forward")
+        action = Twist()
+        # action.linear.x = 2.0
+        action.linear.x = 1.0 # Not sure but negative value makes it move forward
+        self.curr_action = action
+        self.stopped = False
+        return response
+
+    def move_stop_callback(self, request, response):
+        """Print message when stopped."""
+        # stop timer from publishing
+        self.stopped = True
+        self.get_logger().info("Stopping")
+        self.curr_action = Twist()
+        # publish once to ensure we stop
+        self.motion_publisher_.publish(self.curr_action)
+        self.o3de_motion_publisher_.publish(self.curr_action)
+        return response
+
+    def turn_left_callback(self, request, response):
+        """Print message when turning left."""
+        self.get_logger().info("Turning left")
+        action = Twist()
+        action.linear.x = 1.0
+        action.angular.z = 0.4
+        self.curr_action = action
+        self.stopped = False
+        return response
+
+    def turn_right_callback(self, request, response):
+        """Print message when turning right."""
+        self.get_logger().info("Turning right")
+        self.stopped = False
+        action = Twist()
+        #action.linear.x = 1.0
+        action.linear.x = 0.5
+        action.angular.z = -1.5
+        self.curr_action = action
+        self.stopped = False
+        return response
+
+def main(args=None):
+    """Run main."""
+    rclpy.init(args=args)
+    teleop_node = TeleOpRover()
+    rclpy.spin(teleop_node)
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    teleop_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()

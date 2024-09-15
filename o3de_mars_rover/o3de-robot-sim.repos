@@ -1,0 +1,6 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/Mechazo11/space-ros-demos.git
+    version: main
+  
