@@ -1,0 +1,130 @@
+repositories:
+  demos:
+    type: git
+    url: https://github.com/Sanjay-j-p/demos.git
+    version: main
+  simulation:
+    type: git
+    url: https://github.com/Sanjay-j-p/simulation.git
+    version: main
+  realtime_tools:
+    type: git
+    url: https://github.com/ros-controls/realtime_tools.git
+    version: master
+  ros2_control:
+    type: git
+    url: https://github.com/ros-controls/ros2_control.git
+    version: humble
+  ackermann_msgs:
+    type: git
+    url: https://github.com/ros-drivers/ackermann_msgs.git
+    version: ros2
+  resource_retriever:
+    type: git
+    url: https://github.com/ros/resource_retriever.git
+    version: humble
+  angles:
+    type: git
+    url: https://github.com/ros/angles.git
+    version: humble-devel
+  control_toolbox:
+    type: git
+    url: https://github.com/ros-controls/control_toolbox.git
+    version: ros2-master
+  control_msgs:
+    type: git
+    url: https://github.com/ros-controls/control_msgs.git
+    version: humble
+  gz_ros2_control:
+    type: git
+    url: https://github.com/jasmeet0915/gz_ros2_control.git
+    version: jasmeet/humble_harmonic_support
+  backward_ros:
+    type: git
+    url: https://github.com/pal-robotics/backward_ros.git
+    version: foxy-devel
+  qt_gui_core:
+    type: git
+    url: https://github.com/ros-visualization/qt_gui_core.git
+    version: humble
+  python_qt_binding:
+    type: git
+    url: https://github.com/ros-visualization/python_qt_binding.git
+    version: humble
+  ros2_controllers:
+    type: git
+    url: https://github.com/tonylitianyu/ros2_controllers.git
+    version: effort_group_position_controller_2
+  actuator_msgs:
+    type: git
+    url: https://github.com/rudislabs/actuator_msgs.git
+    version: main
+  filters:
+    type: git
+    url: https://github.com/ros/filters.git
+    version: ros2
+  rviz:
+    type: git
+    url: https://github.com/ros2/rviz.git
+    version: humble
+  ros_gz:
+    type: git
+    url: https://github.com/gazebosim/ros_gz.git
+    version: humble
+  generate_parameter_library:
+    type: git
+    url: https://github.com/PickNikRobotics/generate_parameter_library.git
+    version: main
+  joint_state_publisher:
+    type: git
+    url: https://github.com/ros/joint_state_publisher.git
+    version: ros2
+  rsl:
+    type: git
+    url: https://github.com/PickNikRobotics/RSL.git
+    version: main
+  cpp_polyfills:
+    type: git
+    url: https://github.com/PickNikRobotics/cpp_polyfills.git
+    version: main
+  image_transport:
+    type: git
+    url: https://github.com/ros-perception/image_common.git
+    version: humble
+  interactive_markers:
+    type: git
+    url: https://github.com/ros-visualization/interactive_markers.git
+    version: humble
+  laser_geometry:
+    type: git
+    url: https://github.com/ros-perception/laser_geometry.git
+    version: humble
+  warehouse_ros:
+    type: git
+    url: https://github.com/moveit/warehouse_ros.git
+    version: ros2
+  ros-humble-warehouse-ros-mongo:
+    type: git
+    url: https://github.com/ros-planning/warehouse_ros_mongo.git
+    version: ros2
+  vision_msgs:
+    type: git
+    url: https://github.com/ros-perception/vision_msgs.git
+    version: ros2
+  navigation_msgs:
+    type: git
+    url: https://github.com/ros-planning/navigation_msgs.git
+    version: humble
+  gps_msgs:
+    type: git
+    url: https://github.com/swri-robotics/gps_umd.git
+    path: gps_msgs
+    version: 113782d
+  yaml_cpp_vendor:
+    type: git
+    url: https://github.com/ros2/yaml_cpp_vendor.git
+    version: humble
+  xacro:
+    type: git
+    url: https://github.com/ros/xacro.git
+    version: ros2
