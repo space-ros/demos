@@ -156,7 +156,7 @@ Spawn coordinates[ x_,y_z_,roll_,pitch_yaw_]- location of the new rover
 
 Follow these passages to build the docker image and start a docker container.
 
-1. Clone this repository, change the directory to demos\CADRE_demo
+1. Clone this repository, Go inside the directory to demos\CADRE_demo
 
 2. Run the build script 
 ``````
@@ -167,8 +167,7 @@ chmod +x build.sh
 3. Start the container by executing
 
 ```
-chmod +x run.sh
-./run.sh
+docker run -it --entrypoint /bin/bash openrobotics/cadre_demo
 ```
 
 4. (optional) Additional terminals can be opened by executing
@@ -193,12 +192,13 @@ source /opt/ros/${ROS_DISTRO}/setup.bash
 2. Build Your Workspace ex: CADRE_demo
 
 ```
-cd ~/CADRE_demo/
+cd ..
+cd CADRE_demo/
 colcon build --symlink-install
 ```
 3. Source your workspace. 
 ```
-source ~/CADRE_demo/install/setup.bash
+source install/setup.bash
 ```
 
 4. Run the launch file.
@@ -216,7 +216,7 @@ With this, will start the gazebo simulator and Rviz with the three CADRE rovers 
 In another terminal,
 
 1. Excutable Premmsion for python files.
-```cd ~/CADRE_demo/src/robot_control/scripts/
+```cd CADRE_demo/src/robot_control/scripts/
     chmod +x joy.py
     chmod +x mapping.py
 ```

@@ -1,4 +1,3 @@
-
 # Base image
 FROM osrf/space-ros:latest
 
@@ -20,7 +19,13 @@ RUN apt-get install -y \
   python3-rosdep \
   python3-setuptools \
   python3-vcstool \
-  wget
+  wget \
+  # Install additional utilities
+  ros-humble-xacro \
+  ros-humble-rviz2 \
+  # Clean up to reduce image size
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install ROS 2 dependencies
 RUN apt-get update && apt-get install -y \
