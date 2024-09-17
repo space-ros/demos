@@ -1,0 +1,4 @@
+[submodule "OmniLRS"]
+	path = OmniLRS
+	url = https://github.com/AntoineRichard/OmniLRS.git
+	branch = main
