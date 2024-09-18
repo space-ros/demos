@@ -170,10 +170,40 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
   && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
-# # Build the demo
-# RUN /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-#   && /bin/bash -c 'source "${MOVEIT2_DIR}/install/setup.bash"' \
-#   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+RUN vcs import src < "${DEMO_DIR}/src/mini_pupper_ros/.minipupper.repos"
+
+# HACK: Move out package whose build still fails
+RUN /bin/mkdir -p ../NO_src \
+  && for d in champ ros2_controllers; do mv "src/$d" "../NO_src/"; done
+
+# Build the demo
+RUN /bin/bash -c '\
+  source "${SPACEROS_DIR}/install/setup.bash" \
+  && source "${MOVEIT2_DIR}/install/setup.bash" \
+  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+
+# === TODO: The command above fails ============================================
+# --- stderr: forward_command_controller                            
+# CMake Error at CMakeLists.txt:26 (find_package):
+#   By not providing "Findcontroller_interface.cmake" in CMAKE_MODULE_PATH this
+#   project has asked CMake to find a package configuration file provided by
+#   "controller_interface", but CMake did not find one.
+# 
+#   Could not find a package configuration file provided by
+#   "controller_interface" with any of the following names:
+# 
+#     controller_interfaceConfig.cmake
+#     controller_interface-config.cmake
+# 
+#   Add the installation prefix of "controller_interface" to CMAKE_PREFIX_PATH
+#   or set "controller_interface_DIR" to a directory containing one of the
+#   above files.  If "controller_interface" provides a separate development
+#   package or SDK, be sure it has been installed.
+# 
+# 
+# ---
+# Failed   <<< forward_command_controller [1.84s, exited with code 1]
+# ==============================================================================
 
 RUN touch DEBUG-21.txt
 
