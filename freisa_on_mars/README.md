@@ -10,6 +10,8 @@ This code is a part of the following challenge:
 * Team Lead Freelancer Username: [@gmacario](https://www.freelancer.com/u/gmacario)
 * Submission Title: Integrate FREISA Robot Dog with Space ROS Mars Rover Demo
 
+[![FREISA meets NASA Space ROS](https://img.youtube.com/vi/KcfOwAC_WE0/0.jpg)](https://www.youtube.com/watch?v=KcfOwAC_WE0 "FREISA meets NASA Space ROS")
+
 <!--
 ## Directory Overview
 
