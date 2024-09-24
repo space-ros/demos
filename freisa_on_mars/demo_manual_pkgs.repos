@@ -1,0 +1,77 @@
+# freisa_on_mars/demo_manual_pkgs.repos
+#
+# Adapted from https://github.com/space-ros/docker/blob/main/space_robots
+
+repositories:
+  demos:
+    type: git
+    # FIXME: Update url/version once <https://github.com/space-ros/demos/pull/56> is merged
+    #  url: https://github.com/space-ros/demos.git
+    url: https://github.com/B-AROL-O/space-ros-demos.git
+    #  version: main
+    #  version: freisa_on_mars
+    version: dev-gmacario
+
+  # === Repositories used by space_robots ===
+  # See https://github.com/space-ros/docker/blob/main/space_robots/demo_manual_pkgs.repos
+
+  gz_ros2_control:
+    type: git
+    url: https://github.com/ros-controls/gz_ros2_control.git
+    version: humble
+  qt_gui_core:
+    type: git
+    url: https://github.com/ros-visualization/qt_gui_core.git
+    version: humble
+  ros2_controllers:
+    type: git
+    url: https://github.com/tonylitianyu/ros2_controllers.git
+    version: effort_group_position_controller_2
+  actuator_msgs:
+    type: git
+    url: https://github.com/rudislabs/actuator_msgs.git
+    version: main
+  ros_gz:
+     type: git
+     url: https://github.com/gazebosim/ros_gz.git
+     version: humble
+  simulation:
+    type: git
+    url: https://github.com/space-ros/simulation.git
+    version: main
+  ros-humble-warehouse-ros-mongo:
+    type: git
+    url: https://github.com/moveit/warehouse_ros_mongo.git
+    version: ros2
+  vision_msgs:
+    type: git
+    url: https://github.com/ros-perception/vision_msgs.git
+    version: ros2
+  gps_msgs:
+    type: git
+    url: https://github.com/swri-robotics/gps_umd.git
+    path: gps_msgs
+    version: 113782d
+
+  # === Extra repositories required by freisa_on_mars ===
+  mini_pupper_ros:
+    type: git
+    url: https://github.com/B-AROL-O/mini_pupper_ros.git
+    version: ros2-dev
+
+  # From https://github.com/B-AROL-O/mini_pupper_ros/blob/ros2-dev/.minipupper.repos
+  # TODO: vcs import < mini_pupper_ros/.minipupper.repos --recursive
+  champ/champ:
+    type: git
+    url: https://github.com/mangdangroboticsclub/champ.git
+    version: ros2
+  champ/champ_teleop:
+    type: git
+    url: https://github.com/chvmp/champ_teleop.git
+    version: ros2
+  ldlidar_stl_ros:
+    type: git
+    url: https://github.com/ldrobotSensorTeam/ldlidar_stl_ros2.git
+    version: master
+
+# EOF
