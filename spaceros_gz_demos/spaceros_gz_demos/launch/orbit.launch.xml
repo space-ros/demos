@@ -1,0 +1,23 @@
+<launch>
+
+  <!-- Bringup world -->
+  <include file="$(find-pkg-share spaceros_gz_demos)/launch/load_world.launch.py">
+    <arg name="world_file" value="$(find-pkg-share spaceros_gz_demos)/worlds/orbit.sdf"/>
+  </include>
+
+  <!-- Remap topics -->
+  <node pkg="ros_gz_bridge" exec="parameter_bridge" 
+    args="/model/capsule/joint/push_thruster_joint/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/capsule/joint/pitch_thruster_joint/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/capsule/joint/yaw_thruster_joint/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /lidar@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan
+          /lidar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          ">
+    <remap from="/model/capsule/joint/push_thruster_joint/cmd_thrust" to="/capsule/thrust/push"/>
+    <remap from="/model/capsule/joint/pitch_thruster_joint/cmd_thrust" to="/capsule/thrust/pitch"/>
+    <remap from="/model/capsule/joint/yaw_thruster_joint/cmd_thrust" to="/capsule/thrust/yaw"/>
+    <remap from="/lidar" to="/capsule/lidar"/>
+    <remap from="/lidar/points" to="/capsule/lidar/points"/>
+  </node>
+
+</launch>

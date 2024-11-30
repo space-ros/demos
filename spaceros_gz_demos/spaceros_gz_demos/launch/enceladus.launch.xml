@@ -1,0 +1,26 @@
+<launch>
+
+  <!-- Bringup world -->
+  <include file="$(find-pkg-share spaceros_gz_demos)/launch/load_world.launch.py">
+    <arg name="world_file" value="$(find-pkg-share spaceros_gz_demos)/worlds/enceladus.sdf"/>
+  </include>
+
+  <!-- Remap topics -->
+  <node pkg="ros_gz_bridge" exec="parameter_bridge" 
+    args="/model/submarine/joint/right_propeller_joint/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/submarine/joint/left_propeller_joint/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/submarine/buoyancy_engine@std_msgs/msg/Float64@gz.msgs.Double
+          /model/submarine/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry
+          /sonar@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan
+          /sonar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          ">
+    <remap from="/model/submarine/joint/right_propeller_joint/cmd_thrust" to="/submarine/right_thrust"/>
+    <remap from="/model/submarine/joint/left_propeller_joint/cmd_thrust" to="/submarine/left_thrust"/>
+    <remap from="/model/submarine/buoyancy_engine" to="/submarine/buoyancy_engine"/>
+    <remap from="/model/submarine/odometry" to="/submarine/odometry"/>
+    <remap from="/sonar" to="/submarine/sonar"/>
+    <remap from="/sonar/points" to="/submarine/sonar/points"/>
+  </node>
+
+
+</launch>

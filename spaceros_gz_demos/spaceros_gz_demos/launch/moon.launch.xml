@@ -1,0 +1,63 @@
+<launch>
+
+  <!-- Bringup world -->
+  <include file="$(find-pkg-share spaceros_gz_demos)/launch/load_world.launch.py">
+    <arg name="world_file" value="$(find-pkg-share spaceros_gz_demos)/worlds/moon.sdf"/>
+  </include>
+
+  <!-- Remap topics -->
+  <node pkg="ros_gz_bridge" exec="parameter_bridge" 
+    args="
+          /model/X1/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist
+          /model/X1/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry
+          /model/X1/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance
+          /model/X1/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V
+          /world/moon/model/X1/link/base_link/sensor/camera_front/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo
+          /world/moon/model/X1/link/base_link/sensor/camera_front/image@sensor_msgs/msg/Image@gz.msgs.Image
+          /world/moon/model/X1/link/base_link/sensor/front_laser/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan
+          /world/moon/model/X1/link/base_link/sensor/front_laser/scan/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          /world/moon/model/X1/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu@gz.msgs.IMU
+
+          /model/X2/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist
+          /model/X2/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry
+          /model/X2/odometry_with_covariance@nav_msgs/msg/Odometry@gz.msgs.OdometryWithCovariance
+          /model/X2/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V
+          /world/moon/model/X2/link/base_link/sensor/camera_front/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo
+          /world/moon/model/X2/link/base_link/sensor/camera_front/image@sensor_msgs/msg/Image@gz.msgs.Image
+          /world/moon/model/X2/link/base_link/sensor/front_laser/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan
+          /world/moon/model/X2/link/base_link/sensor/front_laser/scan/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          /world/moon/model/X2/link/base_link/sensor/imu_sensor/imu@sensor_msgs/msg/Imu@gz.msgs.IMU
+ 
+          /solar_panel_joint_cmd@std_msgs/msg/Float64@gz.msgs.Double
+          /truss/attach@std_msgs/msg/Empty@gz.msgs.Empty
+          /truss/detach@std_msgs/msg/Empty@gz.msgs.Empty
+          ">
+
+    <remap from="/model/X1/cmd_vel" to="/X1/cmd_vel"/>
+    <remap from="/model/X1/odometry" to="/X1/odometry"/>
+    <remap from="/model/X1/odometry_with_covariance" to="/X1/odometry_with_covariance"/>
+    <remap from="/model/X1/tf" to="/tf"/>
+    <remap from="/world/moon/model/X1/link/base_link/sensor/camera_front/camera_info" to="/X1/camera_front/camera_info"/>
+    <remap from="/world/moon/model/X1/link/base_link/sensor/camera_front/image" to="/X1/camera_front/image"/>
+    <remap from="/world/moon/model/X1/link/base_link/sensor/front_laser/scan" to="/X1/front_laser/scan"/>
+    <remap from="/world/moon/model/X1/link/base_link/sensor/front_laser/scan/points" to="/X1/front_laser/scan/points"/>
+    <remap from="/world/moon/model/X1/link/base_link/sensor/imu_sensor/imu" to="/X1/imu_sensor/imu"/>
+
+    <remap from="/model/X2/cmd_vel" to="/X2/cmd_vel"/>
+    <remap from="/model/X2/odometry" to="/X2/odometry"/>
+    <remap from="/model/X2/odometry_with_covariance" to="/X2/odometry_with_covariance"/>
+    <remap from="/model/X2/tf" to="/tf"/>
+    <remap from="/world/moon/model/X2/link/base_link/sensor/camera_front/camera_info" to="/X2/camera_front/camera_info"/>
+    <remap from="/world/moon/model/X2/link/base_link/sensor/camera_front/image" to="/X2/camera_front/image"/>
+    <remap from="/world/moon/model/X2/link/base_link/sensor/front_laser/scan" to="/X2/front_laser/scan"/>
+    <remap from="/world/moon/model/X2/link/base_link/sensor/front_laser/scan/points" to="/X2/front_laser/scan/points"/>
+    <remap from="/world/moon/model/X2/link/base_link/sensor/imu_sensor/imu" to="/X2/imu_sensor/imu"/>
+
+    <remap from="/solar_panel_joint_cmd" to="/solar_panel/joint"/>
+    <remap from="/truss/attach" to="/X1/truss/attach"/>
+    <remap from="/truss/detach" to="/X1/truss/detach"/>
+
+  </node>
+
+
+</launch>
