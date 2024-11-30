@@ -1,0 +1,74 @@
+<launch>
+
+  <!-- Bringup world -->
+  <include file="$(find-pkg-share spaceros_gz_demos)/launch/load_world.launch.py">
+    <arg name="world_file" value="$(find-pkg-share spaceros_gz_demos)/worlds/mars.sdf"/>
+  </include>
+
+  <!-- Remap topics -->
+  <node pkg="ros_gz_bridge" exec="parameter_bridge" 
+    args="/model/nasa_perseverance/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry
+          /model/nasa_perseverance/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V
+          /model/nasa_perseverance/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist
+          /nasa_perseverance/camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_perseverance/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo
+          /nasa_perseverance/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_perseverance/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          /nasa_perseverance/arm_joint_1@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/arm_joint_2@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/arm_joint_3@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/arm_joint_4@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/arm_joint_5@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/camera_yaw@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_perseverance/camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_perseverance/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo
+          /nasa_perseverance/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_perseverance/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          /model/nasa_ingenuity/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry
+          /model/nasa_ingenuity/joint/MHS_TopBlades_v16/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/nasa_ingenuity/joint/MHS_BottomBlades_v16/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double
+          /model/nasa_ingenuity/battery/ingenuity_battery/state@sensor_msgs/msg/BatteryState@gz.msgs.BatteryState
+          /model/nasa_ingenuity/battery/ingenuity_battery/recharge/start@std_msgs/msg/Bool@gz.msgs.Boolean
+          /nasa_ingenuity/camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_ingenuity/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo
+          /nasa_ingenuity/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image
+          /nasa_ingenuity/depth_camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked
+          /nasa_ingenuity/swashplate1_joint_cmd@std_msgs/msg/Float64@gz.msgs.Double
+          /nasa_ingenuity/swashplate2_joint_cmd@std_msgs/msg/Float64@gz.msgs.Double
+         ">
+
+    <!-- Perseverance Remaps -->
+    <remap from="/model/nasa_perseverance/odometry" to="/perseverance/odometry"/>
+    <remap from="/model/nasa_perseverance/tf" to="/tf"/>
+    <remap from="/model/nasa_perseverance/cmd_vel" to="/perseverance/cmd_vel"/>
+    <remap from="/nasa_perseverance/camera" to="/perseverance/camera"/>
+    <remap from="/nasa_perseverance/camera_info" to="/perseverance/camera_info"/>
+    <remap from="/nasa_perseverance/depth_camera" to="/perseverance/depth_camera"/>
+    <remap from="/nasa_perseverance/depth_camera/points" to="/perseverance/depth_camera/points"/>
+    <remap from="/nasa_perseverance/arm_joint_1" to="/perseverance/arm/joint_1"/>
+    <remap from="/nasa_perseverance/arm_joint_2" to="/perseverance/arm/joint_2"/>
+    <remap from="/nasa_perseverance/arm_joint_3" to="/perseverance/arm/joint_3"/>
+    <remap from="/nasa_perseverance/arm_joint_4" to="/perseverance/arm/joint_4"/>
+    <remap from="/nasa_perseverance/arm_joint_5" to="/perseverance/arm/joint_5"/>
+    <remap from="/nasa_perseverance/camera_yaw" to="/perseverance/camera_yaw"/>
+    <remap from="/nasa_perseverance/camera" to="/ingenuity/camera"/>
+    <remap from="/nasa_perseverance/camera_info" to="/ingenuity/camera_info"/>
+    <remap from="/nasa_perseverance/depth_camera" to="/ingenuity/depth_camera"/>
+    <remap from="/nasa_perseverance/depth_camera/points" to="/ingenuity/depth_camera/points"/>
+    
+    <!-- Ingenuity Remaps -->
+    <remap from="/model/nasa_ingenuity/odometry" to="/ingenuity/odometry"/>
+    <remap from="/model/nasa_ingenuity/joint/MHS_TopBlades_v16/cmd_thrust" to="/ingenuity/top_blades/thrust"/>
+    <remap from="/model/nasa_ingenuity/joint/MHS_BottomBlades_v16/cmd_thrust" to="/ingenuity/bottom_blades/thrust"/>
+    <remap from="/model/nasa_ingenuity/battery/ingenuity_battery/state" to="/ingenuity/battery_state"/>
+    <remap from="/model/nasa_ingenuity/battery/ingenuity_battery/recharge/start" to="/ingenuity/battery_recharge_start"/>
+    <remap from="/nasa_ingenuity/camera" to="/ingenuity/camera"/>
+    <remap from="/nasa_ingenuity/camera_info" to="/ingenuity/camera_info"/>
+    <remap from="/nasa_ingenuity/depth_camera" to="/ingenuity/depth_camera"/>
+    <remap from="/nasa_ingenuity/depth_camera/points" to="/ingenuity/depth_camera/points"/>
+    <remap from="/nasa_ingenuity/swashplate1_joint_cmd" to="/ingenuity/swashplate_1/joint"/>
+    <remap from="/nasa_ingenuity/swashplate2_joint_cmd" to="/ingenuity/swashplate_2/joint"/>
+
+  </node>
+
+</launch>

@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <model name="lunar_surface">
+    <static>true</static>
+    <pose>0 0 209 0 0 0</pose>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <heightmap>
+            <uri>dem/moon.tif</uri>
+            <size>80 80 10</size>
+            <pos>0 0 209</pos>
+          </heightmap>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>50</mu>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <heightmap>
+            <use_terrain_paging>false</use_terrain_paging>
+            <texture>
+              <diffuse>materials/textures/moon_diffuse.png</diffuse>
+              <normal>materials/textures/moon_normal.png</normal>
+              <size>10</size>
+            </texture>
+            <uri>dem/moon.tif</uri>
+            <size>80 80 10</size>
+            <pos>0 0 209</pos>
+            <sampling>2</sampling>
+          </heightmap>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

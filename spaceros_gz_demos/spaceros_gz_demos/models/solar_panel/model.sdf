@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+    <model name="solar_panel">
+        <pose>6 -8 4 1.57 0 0</pose>
+        <link name="pole">
+            <pose>0 -1 0 1.57 0 0</pose>
+            <visual name="pole_visual">
+                <geometry>
+                    <cylinder>
+                        <radius>0.1</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Black</name>
+                    </script>
+                </material>
+            </visual>
+            <collision name="pole_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.1</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+        </link>
+        <link name="panel">
+            <inertial>
+                <mass>40</mass>
+            </inertial>
+            <visual name="panel_visual">
+                <geometry>
+                    <mesh>
+                        <uri>model://solar_panel/resources/solar_panel.glb</uri>
+                        <scale>0.01 0.01 0.01</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+            <collision name="panel_collision">
+                <geometry>
+                    <mesh>
+                        <uri>model://solar_panel/resources/solar_panel.glb</uri>
+                        <scale>0.01 0.01 0.01</scale>
+                    </mesh>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="panel_pole_joint" type="revolute">
+            <parent>pole</parent>
+            <child>panel</child>
+            <axis>
+                <xyz>1 0 0</xyz>
+                <limit>
+                    <lower>-1.57</lower>
+                    <upper>1.57</upper>
+                    <effort>100</effort>
+                    <velocity>0.1</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.1</damping>
+                    <friction>0.1</friction>
+                </dynamics>
+            </axis>
+        </joint>
+        <joint name="pole_world_joint" type="fixed">
+            <parent>world</parent>
+            <child>pole</child>
+        </joint>
+
+        <plugin
+            filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+            <joint_name>panel_pole_joint</joint_name>
+            <topic>solar_panel_joint_cmd</topic>
+            <p_gain>1</p_gain>
+            <i_gain>0.1</i_gain>
+            <d_gain>0.01</d_gain>
+            <i_max>1</i_max>
+            <i_min>-1</i_min>
+            <cmd_max>1</cmd_max>
+            <cmd_min>-1</cmd_min>
+        </plugin>
+    </model>
+</sdf>
