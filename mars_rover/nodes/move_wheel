@@ -9,6 +9,9 @@ from std_msgs.msg import String, Float64MultiArray
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from geometry_msgs.msg import Twist
 import math
+from racs2_msg.msg import RACS2UserMsg
+from RACS2Bridge_geometry_msgs_pb2 import RACS2Bridge_geometry_msgs_Twist
+
 
 class MoveWheel(Node):
 
@@ -21,19 +24,33 @@ class MoveWheel(Node):
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
 
-        self.vel_sub = self.create_subscription(Twist, '/cmd_vel', self.vel_callback, 10)
+        # self.vel_sub = self.create_subscription(Twist, '/cmd_vel', self.vel_callback, 10)
+        self.vel_sub = self.create_subscription(RACS2UserMsg, '/cmd_vel', self.vel_callback, 10)
         self.curr_vel = Twist()
         self.last_vel = Twist()
         self.should_steer = False
 
     def vel_callback(self, msg):
+        self.get_logger().info('Subscribing: [/cmd_vel]')
+        message = RACS2Bridge_geometry_msgs_Twist()
+        message.ParseFromString(b''.join(msg.body_data))
+        self.get_logger().info(f"message: {message}")
+        twist_msg = Twist()
+        twist_msg.linear.x = message.linear.x
+        twist_msg.linear.y = message.linear.y
+        twist_msg.linear.z = message.linear.z
+        twist_msg.angular.x = message.angular.x
+        twist_msg.angular.y = message.angular.y
+        twist_msg.angular.z = message.angular.z
         if abs(self.last_vel.angular.z - self.curr_vel.angular.z) > 0.01 and self.should_steer is False:
             self.last_vel = Twist()
             self.last_vel.linear.x = self.curr_vel.linear.x
             self.last_vel.angular.z = self.curr_vel.angular.z
             self.should_steer = True
 
-        self.curr_vel = msg
+        # self.curr_vel = msg
+        self.curr_vel = twist_msg
+        self.get_logger().info(f"self.curr_vel: {self.curr_vel}")
 
     def set_wheel_common_speed(self, vel):
 
