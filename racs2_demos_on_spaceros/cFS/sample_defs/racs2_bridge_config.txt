@@ -1,0 +1,2 @@
+wss_uri=localhost
+wss_port=8765
