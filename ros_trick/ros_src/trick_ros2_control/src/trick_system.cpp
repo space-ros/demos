@@ -177,19 +177,19 @@ std::vector<hardware_interface::CommandInterface> TrickSystem::export_command_in
       std::string joint_interface_name = joint_info.command_interfaces[j].name;
       if (joint_interface_name == hardware_interface::HW_IF_POSITION)
       {
-        command_variable_ptr_ = &joints_data_[i].joint_position;
+        command_variable_ptr_ = &joints_data_[i].joint_position_cmd;
       }
       if (joint_interface_name == hardware_interface::HW_IF_VELOCITY)
       {
-        command_variable_ptr_ = &joints_data_[i].joint_velocity;
+        command_variable_ptr_ = &joints_data_[i].joint_velocity_cmd;
       }
       if (joint_interface_name == hardware_interface::HW_IF_ACCELERATION)
       {
-        command_variable_ptr_ = &joints_data_[i].joint_acceleration;
+        command_variable_ptr_ = &joints_data_[i].joint_acceleration_cmd;
       }
       if (joint_interface_name == hardware_interface::HW_IF_EFFORT)
       {
-        command_variable_ptr_ = &joints_data_[i].joint_effort;
+        command_variable_ptr_ = &joints_data_[i].joint_effort_cmd;
       }
       // TODO(later) - parametrize it with joint params
       *command_variable_ptr_ = 0.0;
