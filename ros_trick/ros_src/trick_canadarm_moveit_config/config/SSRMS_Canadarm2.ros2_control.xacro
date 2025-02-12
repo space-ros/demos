@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="SSRMS_Canadarm2_ros2_control" params="name">
+        <ros2_control name="${name}" type="system">
+            <hardware>
+                <plugin>trick_ros2_control/TrickSystem</plugin>
+                <param name="trick_variable_server_host">localhost</param>
+                <param name="trick_variable_server_port">49765</param>
+                <param name="trick_variable_cycle_rate">100.0</param>
+            </hardware>
+
+            <joint name="Base_Joint">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[0]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[0]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[0]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[0]</param>
+            </joint>
+
+            <joint name="Shoulder_Roll">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[1]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[1]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[1]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[1]</param>
+            </joint>
+
+            <joint name="Shoulder_Yaw">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[2]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[2]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[2]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[2]</param>
+            </joint>
+
+            <joint name="Elbow_Pitch">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[3]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[3]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[3]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[3]</param>
+            </joint>
+
+            <joint name="Wrist_Pitch">
+              <state_interface name="position"/>
+              <state_interface name="velocity"/>
+              <state_interface name="acceleration"/>
+              <command_interface name="effort"/>
+              <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[4]</param>
+              <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[4]</param>
+              <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[4]</param>
+              <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[4]</param>
+            </joint>
+
+            <joint name="Wrist_Yaw">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[5]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[5]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[5]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[5]</param>
+            </joint>
+
+            <joint name="Wrist_Roll">
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+                <state_interface name="acceleration"/>
+                <command_interface name="effort"/>
+                <param name="state_interface/position/trick_variable_name">CanadarmManip.manip.q[6]</param>
+                <param name="state_interface/velocity/trick_variable_name">CanadarmManip.manip.q_dot[6]</param>
+                <param name="state_interface/acceleration/trick_variable_name">CanadarmManip.manip.q_dotdot[6]</param>
+                <param name="command_interface/effort/trick_variable_name">CanadarmManip.manip.input_torque[6]</param>
+            </joint>
+        </ros2_control>
+    </xacro:macro>
+</robot>
