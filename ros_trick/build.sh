@@ -12,6 +12,8 @@ SPACEROS_DOCKER_REPO_PATH="${CURRENT_PATH}/docker_repo"
 if [ ! -d ${SPACEROS_DOCKER_REPO_PATH} ]; then
     mkdir -p ${SPACEROS_DOCKER_REPO_PATH}
     git clone -b humble-2024.07.0 https://github.com/space-ros/docker.git ${SPACEROS_DOCKER_REPO_PATH}
+    cd ${SPACEROS_DOCKER_REPO_PATH}
+    git apply ${CURRENT_PATH}/spaceros_docker_repo.patch
     cd ${CURRENT_PATH}
 fi
 cd ${SPACEROS_DOCKER_REPO_PATH}/moveit2 && ./build.sh

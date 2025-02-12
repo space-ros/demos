@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Tested with humble-2024.07.0 release
-FROM osrf/space-ros:latest
+FROM osrf/space-ros:humble-2024.07.0
 
 # ------------------------------------------------------------------------------
 # Get Install trick dependencies
