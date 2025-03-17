@@ -11,9 +11,9 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-
 canadarm_joint_trajectory_controller:
   ros__parameters:
+    allow_nonzero_velocity_at_trajectory_end: false
     joints:
       - Base_Joint
       - Shoulder_Roll
@@ -22,12 +22,41 @@ canadarm_joint_trajectory_controller:
       - Wrist_Pitch
       - Wrist_Yaw
       - Wrist_Roll
-    interface_name: position
+#    interface_name: position
     command_interfaces:
       - position
     state_interfaces:
       - position
       - velocity
+    gains:
+      Base_Joint:
+        p: 5000.0
+        i: 100.0
+        d: 2.0
+      Shoulder_Roll:
+        p: 5000.0
+        i: 100.0
+        d: 2.0
+      Shoulder_Yaw:
+        p: 5000.0
+        i: 100.0
+        d: 20.0
+      Elbow_Pitch:
+        p: 5000.0
+        i: 100.0
+        d: 2.0
+      Wrist_Pitch:
+        p: 5000.0
+        i: 100.0
+        d: 2.0
+      Wrist_Yaw:
+        p: 5000.0
+        i: 100.0
+        d: 2.0
+      Wrist_Roll:
+        p: 5000.0
+        i: 100.0
+        d: 2.0	
 
 canadarm_joint_controller:
   ros__parameters:
@@ -47,30 +76,30 @@ canadarm_joint_controller:
       - effort
     gains:
       Base_Joint:
-        p: 50.0
-        i: 100.0
-        d: 2000.0
+        p: 1000.0
+        i: 10.0
+        d: 200.0
       Shoulder_Roll:
-        p: 50.0
-        i: 100.0
-        d: 2000.0
+        p: 1000.0
+        i: 10.0
+        d: 200.0
       Shoulder_Yaw:
-        p: 50.0
-        i: 100.0
-        d: 2000.0
+        p: 500.0
+        i: 10.0
+        d: 200.0
       Elbow_Pitch:
-        p: 50.0
-        i: 100.0
-        d: 2000.0
+        p: 500.0
+        i: 10.0
+        d: 200.0
       Wrist_Pitch:
-        p: 50.0
-        i: 100.0
-        d: 2000.0
+        p: 500.0
+        i: 10.0
+        d: 200.0
       Wrist_Yaw:
         p: 50.0
-        i: 10.0
-        d: 200.0
+        i: 1.0
+        d: 20.0
       Wrist_Roll:
         p: 50.0
-        i: 10.0
-        d: 200.0
+        i: 1.0
+        d: 20.0

@@ -1,6 +1,6 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -19,19 +19,24 @@ def generate_launch_description():
     canadarm_demos_path = get_package_share_directory('canadarm')
     simulation_models_path = get_package_share_directory('simulation')
 
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+    env = {'GZ_SIM_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
-           'IGN_GAZEBO_RESOURCE_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), canadarm_demos_path])}
+           'GZ_SIM_RESOURCE_PATH':
+           ':'.join([environ.get('GZ_SIM_RESOURCE_PATH', default=''), canadarm_demos_path])}
+
+    env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH',
+      PathJoinSubstitution([FindPackageShare('simulation'), 'models']) 
+    )
 
 
     urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
-    leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.world')
+    leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.sdf')
 
 
     doc = xacro.process_file(urdf_model_path, mappings={'xyz' : '1.0 0.0 1.5', 'rpy': '3.1416 0.0 0.0'})
-    robot_description = {'robot_description': doc.toxml()}
+    robot_description_content = doc.toxml()
+    robot_description = {'robot_description': robot_description_content}
 
 
     #run_node = Node(
@@ -46,64 +51,89 @@ def generate_launch_description():
         output='screen'
     )
 
-
-    start_world = ExecuteProcess(
-        cmd=['ign gazebo', leo_model, '-r'],
-        output='screen',
-        additional_env=env,
-        shell=True
+    gz_launch = IncludeLaunchDescription(
+            PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py']),
+            launch_arguments = [
+               ('gz_args', [
+                   ' -r',
+                   ' -v 4', 
+                   leo_model
+               ])
+            ]   
     )
-
 
     robot_state_publisher = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[robot_description])
-
+            parameters=[robot_description,
+            {"use_sim_time": True}])
+    
     spawn = Node(
-        package='ros_ign_gazebo', executable='create',
-        arguments=[
-            '-name', 'canadarm',
-            '-topic', robot_description,
-        ],
-        output='screen'
-    )
+            package='ros_gz_sim',
+            executable='create',
+            name='spawn_canadarm',
+            output='screen',
+            arguments=[
+              "-string", 
+              robot_description_content, 
+              "-name", 'canadarm', 
+              "-allow_renaming", "true",
+#              "-x", LaunchConfiguration("x"), 
+#              "-y", LaunchConfiguration("y"), 
+#              "-z", LaunchConfiguration("z"),
+#              "-R", LaunchConfiguration("R"), 
+#              "-P", LaunchConfiguration("P"), 
+#              "-Y", LaunchConfiguration("Y")
+          ] 
+        )      
 
 
     # Control
-    load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
+    joint_state_broadcaster_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
         output='screen'
     )
-
-    load_canadarm_joint_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'canadarm_joint_trajectory_controller'],
-        output='screen'
+        
+    canadarm_joint_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["canadarm_joint_trajectory_controller", "-c", "/controller_manager"],
+        output='screen',
     )
 
-
+    # Make the /clock topic available in ROS
+    gz_sim_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
 
     return LaunchDescription([
-        start_world,
+#        env_gz_sim,
+        gz_launch,
         robot_state_publisher,
         spawn,
-        #run_node,
+        ##run_node,
         run_move_arm,
 
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
-                on_exit=[load_joint_state_broadcaster],
+                on_exit=[joint_state_broadcaster_spawner],
             )
         ),
         RegisterEventHandler(
             OnProcessExit(
-                target_action=load_joint_state_broadcaster,
-                on_exit=[load_canadarm_joint_controller],
+                target_action=joint_state_broadcaster_spawner,
+                on_exit=[canadarm_joint_controller_spawner],
             )
         ),
+        gz_sim_bridge
     ])
