@@ -22,42 +22,19 @@ canadarm_joint_trajectory_controller:
       - Wrist_Pitch
       - Wrist_Yaw
       - Wrist_Roll
-#    interface_name: position
+    interface_name: position
     command_interfaces:
       - position
     state_interfaces:
       - position
       - velocity
-    gains:
-      Base_Joint:
-        p: 5000.0
-        i: 100.0
-        d: 2.0
-      Shoulder_Roll:
-        p: 5000.0
-        i: 100.0
-        d: 2.0
-      Shoulder_Yaw:
-        p: 5000.0
-        i: 100.0
-        d: 20.0
-      Elbow_Pitch:
-        p: 5000.0
-        i: 100.0
-        d: 2.0
-      Wrist_Pitch:
-        p: 5000.0
-        i: 100.0
-        d: 2.0
-      Wrist_Yaw:
-        p: 5000.0
-        i: 100.0
-        d: 2.0
-      Wrist_Roll:
-        p: 5000.0
-        i: 100.0
-        d: 2.0	
-
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.1
+      goal_time: 0.0
+      
 canadarm_joint_controller:
   ros__parameters:
     joints:

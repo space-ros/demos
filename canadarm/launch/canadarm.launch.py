@@ -2,7 +2,7 @@ from http.server import executable
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable, IncludeLaunchDescription, ExecuteProcess, RegisterEventHandler
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
-from launch_ros.actions import Node
+from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
 from launch.event_handlers import OnProcessExit, OnExecutionComplete
 import os
@@ -17,20 +17,18 @@ def generate_launch_description():
     # ld = LaunchDescription()
 
     canadarm_demos_path = get_package_share_directory('canadarm')
-    simulation_models_path = get_package_share_directory('simulation')
-
-    env = {'GZ_SIM_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
-                     environ.get('LD_LIBRARY_PATH', default='')]),
-           'GZ_SIM_RESOURCE_PATH':
-           ':'.join([environ.get('GZ_SIM_RESOURCE_PATH', default=''), canadarm_demos_path])}
-
-    env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH',
-      PathJoinSubstitution([FindPackageShare('simulation'), 'models']) 
+    canadarm_models_path = get_package_share_directory('simulation')
+    
+    sim_resource_path = os.pathsep.join(
+            [
+                environ.get("GZ_SIM_RESOURCE_PATH", default=""),
+                os.path.join( canadarm_models_path, 'models' )
+            ]
     )
+    env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', sim_resource_path)
 
 
-    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
+    urdf_model_path = os.path.join(canadarm_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.sdf')
 
 
@@ -55,9 +53,9 @@ def generate_launch_description():
             PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py']),
             launch_arguments = [
                ('gz_args', [
+                   leo_model,
                    ' -r',
-                   ' -v 4', 
-                   leo_model
+                   ' -v 4' 
                ])
             ]   
     )
@@ -80,12 +78,6 @@ def generate_launch_description():
               robot_description_content, 
               "-name", 'canadarm', 
               "-allow_renaming", "true",
-#              "-x", LaunchConfiguration("x"), 
-#              "-y", LaunchConfiguration("y"), 
-#              "-z", LaunchConfiguration("z"),
-#              "-R", LaunchConfiguration("R"), 
-#              "-P", LaunchConfiguration("P"), 
-#              "-Y", LaunchConfiguration("Y")
           ] 
         )      
 
@@ -116,7 +108,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-#        env_gz_sim,
+        SetParameter(name='use_sim_time', value=True),    
+        env_gz_sim,
         gz_launch,
         robot_state_publisher,
         spawn,

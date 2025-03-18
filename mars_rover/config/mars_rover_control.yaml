@@ -15,7 +15,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
     wheel_tree_position_controller:
-      type: effort_controllers/JointGroupPositionController
+      type: effort_controllers/JointGroupEffortController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -29,12 +29,22 @@ arm_joint_trajectory_controller:
       - arm_03_joint
       - arm_04_joint
       - arm_tools_joint
-    interface_name: position
     command_interfaces:
       - position
     state_interfaces:
       - position
       - velocity
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.2
+      goal_time: 0.0
+      arm_01_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_02_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_03_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_04_joint: { trajectory: 0.2, goal: 0.1 }
+      arm_tools_joint: { trajectory: 0.2, goal: 0.1 }
 
 mast_joint_trajectory_controller:
   ros__parameters:

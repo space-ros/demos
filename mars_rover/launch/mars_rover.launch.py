@@ -1,6 +1,6 @@
 from http.server import executable
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.substitutions import TextSubstitution, PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
@@ -23,15 +23,22 @@ def generate_launch_description():
     mars_rover_demos_path = get_package_share_directory('mars_rover')
     mars_rover_models_path = get_package_share_directory('simulation')
 
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
-                     environ.get('LD_LIBRARY_PATH', default='')]),
-           'IGN_GAZEBO_RESOURCE_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), mars_rover_demos_path])}
+    sim_resource_path = os.pathsep.join(
+            [
+                environ.get("GZ_SIM_RESOURCE_PATH", default=""),
+                os.path.join( mars_rover_models_path, 'models' )
+            ]
+    )
+    env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', sim_resource_path)
+
+#    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
+#           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+#                     environ.get('LD_LIBRARY_PATH', default='')]),
+#          } 
     
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
         'urdf', 'curiosity_mars_rover.xacro')
-    mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.world')
+    mars_world_model = os.path.join(mars_rover_demos_path, 'worlds', 'mars_curiosity.sdf')
 
     doc = xacro.process_file(urdf_model_path)
     robot_description = {'robot_description': doc.toxml()}
@@ -66,12 +73,16 @@ def generate_launch_description():
         output='screen'
     )
 
-    start_world = ExecuteProcess(
-        cmd=['ign gazebo', mars_world_model, '-r'],
-        output='screen',
-        additional_env=env,
-        shell=True
-    )
+    gz_launch = IncludeLaunchDescription(
+            PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py']),
+            launch_arguments = [
+               ('gz_args', [
+                   mars_world_model,
+                   ' -r',
+                   ' -v 4' 
+               ])
+            ]   
+    )    
 
     robot_state_publisher = Node(
             package='robot_state_publisher',
@@ -84,9 +95,9 @@ def generate_launch_description():
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
-                '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
-                '/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
-                '/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
+                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+                '/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+#                '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
             ],
             output='screen')
             
@@ -97,16 +108,18 @@ def generate_launch_description():
             output='screen')
 
     spawn = Node(
-        package='ros_ign_gazebo', executable='create',
-        arguments=[
-            '-name', 'curiosity_mars_rover',
-            '-topic', robot_description,
-            '-z', '-7.5'
-        ],
-        output='screen'
-        
-    )
-
+            package='ros_gz_sim',
+            executable='create',
+            name='spawn_mars_rover',
+            arguments=[
+              "-topic", 
+              robot_description, 
+              "-name", 'curiosity_mars_rover', 
+              "-allow_renaming", "true",
+              "-z", '-7.5',
+            ],
+            output='screen'           
+        ) 
 
     ## Control Components
 
@@ -120,45 +133,52 @@ def generate_launch_description():
             component_state_msg]
     )
 
-    load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
+    load_joint_state_broadcaster = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
-    load_arm_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'arm_joint_trajectory_controller'],
+    load_arm_joint_traj_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=['arm_joint_trajectory_controller', "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
-    load_mast_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'mast_joint_trajectory_controller'],
+    load_mast_joint_traj_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["mast_joint_trajectory_controller", "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
-    load_wheel_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'wheel_velocity_controller'],
+    load_wheel_joint_traj_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=['wheel_velocity_controller', "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
-    load_steer_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'steer_position_controller'],
+    load_steer_joint_traj_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=['steer_position_controller', "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
-    load_suspension_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'wheel_tree_position_controller'],
+    load_suspension_joint_traj_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=['wheel_tree_position_controller', "--controller-manager", "/controller_manager"],
         output='screen'
     )
 
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
-        start_world,
+        env_gz_sim,
+        gz_launch,
         robot_state_publisher,
         spawn,
         arm_node,
@@ -167,17 +187,10 @@ def generate_launch_description():
         run_node,
         odom_node,
         ros_gz_bridge,
-        image_bridge,
-
+#        image_bridge,
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
-                on_exit=[set_hardware_interface_active],
-            )
-        ),
-        RegisterEventHandler(
-            OnProcessExit(
-                target_action=set_hardware_interface_active,
                 on_exit=[load_joint_state_broadcaster],
             )
         ),
@@ -188,7 +201,8 @@ def generate_launch_description():
                         load_mast_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
-                        load_suspension_joint_traj_controller],
+                        load_suspension_joint_traj_controller
+],
             )
         ),
     ])
