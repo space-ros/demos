@@ -27,6 +27,13 @@ def generate_launch_description():
     )
     env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', sim_resource_path)
 
+    plugin_path = os.pathsep.join(
+            [
+                environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
+                environ.get("LD_LIBRARY_PATH", default=""),
+            ]
+    )
+    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', plugin_path)
 
     urdf_model_path = os.path.join(canadarm_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.sdf')
@@ -110,6 +117,7 @@ def generate_launch_description():
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),    
         env_gz_sim,
+        env_gz_plugin,
         gz_launch,
         robot_state_publisher,
         spawn,

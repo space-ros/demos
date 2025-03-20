@@ -13,8 +13,6 @@ from ament_index_python.packages import get_package_share_directory
 
 import xacro
 
-
-
 # . ../spaceros_ws/install/setup.bash && . ../depends_ws/install/setup.bash
 # rm -rf build install log && colcon build && . install/setup.bash
 
@@ -31,10 +29,13 @@ def generate_launch_description():
     )
     env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', sim_resource_path)
 
-#    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-#           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
-#                     environ.get('LD_LIBRARY_PATH', default='')]),
-#          } 
+    plugin_path = os.pathsep.join(
+            [
+                environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
+                environ.get("LD_LIBRARY_PATH", default=""),
+            ]
+    )
+    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', plugin_path)
     
     urdf_model_path = os.path.join(mars_rover_models_path, 'models', 'curiosity_path',
         'urdf', 'curiosity_mars_rover.xacro')
@@ -97,7 +98,7 @@ def generate_launch_description():
             arguments=[
                 '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
                 '/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-#                '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
+                '/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan',
             ],
             output='screen')
             
@@ -178,6 +179,7 @@ def generate_launch_description():
     return LaunchDescription([
         SetParameter(name='use_sim_time', value=True),
         env_gz_sim,
+        env_gz_plugin,
         gz_launch,
         robot_state_publisher,
         spawn,
@@ -187,7 +189,7 @@ def generate_launch_description():
         run_node,
         odom_node,
         ros_gz_bridge,
-#        image_bridge,
+        image_bridge,
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
@@ -202,7 +204,7 @@ def generate_launch_description():
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
                         load_suspension_joint_traj_controller
-],
+                ],
             )
         ),
     ])
