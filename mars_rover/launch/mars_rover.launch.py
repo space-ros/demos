@@ -124,7 +124,7 @@ def generate_launch_description():
 
     ## Control Components
 
-    component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
+    component_state_msg = '{name: "GazeboSystem", target_state: {id: 3, label: ""}}'
 
     ## a hack to resolve current bug
     set_hardware_interface_active = ExecuteProcess(
@@ -190,9 +190,16 @@ def generate_launch_description():
         odom_node,
         ros_gz_bridge,
         image_bridge,
+        
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
+                on_exit=[set_hardware_interface_active],
+            )
+        ),
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=set_hardware_interface_active,
                 on_exit=[load_joint_state_broadcaster],
             )
         ),
@@ -203,8 +210,7 @@ def generate_launch_description():
                         load_mast_joint_traj_controller,
                         load_wheel_joint_traj_controller,
                         load_steer_joint_traj_controller,
-                        load_suspension_joint_traj_controller
-                ],
+                        load_suspension_joint_traj_controller],
             )
         ),
     ])

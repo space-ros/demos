@@ -13,7 +13,7 @@
       <plugin filename="MinimalScene" name="3D View">
         <gz-gui>
           <title>3D View</title>
-          <property type="bool" key="showTitleBar">false</property>
+          <property type="bool" key="showTitleBar">true</property>
           <property type="string" key="state">docked</property>
         </gz-gui>
  

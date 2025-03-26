@@ -17,12 +17,12 @@ def generate_launch_description():
     # ld = LaunchDescription()
 
     canadarm_demos_path = get_package_share_directory('canadarm')
-    canadarm_models_path = get_package_share_directory('simulation')
+    simulation_models_path = get_package_share_directory('simulation')
     
     sim_resource_path = os.pathsep.join(
             [
                 environ.get("GZ_SIM_RESOURCE_PATH", default=""),
-                os.path.join( canadarm_models_path, 'models' )
+                os.path.join( simulation_models_path, 'models' )
             ]
     )
     env_gz_sim = SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', sim_resource_path)
@@ -35,7 +35,7 @@ def generate_launch_description():
     )
     env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', plugin_path)
 
-    urdf_model_path = os.path.join(canadarm_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
+    urdf_model_path = os.path.join(simulation_models_path, 'models', 'canadarm', 'urdf', 'SSRMS_Canadarm2.urdf.xacro')
     leo_model = os.path.join(canadarm_demos_path, 'worlds', 'simple.sdf')
 
 
@@ -90,14 +90,14 @@ def generate_launch_description():
 
 
     # Control
-    joint_state_broadcaster_spawner = Node(
+    load_joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
         output='screen'
     )
         
-    canadarm_joint_controller_spawner = Node(
+    load_canadarm_joint_controller = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["canadarm_joint_trajectory_controller", "-c", "/controller_manager"],
@@ -121,19 +121,19 @@ def generate_launch_description():
         gz_launch,
         robot_state_publisher,
         spawn,
-        ##run_node,
+        #run_node,
         run_move_arm,
 
         RegisterEventHandler(
             OnProcessExit(
                 target_action=spawn,
-                on_exit=[joint_state_broadcaster_spawner],
+                on_exit=[load_joint_state_broadcaster],
             )
         ),
         RegisterEventHandler(
             OnProcessExit(
-                target_action=joint_state_broadcaster_spawner,
-                on_exit=[canadarm_joint_controller_spawner],
+                target_action=load_joint_state_broadcaster,
+                on_exit=[load_canadarm_joint_controller],
             )
         ),
         gz_sim_bridge

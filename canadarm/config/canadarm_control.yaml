@@ -53,30 +53,30 @@ canadarm_joint_controller:
       - effort
     gains:
       Base_Joint:
-        p: 1000.0
-        i: 10.0
-        d: 200.0
+        p: 50.0
+        i: 100.0
+        d: 2000.0
       Shoulder_Roll:
-        p: 1000.0
-        i: 10.0
-        d: 200.0
+        p: 50.0
+        i: 100.0
+        d: 2000.0
       Shoulder_Yaw:
-        p: 500.0
-        i: 10.0
-        d: 200.0
+        p: 50.0
+        i: 100.0
+        d: 2000.0
       Elbow_Pitch:
-        p: 500.0
-        i: 10.0
-        d: 200.0
+        p: 50.0
+        i: 100.0
+        d: 2000.0
       Wrist_Pitch:
-        p: 500.0
-        i: 10.0
-        d: 200.0
+        p: 50.0
+        i: 100.0
+        d: 2000.0
       Wrist_Yaw:
         p: 50.0
-        i: 1.0
-        d: 20.0
+        i: 100.0
+        d: 2000.0
       Wrist_Roll:
         p: 50.0
-        i: 1.0
-        d: 20.0
+        i: 100.0
+        d: 2000.0
