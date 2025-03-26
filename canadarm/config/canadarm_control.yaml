@@ -74,9 +74,9 @@ canadarm_joint_controller:
         d: 2000.0
       Wrist_Yaw:
         p: 50.0
-        i: 100.0
-        d: 2000.0
+        i: 10.0
+        d: 200.0
       Wrist_Roll:
         p: 50.0
-        i: 100.0
-        d: 2000.0
+        i: 10.0
+        d: 200.0
