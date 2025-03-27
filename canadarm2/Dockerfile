@@ -1,4 +1,4 @@
-FROM osrf/space-ros:latest
+FROM osrf/space-ros:humble-2024.07.0
 
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV ROS_DISTRO=humble
