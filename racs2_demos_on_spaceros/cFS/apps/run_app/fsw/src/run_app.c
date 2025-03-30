@@ -53,39 +53,6 @@ static CFE_EVS_BinFilter_t  SAMPLE_EventFilters[] =
           {SAMPLE_COMMANDRST_INF_EID,    0x0000},
        };
 
-
-void send_command(Command cmd) {
-    switch (cmd) {
-        case FORWARD:
-            printf("Moving Forward\n");
-            twist_linear_x = 2.0;
-            break;
-        case BACKWARD:
-            printf("Moving Backward\n");
-            twist_linear_x = -2.0;
-            break;
-        case TURN_RIGHT:
-            printf("Turning Right\n");
-            twist_linear_x = 1.0;
-            twist_angular_z = -0.4;
-            break;
-        case TURN_LEFT:
-            printf("Turning Left\n");
-            twist_linear_x = 1.0;
-            twist_angular_z = 0.4;
-            break;
-        case STOP:
-            printf("Stopping\n");
-            twist_linear_x = 0.0;
-            twist_linear_y = 0.0;
-            twist_linear_z = 0.0;
-            twist_angular_x = 0.0;
-            twist_angular_y = 0.0;
-            twist_angular_z = 0.0;
-            break;
-    }
-}
-
 void process_input(char input) {
     switch (input) {
         case 'w':
@@ -129,14 +96,14 @@ void process_input(char input) {
 void set_non_canonical_mode(int fd) {
     struct termios termios;
 
-    // 現在の端末設定を取得
+    // Get the current terminal settings
     tcgetattr(fd, &original_termios);
 
-    // 設定を変更
+    // Modify the settings
     termios = original_termios;
-    termios.c_lflag &= ~(ICANON | ECHO); // 非カノニカルモード、エコーを無効にする
+    termios.c_lflag &= ~(ICANON | ECHO); // Disable canonical mode and echo
 
-    // 変更を適用
+    // Apply the changes immediately
     tcsetattr(fd, TCSANOW, &termios);
 }
 
@@ -145,7 +112,7 @@ void restore_canonical_mode(int fd) {
 }
 
 void signal_handler(int signum) {
-    // 端末設定を元に戻す
+    // Restore the original terminal settings
     restore_canonical_mode(fileno(stdin));
     printf("\nTerminating program.\n");
     exit(0);
@@ -167,7 +134,6 @@ void RUN_APP_Main( void )
 
     SAMPLE_TAKLKER_Init();
 
-    struct termios original_termios;
     char input;
     signal(SIGINT, signal_handler);
 
@@ -216,12 +182,6 @@ void RUN_APP_Main( void )
         message.angular->x = twist_angular_x;
         message.angular->y = twist_angular_y;
         message.angular->z = twist_angular_z;
-        // message.linear->x = 2.0;
-        // message.linear->y = 0.0;
-        // message.linear->z = 0.0;
-        // message.angular->x = 0.0;
-        // message.angular->y = 0.0;
-        // message.angular->z = 0.0;
 
         OS_printf("RUN_APP: [Send][MsgID=0x%x][linear: x = %5.2f, y = %5.2f, z = %5.2f][angular: x = %5.2f, y = %5.2f, z = %5.2f]\n", 
             RACS2_BRIDGE_MID,
@@ -245,10 +205,7 @@ void RUN_APP_Main( void )
         // send data
         CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &RACS2_UserMsgPkt);
         status = CFE_SB_SendMsg((CFE_SB_Msg_t *) &RACS2_UserMsgPkt);
-        // OS_printf("RUN_APP: Sent message, MID = [0x%x], sample_command_count = %d\n", 
-        //     CFE_SB_GetMsgId((CFE_SB_MsgPtr_t) &RACS2_UserMsgPkt),
-        //     RACS2_UserMsgPkt.sample_command_count
-        //     );
+
         if (status != CFE_SUCCESS) {
             OS_printf("RUN_APP: Error: sending is failed. status = 0x%x\n", status);
         }
