@@ -8,10 +8,9 @@ This is RACS2 Bridge demo for Curiosity Mars rover.
 
 ## Building the Demo Docker
 
-The demo image builds on top of the `spaceros`, `moveit2`, `space_robots` images.
-To build the docker image, first ensure the `spaceros` base image is available either by [building it locally](https://github.com/space-ros/space-ros) or pulling it.
+This demo builds on top of the [`space-ros`](https://github.com/space-ros/space-ros), [`moveit2`](https://github.com/space-ros/docker/tree/main/moveit2), and [`space_robots`](https://github.com/space-ros/docker/tree/main/space_robots) Docker images.
 
-Then build the `moveit2`, `space_robots` and `racs2_demos_on_spaceros` demo images: 
+To build the RACS2 demo image, follow these steps:
 
 ```bash
 git clone https://github.com/space-ros/docker.git
@@ -19,9 +18,13 @@ cd docker/moveit2
 ./build.sh
 cd ../space_robots
 ./build.sh
-cd ../../
+cd ../../demos/racs2_demos_on_spaceros
 ./build.sh
 ```
+
+The final step builds the racs2_demos_on_spaceros image using the base images built in the previous steps.
+
+Make sure you have Docker installed and sufficient permissions to run it (sudo may be required depending on your setup).
 
 ## Running the Demo Docker
 
@@ -36,7 +39,7 @@ Then run:
 ./run.sh
 ```
 
-Depending on the host computer, you might need to remove the ```--gpus all``` flag in ```run.sh```, which uses your GPUs.
+Depending on the host computer, you might need to add/remove the ```--gpus all``` flag in ```run.sh```, which uses your GPUs.
 
 ## Running the Demos
 
@@ -44,7 +47,7 @@ Depending on the host computer, you might need to remove the ```--gpus all``` fl
 Launch the rover demo (calling Terminal 1):
 ```bash
 source install/setup.bash
-ros2 launch mars_rover mars_rover.launch.py
+ros2 launch curiosity_rover_demo mars_rover.launch.py
 ```
 
 #### RACS2 Bridge demo
@@ -70,7 +73,6 @@ cd cfs/build/exe/cpu1/
 
 **Executing commands to the rover must be done with this terminal active.**
 
-
 ##### Available Commands
 
 Drive commands to the rover are input via keyboard in Terimnal 3. The keymap is as follows.
@@ -82,6 +84,7 @@ Drive commands to the rover are input via keyboard in Terimnal 3. The keymap is 
 * "x": Stop the rover
 
 ##### Nodes
+
 ![RACS2 demo on Space ROS Mars rover demo](racs2_demo_on_spaceros_nodes.png)
 
 ## Reference

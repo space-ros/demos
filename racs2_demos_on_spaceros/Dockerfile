@@ -65,7 +65,7 @@ RUN git submodule update
 
 # Get the RACS2 source code
 WORKDIR ${RACS2_DEMO_DIR}
-RUN git clone https://github.com/jaxa/racs2_bridge -b v1.1
+RUN git clone https://github.com/jaxa/racs2_bridge -b v1.1.1
 
 # Get the demo source code
 # rename old demo directory and exclude from build
@@ -111,13 +111,19 @@ RUN cp -pr ${RACS2_DEMO_DIR}/racs2_bridge/ROS2/Bridge/Server_Python/bridge_py_s 
 RUN cp -pr ${RACS2_DEMO_DIR}/racs2_bridge/Example/Case.1/ROS2/racs2_msg src/
 
 
-COPY  CMakeLists.txt  ${DEMO_DIR}/src/demos/mars_rover/CMakeLists.txt
-COPY  package.xml  ${DEMO_DIR}/src/demos/mars_rover/package.xml
-# COPY  racs2_demos_on_spaceros ${DEMO_DIR}/src/demos/mars_rover/racs2_demos_on_spaceros
-COPY  launch/mars_rover.launch.py ${DEMO_DIR}/src/demos/mars_rover/launch/mars_rover.launch.py
-COPY  nodes/RACS2Bridge_geometry_msgs_pb2.py ${DEMO_DIR}/src/demos/mars_rover/nodes/RACS2Bridge_geometry_msgs_pb2.py
-COPY  nodes/move_wheel ${DEMO_DIR}/src/demos/mars_rover/nodes/move_wheel
+# COPY  CMakeLists.txt  ${DEMO_DIR}/src/demos/mars_rover/CMakeLists.txt
+# COPY  package.xml  ${DEMO_DIR}/src/demos/mars_rover/package.xml
+# # COPY  racs2_demos_on_spaceros ${DEMO_DIR}/src/demos/mars_rover/racs2_demos_on_spaceros
+# COPY  launch/mars_rover.launch.py ${DEMO_DIR}/src/demos/mars_rover/launch/mars_rover.launch.py
+# COPY  nodes/RACS2Bridge_geometry_msgs_pb2.py ${DEMO_DIR}/src/demos/mars_rover/nodes/RACS2Bridge_geometry_msgs_pb2.py
+# COPY  nodes/move_wheel ${DEMO_DIR}/src/demos/mars_rover/nodes/move_wheel
 
+COPY  CMakeLists.txt  ${DEMO_DIR}/src/demos/curiosity_rover/curiosity_rover_demo/CMakeLists.txt
+COPY  package.xml  ${DEMO_DIR}/src/demos/curiosity_rover/curiosity_rover_demo/package.xml
+# COPY  racs2_demos_on_spaceros ${DEMO_DIR}/src/demos/mars_rover/racs2_demos_on_spaceros
+COPY  launch/mars_rover.launch.py ${DEMO_DIR}/src/demos/curiosity_rover/curiosity_rover_demo/launch/mars_rover.launch.py
+COPY  nodes/RACS2Bridge_geometry_msgs_pb2.py ${DEMO_DIR}/src/demos/curiosity_rover/curiosity_rover_demo/nodes/RACS2Bridge_geometry_msgs_pb2.py
+COPY  nodes/move_wheel ${DEMO_DIR}/src/demos/curiosity_rover/curiosity_rover_demo/nodes/move_wheel
 
 
 
@@ -130,8 +136,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROS_DISTRO}
 
 # Build the demo
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
-  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+# RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash \
+#  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash && source ${MOVEIT2_DIR}/install/setup.bash && \
+    colcon build --packages-select \
+    curiosity_description curiosity_gazebo curiosity_rover_demo racs2_msg bridge_py_s \
+    --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 RUN sudo usermod -aG render $USERNAME

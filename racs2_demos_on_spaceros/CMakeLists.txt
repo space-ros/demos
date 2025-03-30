@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(mars_rover)
+project(curiosity_rover_demo)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -13,7 +13,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(simulation REQUIRED)
+# find_package(simulation REQUIRED)
 find_package(std_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
@@ -32,9 +32,9 @@ if(BUILD_TESTING)
 endif()
 
 install(DIRECTORY
-  config
+  # config
   launch
-  worlds
+  # worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
@@ -45,7 +45,7 @@ install(PROGRAMS
   nodes/move_mast
   nodes/move_wheel
   nodes/run_demo
-  nodes/odom_tf_publisher
+  # nodes/odom_tf_publisher
   nodes/RACS2Bridge_geometry_msgs_pb2.py
   DESTINATION lib/${PROJECT_NAME}
 )

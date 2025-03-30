@@ -1,0 +1,278 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<xacro:macro name="sensor_mast" params="">
+
+		<link name='chassis_to_mast_p'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="chassis_to_mast_p_joint" type="fixed">
+			<parent link="chassis"/>
+			<child link="chassis_to_mast_p"/>
+			<origin xyz="-0.55456 -0.722499 0.331395" rpy="0 0 0.523599"/>
+		</joint>
+
+
+		<link name='mast_p'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_p_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_p_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${mast_p_Mass}"/>
+				<xacro:box_inertia m="${mast_p_Mass}" x="${mast_p_X*scale_XYZ}" y="${mast_p_Y*scale_XYZ}" z="${mast_p_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="mast_p_joint" type="revolute">
+			<parent link="chassis_to_mast_p"/>
+			<child link="mast_p"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${mast_p_lower_limit}" upper="${mast_p_upper_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="0 1 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="mast_p_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="mast_p_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="mast_pMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='mast_p_to_mast_02'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="mast_p_to_mast_02_joint" type="fixed">
+			<parent link="mast_p"/>
+			<child link="mast_p_to_mast_02"/>
+			<origin xyz="0 0 0.473641" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='mast_02'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${mast_02_Mass}"/>
+				<xacro:box_inertia m="${mast_02_Mass}" x="${mast_02_X*scale_XYZ}" y="${mast_02_Y*scale_XYZ}" z="${mast_02_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="mast_02_joint" type="continuous">
+			<parent link="mast_p_to_mast_02"/>
+			<child link="mast_02"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit effort="10000.0" velocity="100.0"/>
+			<axis xyz="0 0 1"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="mast_02_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="mast_02_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="mast_02Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+
+		<link name='mast_02_to_mast_cameras'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="mast_02_to_mast_cameras_joint" type="fixed">
+			<parent link="mast_02"/>
+			<child link="mast_02_to_mast_cameras"/>
+			<origin xyz="0 0 0.20859" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='mast_cameras'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_cameras.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/mast_cameras.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${mast_cameras_Mass}"/>
+				<xacro:box_inertia m="${mast_cameras_Mass}" x="${mast_cameras_X*scale_XYZ}" y="${mast_cameras_Y*scale_XYZ}" z="${mast_cameras_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="mast_cameras_joint" type="revolute">
+			<parent link="mast_02_to_mast_cameras"/>
+			<child link="mast_cameras"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-mast_cameras_limit}" upper="${mast_cameras_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="mast_02_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="mast_cameras_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="mast_02Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<material name="green">
+			<color rgba="0 0.8 0 1"/>
+		</material>
+
+		<link name="camera_link">
+			<!-- Inertial for gazebo to take it into account, Put 1gr weight -->
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.001" />
+				<inertia ixx="9.1875e-09" ixy="0.0" ixz="0.0" iyy="9.1875e-09" iyz="0.0" izz="1.378125e-08"/>
+			</inertial>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<box size="0.0005 0.0005 0.0005"/>
+				</geometry>
+				<material name="green"/>
+			</visual>
+		</link>
+
+		<gazebo reference="camera_link">
+			<material>Gazebo/Green</material>
+		</gazebo>
+
+		<joint name="head_camera_joint" type="fixed">
+			<parent link="mast_cameras"/>
+			<child link="camera_link"/>
+			<origin xyz="0.13642 -0.218683 0.222314" rpy="0 0 ${-PI/2}"/>
+		</joint>
+
+		<link name="lidar_link">
+			<!-- Inertial for gazebo to take it into account, Put 1gr weight -->
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.001" />
+				<inertia ixx="9.1875e-09" ixy="0.0" ixz="0.0" iyy="9.1875e-09" iyz="0.0" izz="1.378125e-08"/>
+			</inertial>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.05" length="0.02"/>
+				</geometry>
+				<material name="black"/>
+			</visual>
+		</link>
+
+		<gazebo reference="lidar_link">
+			<material>Gazebo/Black</material>
+		</gazebo>
+
+		<joint name="lidar_joint" type="fixed">
+			<parent link="mast_cameras"/>
+			<child link="lidar_link"/>
+			<origin xyz="0 0 0.325" rpy="0 0 ${-PI/2}"/>
+		</joint>
+
+	</xacro:macro>
+
+</robot>

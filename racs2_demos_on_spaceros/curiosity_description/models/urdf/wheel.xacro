@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<xacro:macro name="wheel" params="wheel_name wheel_conector_name tY">
+		<!-- tY is Zero if left side, 1 if right side -->
+		<link name='${wheel_name}'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 1.57 0"/>
+				<geometry>
+					<cylinder radius="${wheelRadius}" length="${wheelWidth}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/wheel_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${wheelMass}"/>
+				<xacro:cylinder_inertia m="${wheelMass}" r="${wheelRadius*scale_XYZ}" h="${wheelWidth*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<gazebo reference="${wheel_name}">
+			<mu1 value="1.0"/>
+			<mu2 value="1.0"/>
+			<kp value="10000000.0" />
+			<kd>100.0</kd>
+			<minDepth>0.001</minDepth>
+			<maxVel>1.0</maxVel>
+			<!--kd value="1.0" />
+      <fdir1 value="1 0 0"/-->
+		</gazebo>
+
+		<joint name="${wheel_name}_joint" type="continuous">
+			<parent link="${wheel_conector_name}"/>
+			<child link="${wheel_name}"/>
+			<origin xyz="0 0 0" rpy="0 0 ${tY*PI}"/>
+			<limit effort="10000.0" velocity="100.0"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="${wheel_name}_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="${wheel_name}_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="${wheel_name}Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+	</xacro:macro>
+
+</robot>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>mars_rover</name>
+  <name>curiosity_rover_demo</name>
   <version>0.0.1</version>
-  <description>A RACS2 Bridge demo for Mars rover</description>
-  <maintainer email="jaxa@jaxa.jp">jaxa</maintainer>
+  <description>A RACS2 Bridge demo for Curiosity mars rover</description>
+  <maintainer email="yuyuqq@gmail.com">yuyuqq</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	
+	<!-- Scaling -->
+	<xacro:property name="scale_XYZ" value="1.0"/>
+
+	<!-- Chassis properties -->
+	<xacro:property name="chassisMass" value="733.64"/>
+
+	<xacro:property name="chassisHeight" value="0.76"/>
+	<xacro:property name="chassisLength" value="2.08157"/>
+	<xacro:property name="chassisWidth" value="1.53774"/>
+
+
+	<!-- Wheel Trees -->
+	<xacro:property name="TreeMass" value="${72.96/2.0}"/>
+	<xacro:property name="TreeParts" value="5.0"/>
+
+	<xacro:property name="axisHeight" value="0.36388"/>
+	<xacro:property name="axisLength" value="0.20321"/>
+	<xacro:property name="axisWidth" value="0.27070"/>
+	<xacro:property name="axisMass" value="${TreeMass/TreeParts}"/>
+
+	<xacro:property name="suspension_arm_F_L_Mass" value="${TreeMass/TreeParts}"/>
+	<xacro:property name="suspension_arm_F_L_X" value="0.39606"/>
+	<xacro:property name="suspension_arm_F_L_Y" value="1.02203"/>
+	<xacro:property name="suspension_arm_F_L_Z" value="0.30536"/>
+	<xacro:property name="suspension_arm_F_L_limit" value="0.4"/>
+
+	<xacro:property name="suspension_arm_B_L_Mass" value="${TreeMass/TreeParts}"/>
+	<xacro:property name="suspension_arm_B_L_X" value="0.123524"/>
+	<xacro:property name="suspension_arm_B_L_Y" value="0.852108"/>
+	<xacro:property name="suspension_arm_B_L_Z" value="0.348354"/>
+	<xacro:property name="suspension_arm_B_L_limit" value="0.4"/>
+
+	<xacro:property name="suspension_arm_B2_L_Mass" value="${TreeMass/TreeParts}"/>
+	<xacro:property name="suspension_arm_B2_L_X" value="0.400262"/>
+	<xacro:property name="suspension_arm_B2_L_Y" value="1.22113"/>
+	<xacro:property name="suspension_arm_B2_L_Z" value="0.631338"/>
+	<xacro:property name="suspension_arm_B2_lower_limit" value="-1.2"/>
+	<xacro:property name="suspension_arm_B2_upper_limit" value="1.2"/>
+
+	<xacro:property name="suspension_steer_F_L_Mass" value="${TreeMass/TreeParts}"/>
+	<xacro:property name="suspension_steer_F_L_X" value="0.528399"/>
+	<xacro:property name="suspension_steer_F_L_Y" value="0.21019"/>
+	<xacro:property name="suspension_steer_F_L_Z" value="0.450036"/>
+
+	<xacro:property name="suspension_steer_B_L_Mass" value="${TreeMass/TreeParts}"/>
+	<xacro:property name="suspension_steer_B_L_X" value="0.528399"/>
+	<xacro:property name="suspension_steer_B_L_Y" value="0.21019"/>
+	<xacro:property name="suspension_steer_B_L_Z" value="0.450036"/>
+
+	<xacro:property name="suspension_steer_limit" value="0.6"/>
+	<xacro:property name="suspension_steer_effort" value="10000.0"/>
+	<xacro:property name="suspension_steer_velocity" value="10.0"/>
+
+	<xacro:property name="suspension_effort" value="10000.0"/>
+	<xacro:property name="suspension_speed" value="10.0"/>
+	<xacro:property name="suspension_damping" value="0.5"/>
+	<xacro:property name="suspension_friction" value="0.5"/>
+
+	<!-- Wheels properties -->
+	<xacro:property name="wheelWidth" value="0.39473"/>
+	<xacro:property name="wheelRadius" value="0.242647"/>
+	<xacro:property name="wheelMass" value="2.07"/>
+
+	<!-- Arm -->
+	<xacro:property name="armMass" value="30.0"/>
+	<xacro:property name="armParts" value="5.0"/>
+
+	<xacro:property name="arm_01_Mass" value="${armMass/armParts}"/>
+	<xacro:property name="arm_01_X" value="0.356891"/>
+	<xacro:property name="arm_01_Y" value="0.334128"/>
+	<xacro:property name="arm_01_Z" value="0.300511"/>
+	<xacro:property name="arm_01_limit" value="1.57"/>
+
+	<xacro:property name="arm_02_Mass" value="${armMass/armParts}"/>
+	<xacro:property name="arm_02_X" value="0.472171"/>
+	<xacro:property name="arm_02_Y" value="0.972313"/>
+	<xacro:property name="arm_02_Z" value="0.218611"/>
+	<xacro:property name="arm_02_limit" value="1.57"/>
+
+	<xacro:property name="arm_03_Mass" value="${armMass/armParts}"/>
+	<xacro:property name="arm_03_X" value="0.30683"/>
+	<xacro:property name="arm_03_Y" value="0.178607"/>
+	<xacro:property name="arm_03_Z" value="0.878958"/>
+	<xacro:property name="arm_03_limit" value="5.0"/>
+
+	<xacro:property name="arm_04_Mass" value="${armMass/armParts}"/>
+	<xacro:property name="arm_04_X" value="0.32452"/>
+	<xacro:property name="arm_04_Y" value="0.344693"/>
+	<xacro:property name="arm_04_Z" value="0.288832"/>
+	<xacro:property name="arm_04_limit" value="1.57"/>
+
+	<xacro:property name="arm_tools_Mass" value="${armMass/armParts}"/>
+	<xacro:property name="arm_tools_X" value="0.60282"/>
+	<xacro:property name="arm_tools_Y" value="0.467147"/>
+	<xacro:property name="arm_tools_Z" value="0.21915"/>
+
+
+
+	<!-- Mast -->
+	<xacro:property name="mastMass" value="50.0"/>
+	<xacro:property name="MastParts" value="3.0"/>
+
+	<xacro:property name="mast_p_Mass" value="${mastMass/MastParts}"/>
+	<xacro:property name="mast_p_X" value="0.192274"/>
+	<xacro:property name="mast_p_Y" value="0.221494"/>
+	<xacro:property name="mast_p_Z" value="0.525621"/>
+	<xacro:property name="mast_p_upper_limit" value="1.57"/>
+	<xacro:property name="mast_p_lower_limit" value="0.0"/>
+
+	<xacro:property name="mast_02_Mass" value="${mastMass/MastParts}"/>
+	<xacro:property name="mast_02_X" value="0.270963"/>
+	<xacro:property name="mast_02_Y" value="0.232093"/>
+	<xacro:property name="mast_02_Z" value="0.285976"/>
+
+	<xacro:property name="mast_cameras_Mass" value="${mastMass/MastParts}"/>
+	<xacro:property name="mast_cameras_X" value="0.550001"/>
+	<xacro:property name="mast_cameras_Y" value="0.283001"/>
+	<xacro:property name="mast_cameras_Z" value="0.203994"/>
+	<xacro:property name="mast_cameras_limit" value="1.57"/>
+
+
+
+	
+	
+</robot>

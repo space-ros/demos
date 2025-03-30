@@ -1,0 +1,364 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<xacro:macro name="arm" params="">
+
+		<link name='chassis_to_arm_01'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="chassis_to_arm_01_joint" type="fixed">
+			<parent link="chassis"/>
+			<child link="chassis_to_arm_01"/>
+			<origin xyz="0.449641 -1.11319 0.112807" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='arm_01'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${arm_01_Mass}"/>
+				<xacro:box_inertia m="${arm_01_Mass}" x="${arm_01_X*scale_XYZ}" y="${arm_01_Y*scale_XYZ}" z="${arm_01_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="arm_01_joint" type="revolute">
+			<parent link="chassis_to_arm_01"/>
+			<child link="arm_01"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-arm_01_limit}" upper="${arm_01_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="0 0 1"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="arm_01_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="arm_01_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="arm_01Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='arm_01_to_arm_02'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="arm_01_to_arm_02_joint" type="fixed">
+			<parent link="arm_01"/>
+			<child link="arm_01_to_arm_02"/>
+			<origin xyz="0.0 -0.160259 -0.166117" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='arm_02'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_01_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_02_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${arm_02_Mass}"/>
+				<xacro:box_inertia m="${arm_02_Mass}" x="${arm_02_X*scale_XYZ}" y="${arm_02_Y*scale_XYZ}" z="${arm_02_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="arm_02_joint" type="revolute">
+			<parent link="arm_01_to_arm_02"/>
+			<child link="arm_02"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-arm_02_limit}" upper="${arm_02_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="arm_02_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="arm_02_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="arm_02Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='arm_02_to_arm_03'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="arm_02_to_arm_03_joint" type="fixed">
+			<parent link="arm_02"/>
+			<child link="arm_02_to_arm_03"/>
+			<origin xyz="0.071249 -0.825069 0.0" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='arm_03'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_03_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${arm_03_Mass}"/>
+				<xacro:box_inertia m="${arm_03_Mass}" x="${arm_03_X*scale_XYZ}" y="${arm_03_Y*scale_XYZ}" z="${arm_03_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="arm_03_joint" type="revolute">
+			<parent link="arm_02_to_arm_03"/>
+			<child link="arm_03"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-arm_03_limit}" upper="${arm_03_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="arm_03_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="arm_03_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="arm_03Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+
+		<link name='arm_03_to_arm_04'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="arm_03_to_arm_04_joint" type="fixed">
+			<parent link="arm_03"/>
+			<child link="arm_03_to_arm_04"/>
+			<origin xyz="-0.193815 0.0 0.779746" rpy="0 0 ${PI/2.0}"/>
+		</joint>
+
+
+		<link name='arm_04'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_04_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${arm_04_Mass}"/>
+				<xacro:box_inertia m="${arm_04_Mass}" x="${arm_04_X*scale_XYZ}" y="${arm_04_Y*scale_XYZ}" z="${arm_04_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="arm_04_joint" type="revolute">
+			<parent link="arm_03_to_arm_04"/>
+			<child link="arm_04"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-arm_04_limit}" upper="${arm_04_limit}" effort="10000.0" velocity="100.0"/>
+			<axis xyz="0 1 0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="arm_04_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="arm_04_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="arm_04Motor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='arm_04_to_arm_tools'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+
+		<joint name="arm_04_to_arm_tools_joint" type="fixed">
+			<parent link="arm_04"/>
+			<child link="arm_04_to_arm_tools"/>
+			<origin xyz="0.141321 0.042652 0.105732" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='arm_tools'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/arm_tools_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${arm_tools_Mass}"/>
+				<xacro:box_inertia m="${arm_tools_Mass}" x="${arm_tools_X*scale_XYZ}" y="${arm_tools_Y*scale_XYZ}" z="${arm_tools_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+
+		<joint name="arm_tools_joint" type="continuous">
+			<parent link="arm_04_to_arm_tools"/>
+			<child link="arm_tools"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit effort="10000.0" velocity="100.0"/>
+			<axis xyz="0 0 1"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+
+		<transmission name="arm_tools_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="arm_tools_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="arm_toolsMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+	</xacro:macro>
+
+</robot>

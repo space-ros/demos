@@ -1,0 +1,428 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+	<xacro:macro name="left_wheel_tree" params="">
+
+		<link name='left_axis'>
+
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${axisMass}"/>
+				<xacro:box_inertia m="${axisMass}" x="${axisWidth*scale_XYZ}" y="${axisLength*scale_XYZ}" z="${axisHeight*scale_XYZ}"/>
+			</inertial>
+
+		</link>
+
+		<joint name="left_axis_joint" type="fixed">
+			<parent link="chassis"/>
+			<child link="left_axis"/>
+			<origin xyz="0.7938 -0.2133 0" rpy="0 -0.19565141 0"/>
+		</joint>
+
+
+		<link name='suspension_arm_F_L'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${suspension_arm_F_L_Mass}"/>
+				<xacro:box_inertia m="${suspension_arm_F_L_Mass}" x="${suspension_arm_F_L_X*scale_XYZ}" y="${suspension_arm_F_L_Y*scale_XYZ}" z="${suspension_arm_F_L_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+		<joint name="suspension_arm_F_L_joint" type="revolute">
+			<parent link="left_axis"/>
+			<child link="suspension_arm_F_L"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-suspension_arm_F_L_limit}" upper="${suspension_arm_F_L_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
+		</joint>
+
+		<transmission name="suspension_arm_F_L_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="suspension_arm_F_L_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="suspension_arm_F_LMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+		<link name='suspension_arm_B_L'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${suspension_arm_B_L_Mass}"/>
+				<xacro:box_inertia m="${suspension_arm_B_L_Mass}" x="${suspension_arm_B_L_X*scale_XYZ}" y="${suspension_arm_B_L_Y*scale_XYZ}" z="${suspension_arm_B_L_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+		<joint name="suspension_arm_B_L_joint" type="revolute">
+			<parent link="left_axis"/>
+			<child link="suspension_arm_B_L"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-suspension_arm_B_L_limit}" upper="${suspension_arm_B_L_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
+		</joint>
+
+		<transmission name="suspension_arm_B_L_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="suspension_arm_B_L_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="suspension_arm_B_LMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='suspension_arm_B_L_to_B2_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin xyz="0 0 0.015" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.06" length="0.035"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.04" length="0.1"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_arm_B_L_to_B2_L_joint" type="fixed">
+			<parent link="suspension_arm_B_L"/>
+			<child link="suspension_arm_B_L_to_B2_L"/>
+			<origin xyz="-0.05159 0.73683 -0.22972" rpy="0 0.1937315 0"/>
+		</joint>
+
+
+		<link name='suspension_arm_B2_L'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${suspension_arm_B2_L_Mass}"/>
+				<xacro:box_inertia m="${suspension_arm_B2_L_Mass}" x="${suspension_arm_B2_L_X*scale_XYZ}" y="${suspension_arm_B2_L_Y*scale_XYZ}" z="${suspension_arm_B2_L_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+		<joint name="suspension_arm_B2_L_joint" type="revolute">
+			<parent link="suspension_arm_B_L_to_B2_L"/>
+			<child link="suspension_arm_B2_L"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${suspension_arm_B2_lower_limit}" upper="${suspension_arm_B2_upper_limit}" effort="${suspension_effort}" velocity="${suspension_speed}"/>
+			<axis xyz="1 0 0"/>
+			<dynamics damping="${suspension_damping}" friction="${suspension_friction}"/>
+		</joint>
+
+		<transmission name="suspension_arm_B2_L_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="suspension_arm_B2_L_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="suspension_arm_B2_LMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<!-- FRONT WHEEL -->
+		<link name='suspension_arm_F_L_to_suspension_steer_F_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin xyz="0 0 0.015" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.06" length="0.04"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.06" length="0.04"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_arm_F_L_to_suspension_steer_F_L_joint" type="fixed">
+			<parent link="suspension_arm_F_L"/>
+			<child link="suspension_arm_F_L_to_suspension_steer_F_L"/>
+			<origin xyz="0.2057 -0.87876 -0.29370" rpy="0 0.1937315 0"/>
+		</joint>
+
+
+		<link name='suspension_steer_F_L'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${suspension_steer_F_L_Mass}"/>
+				<xacro:box_inertia m="${suspension_steer_F_L_Mass}" x="${suspension_steer_F_L_X*scale_XYZ}" y="${suspension_steer_F_L_Y*scale_XYZ}" z="${suspension_steer_F_L_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+		<joint name="suspension_steer_F_L_joint" type="revolute">
+			<parent link="suspension_arm_F_L_to_suspension_steer_F_L"/>
+			<child link="suspension_steer_F_L"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-suspension_steer_limit}" upper="${suspension_steer_limit}" effort="${suspension_steer_effort}" velocity="${suspension_steer_velocity}"/>
+			<axis xyz="0 0 1"/>
+		</joint>
+
+		<transmission name="suspension_steer_F_L_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="suspension_steer_F_L_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="suspension_steer_F_LMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+		<link name='suspension_steer_F_L_to_front_wheel_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_steer_F_L_to_suspension_steer_F_L_to_front_wheel_L_joint" type="fixed">
+			<parent link="suspension_steer_F_L"/>
+			<child link="suspension_steer_F_L_to_front_wheel_L"/>
+			<origin xyz="0 0 -0.3996" rpy="0 0 0"/>
+		</joint>
+
+		<xacro:wheel wheel_name="front_wheel_L" wheel_conector_name="suspension_steer_F_L_to_front_wheel_L" tY="0"/>
+
+
+		<!-- FRONT LEFT Wheel Left END -->
+
+
+
+		<!-- MIDDLE WHEEL -->
+
+		<link name='suspension_arm_B2_L_to_middle_wheel_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_arm_B2_L_to_suspension_arm_B2_L_to_middle_wheel_L_joint" type="fixed">
+			<parent link="suspension_arm_B2_L"/>
+			<child link="suspension_arm_B2_L_to_middle_wheel_L"/>
+			<origin xyz="0.39423 -0.44859 -0.41098" rpy="0 0 0"/>
+		</joint>
+
+		<xacro:wheel wheel_name="middle_wheel_L" wheel_conector_name="suspension_arm_B2_L_to_middle_wheel_L" tY="0"/>
+
+		<!-- FRONT MIDDLE Wheel Left END -->
+
+
+		<!-- BACK WHEEL -->
+		<link name='suspension_arm_B2_L_to_suspension_steer_B_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin xyz="0 0 0.015" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.06" length="0.04"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.06" length="0.04"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_arm_B2_L_to_suspension_steer_B_L_joint" type="fixed">
+			<parent link="suspension_arm_B2_L"/>
+			<child link="suspension_arm_B2_L_to_suspension_steer_B_L"/>
+			<origin xyz="0.26271 0.62363 -0.00069" rpy="0 0 0"/>
+		</joint>
+
+
+		<link name='suspension_steer_B_L'>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</collision>
+
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+				</geometry>
+			</visual>
+
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="${suspension_steer_B_L_Mass}"/>
+				<xacro:box_inertia m="${suspension_steer_B_L_Mass}" x="${suspension_steer_B_L_X*scale_XYZ}" y="${suspension_steer_B_L_Y*scale_XYZ}" z="${suspension_steer_B_L_Z*scale_XYZ}"/>
+			</inertial>
+		</link>
+
+		<joint name="suspension_steer_B_L_joint" type="revolute">
+			<parent link="suspension_arm_B2_L_to_suspension_steer_B_L"/>
+			<child link="suspension_steer_B_L"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit lower="${-suspension_steer_limit}" upper="${suspension_steer_limit}" effort="${suspension_steer_effort}" velocity="${suspension_steer_velocity}"/>
+			<axis xyz="0 0 1"/>
+		</joint>
+
+		<transmission name="suspension_steer_B_L_trans">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="suspension_steer_B_L_joint">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="suspension_steer_B_LMotor">
+				<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+				<mechanicalReduction>1</mechanicalReduction>
+			</actuator>
+		</transmission>
+
+
+		<link name='suspension_steer_B_L_to_back_wheel_L'>
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.02" />
+				<inertia ixx="2.61666666667e-05" ixy="0.0" ixz="0.0" iyy="2.61666666667e-05" iyz="0.0" izz="3.6e-05"/>
+			</inertial>
+			<collision>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin rpy="0.0 1.57 0" xyz="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.02" length="0.02"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="suspension_arm_B2_L_to_suspension_steer_B_L_to_back_wheel_L_joint" type="fixed">
+			<parent link="suspension_steer_B_L"/>
+			<child link="suspension_steer_B_L_to_back_wheel_L"/>
+			<origin xyz="0 0 -0.410523" rpy="0 0 0"/>
+		</joint>
+
+		<xacro:wheel wheel_name="back_wheel_L" wheel_conector_name="suspension_steer_B_L_to_back_wheel_L" tY="0"/>
+
+		<!-- END BACK WHEEL LEFT -->
+	</xacro:macro>
+
+</robot>
