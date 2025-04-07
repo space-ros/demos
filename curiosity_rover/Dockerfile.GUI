@@ -1,0 +1,76 @@
+FROM ros:humble-ros-core-jammy
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+ENV ROS_DISTRO=humble
+ENV USERNAME=spaceros-user
+ENV HOME=/home/spaceros-user
+ENV IGNITION_VERSION=fortress
+ENV GZ_VERSION=fortress
+
+# Install dependencies
+RUN apt update && apt install -y ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+    wget \
+    curl \
+    && apt clean  \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg\
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+
+# Install Gazebo
+RUN apt-get update -qq \
+    && apt-get install -y \
+    gz-${GZ_VERSION} \
+    libgz-sim7 \
+    libgz-transport12 \
+    libgz-gui7 \
+    build-essential\
+    ros-${ROS_DISTRO}-rcl-interfaces\
+    ros-${ROS_DISTRO}-rclcpp\
+    ros-${ROS_DISTRO}-builtin-interfaces\
+    ros-${ROS_DISTRO}-ros-gz\
+    ros-${ROS_DISTRO}-sdformat-urdf\
+    ros-${ROS_DISTRO}-vision-msgs\
+    ros-${ROS_DISTRO}-actuator-msgs\
+    ros-${ROS_DISTRO}-image-transport\
+    ros-${ROS_DISTRO}-xacro\
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Install Rviz2
+RUN apt-get update -qq \
+    && apt-get install -y \
+    ros-${ROS_DISTRO}-rviz2 \
+    ros-${ROS_DISTRO}-moveit-ros-visualization \
+    ros-${ROS_DISTRO}-nav2-rviz-plugins \
+    && rm -rf /var/lib/apt/lists/*
+
+# Demo package
+RUN mkdir -p ${HOME}/curiosity_ws/src
+WORKDIR ${HOME}/curiosity_ws/src
+COPY ./curiosity_description ./curiosity_description
+COPY ./curiosity_gazebo ./curiosity_gazebo
+COPY .defaults.yaml ${HOME}/curiosity_ws/.defaults.yaml
+
+RUN apt update \
+    && apt install -y python3-rosdep python3-colcon-common-extensions \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rosdep init \
+    && rosdep update
+
+RUN . /opt/ros/humble/setup.sh \
+    && cd ${HOME}/curiosity_ws \
+    && apt update \
+    && rosdep install --from-paths src --ignore-src -r -y \
+    && colcon build
+
+WORKDIR ${HOME}/curiosity_ws
+
+RUN apt update && apt install -y ros-humble-ros-ign-gazebo
+RUN echo "source /opt/ros/humble/setup.bash" >> ${HOME}/.bashrc
+RUN echo "source ${HOME}/curiosity_ws/install/setup.bash" >> ${HOME}/.bashrc
+
+CMD ign gazebo

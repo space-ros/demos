@@ -11,3 +11,8 @@ Submissions to this repo should include:
     - - See example here: https://github.com/space-ros/docker/blob/main/space_robots/run.sh
 
 Please refer to the [dockerfile repo](https://github.com/space-ros/docker/tree/main/space_robots) for instructions on running the existing demos
+
+## Demos
+
+1. [Canadarm2](canadarm2/README.md)
+2. [Curiosity Rover](curiosity_rover/README.md)

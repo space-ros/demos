@@ -1,0 +1,7 @@
+{
+  "build":
+    {
+      "symlink-install": true,
+      "cmake_args": "-DCMAKE_BUILD_TYPE=Release -Wno-dev",
+    },
+}
