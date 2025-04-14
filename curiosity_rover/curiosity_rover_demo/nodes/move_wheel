@@ -4,11 +4,9 @@ import math
 
 import rclpy  # type: ignore
 from rclpy.node import Node  # type: ignore
-from builtin_interfaces.msg import Duration  # type: ignore
 
-from std_msgs.msg import Float64MultiArray  # type: ignore
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint  # type: ignore
 from geometry_msgs.msg import Twist  # type: ignore
+from curiosity_common.sim.wheel_control import GazeboMobileController, IsaacMobileController  # type: ignore
 
 
 class MoveWheel(Node):
@@ -16,15 +14,21 @@ class MoveWheel(Node):
 
     def __init__(self):
         super().__init__("wheel_node")
-        self.wheel_publisher_ = self.create_publisher(
-            Float64MultiArray, "/wheel_velocity_controller/commands", 10
+
+        self.declare_parameter(
+            "environment",
+            rclpy.Parameter.Type.STRING,
         )
-        self.steer_publisher_ = self.create_publisher(
-            JointTrajectory, "/steer_position_controller/joint_trajectory", 10
+
+        self._environment = (
+            self.get_parameter("environment").get_parameter_value().string_value
         )
-        self.suspension_publisher_ = self.create_publisher(
-            Float64MultiArray, "/wheel_tree_position_controller/commands", 10
-        )
+
+        if self._environment == "gazebosim":
+            self._mobile_controller = GazeboMobileController(self)
+        else:
+            self._mobile_controller = IsaacMobileController(self)
+
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -37,6 +41,11 @@ class MoveWheel(Node):
 
     def vel_callback(self, msg):
         """Velocity callback."""
+
+        if self._environment == "isaacsim":
+            self._mobile_controller.set_cmd_vel(msg)
+            return
+
         if (
             abs(self.last_vel.angular.z - self.curr_vel.angular.z) > 0.01
             and self.should_steer is False
@@ -51,11 +60,10 @@ class MoveWheel(Node):
     def set_wheel_common_speed(self, vel):
         """Set the wheel common speed."""
 
-        target_vel = Float64MultiArray()
-        target_vel.data = [vel, vel * 1.5, vel, -vel, -vel * 1.5, -vel]
+        target_vel = [vel, vel * 1.5, vel, -vel, -vel * 1.5, -vel]
 
         # self.get_logger().info(f'Publishing: "{target_vel.data}"')
-        self.wheel_publisher_.publish(target_vel)
+        self._mobile_controller.set_wheel_speed(target_vel)
 
     def map_angular_to_steering(self, angular_speed) -> float:
         """Map angular speed to steering angle."""
@@ -69,18 +77,16 @@ class MoveWheel(Node):
     def set_steering(self, turn_rad):
         """Set the steering angle."""
         # Ideal Ackerman Steering
-        target_steer = JointTrajectory()
-        # target_steer.header.stamp = self.get_clock().now().to_msg()
-        target_steer.joint_names = [
+        joint_names = [
             "suspension_steer_F_L_joint",
             "suspension_steer_B_L_joint",
             "suspension_steer_F_R_joint",
             "suspension_steer_B_R_joint",
         ]
-        steer_point = JointTrajectoryPoint()
+        steer_point = []
 
         if abs(turn_rad) < 1e-3:
-            steer_point.positions = [0.0, 0.0, 0.0, 0.0]
+            steer_point = [0.0, 0.0, 0.0, 0.0]
         else:
             turning_radius = abs(turn_rad)  # R
 
@@ -100,23 +106,16 @@ class MoveWheel(Node):
             alpha_o = round(alpha_o, 2)
 
             if turn_rad > 0.0:
-                steer_point.positions = [alpha_i, -alpha_i, alpha_o, -alpha_o]
+                steer_point = [alpha_i, -alpha_i, alpha_o, -alpha_o]
             else:
-                steer_point.positions = [-alpha_o, alpha_o, -alpha_i, alpha_i]
+                steer_point = [-alpha_o, alpha_o, -alpha_i, alpha_i]
 
-        steer_point.time_from_start = Duration(sec=1)
+        self._mobile_controller.set_steering(joint_names, steer_point)
 
-        target_steer.points.append(steer_point)
-
-        self.steer_publisher_.publish(target_steer)
-
-    def set_suspension(self, sus_val=None):
+    def set_suspension(self):
         """Set the suspension."""
-
-        target_val = Float64MultiArray()
-        if sus_val is None:
-            target_val.data = [0.3, -0.1, 0.3, -0.1]
-        self.suspension_publisher_.publish(target_val)
+        target_val = [0.3, -0.1, 0.3, -0.1]
+        self._mobile_controller.set_suspension(target_val)
 
     def timer_callback(self):
         """Timer callback."""

@@ -15,11 +15,10 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
     wheel_tree_position_controller:
-      type: effort_controllers/JointGroupPositionController
+      type: position_controllers/JointGroupPositionController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-
 
 arm_joint_trajectory_controller:
   ros__parameters:
@@ -59,7 +58,6 @@ wheel_velocity_controller:
       - middle_wheel_R_joint
       - back_wheel_R_joint
     interface_name: velocity
-
 
 steer_position_controller:
   ros__parameters:

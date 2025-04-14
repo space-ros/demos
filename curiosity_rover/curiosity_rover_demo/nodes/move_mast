@@ -5,8 +5,10 @@ import rclpy  # type: ignore
 from rclpy.node import Node  # type: ignore
 from builtin_interfaces.msg import Duration  # type: ignore
 
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint  # type: ignore
+from trajectory_msgs.msg import JointTrajectoryPoint  # type: ignore
 from std_srvs.srv import Empty  # type: ignore
+
+from curiosity_common.sim.arm_control import GazeboJointController, IsaacJointController  # type: ignore
 
 
 class MastArm(Node):
@@ -14,9 +16,6 @@ class MastArm(Node):
 
     def __init__(self):
         super().__init__("mast_node")
-        self.mast_publisher_ = self.create_publisher(
-            JointTrajectory, "/mast_joint_trajectory_controller/joint_trajectory", 10
-        )
         self.mast_open_srv = self.create_service(
             Empty, "mast_open", self.mast_open_callback
         )
@@ -27,30 +26,38 @@ class MastArm(Node):
             Empty, "mast_rotate", self.mast_rotate_callback
         )
 
+        self.declare_parameter(
+            "environment",
+            rclpy.Parameter.Type.STRING,
+        )
+
+        self._environment = (
+            self.get_parameter("environment").get_parameter_value().string_value
+        )
+
+        if self._environment == "gazebosim":
+            self._controller = GazeboJointController(
+                self, "/mast_joint_trajectory_controller/joint_trajectory"
+            )
+        elif self._environment == "isaacsim":
+            self._controller = IsaacJointController(
+                self, "/curiosity/mast_arm/joint_command"
+            )
+
+        self._joint_names = ["mast_p_joint", "mast_02_joint", "mast_cameras_joint"]
+        self._open_positions = [0.0, -0.5, 0.0]
+        self._close_positions = [1.57, -1.57, 0.0]
+
     def mast_open_callback(self, request, response):  # pylint: disable=unused-argument
         """Move the mast arm to open position."""
-        traj = JointTrajectory()
-        traj.joint_names = ["mast_p_joint", "mast_02_joint", "mast_cameras_joint"]
+        self._controller.set_joint_states(self._joint_names, self._open_positions)
 
-        point = JointTrajectoryPoint()
-        point.positions = [0.0, -0.5, 0.0]
-        point.time_from_start = Duration(sec=1)
-
-        traj.points.append(point)
-        self.mast_publisher_.publish(traj)
         return response
 
     def mast_close_callback(self, request, response):  # pylint: disable=unused-argument
         """Move the mast arm to close position."""
-        traj = JointTrajectory()
-        traj.joint_names = ["mast_p_joint", "mast_02_joint", "mast_cameras_joint"]
+        self._controller.set_joint_states(self._joint_names, self._close_positions)
 
-        point = JointTrajectoryPoint()
-        point.positions = [1.57, -1.57, 0.0]
-        point.time_from_start = Duration(sec=1)
-
-        traj.points.append(point)
-        self.mast_publisher_.publish(traj)
         return response
 
     def mast_rotate_callback(
@@ -58,25 +65,22 @@ class MastArm(Node):
     ):  # pylint: disable=unused-argument
         """Rotate the mast arm."""
 
-        traj = JointTrajectory()
-        traj.joint_names = ["mast_p_joint", "mast_02_joint", "mast_cameras_joint"]
-
         point1 = JointTrajectoryPoint()
         point1.positions = [0.0, -1.57, 0.0]
         point1.time_from_start = Duration(sec=2)
-        traj.points.append(point1)
 
         point2 = JointTrajectoryPoint()
         point2.positions = [0.0, -3.14, 0.0]
         point2.time_from_start = Duration(sec=4)
-        traj.points.append(point2)
 
         point3 = JointTrajectoryPoint()
         point3.positions = [0.0, -6.28, 0.0]
         point3.time_from_start = Duration(sec=6)
-        traj.points.append(point3)
 
-        self.mast_publisher_.publish(traj)
+        self._controller.set_joint_trajectory(
+            self._joint_names, [point1, point2, point3]
+        )
+
         return response
 
 
