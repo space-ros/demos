@@ -1,7 +1,7 @@
-FROM osrf/space-ros:humble-2024.10.0
+FROM osrf/space-ros:jazzy-2025.01.0
 
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-ENV ROS_DISTRO=humble
+ENV ROS_DISTRO=jazzy
 ENV HOME=/home/spaceros-user
 
 # Install dependencies
