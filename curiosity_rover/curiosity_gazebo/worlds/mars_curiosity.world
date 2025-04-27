@@ -1,41 +1,67 @@
-<sdf version="1.5">
+<sdf version="1.8">
   <world name="default">
+  
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.9 0.753 0.66 1</background>
+      <grid>false</grid>
+    </scene>  
+  
     <gui fullscreen="0">
 
-      <plugin filename="GzScene3D" name="3D View">
-        <ignition-gui>
+      <plugin filename="MinimalScene" name="3D View">
+        <gz-gui>
           <title>3D View</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="string" key="state">docked</property>
-        </ignition-gui>
+        </gz-gui>
+ 
         <engine>ogre2</engine>
         <scene>scene</scene>
-        <background_color>0.9 0.753 0.66</background_color>
         <camera_pose>-5.0 0.0 -6.0 0.0 0.0 0.0</camera_pose>
       </plugin>
-
-      <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+      <plugin filename="GzSceneManager" name="Scene Manager">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
           <property key="state" type="string">floating</property>
-        </ignition-gui>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
       </plugin>
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+ 
+      <plugin filename="ImageDisplay" name="Image Display">
+        <gz-gui>
+          <property key="state" type="string">floating</property>
+        </gz-gui>
+      </plugin> 
+      
     </gui>
 
-    <server_config>
-    <plugins>
-        <plugin entity_name="*"
-                entity_type="world"
-                filename="ignition-gazebo-scene-broadcaster-system"
-                name="ignition::gazebo::systems::SceneBroadcaster">
-        </plugin>
-        <plugin entity_name="*"
-                entity_type="world"
-                filename="ignition-gazebo-sensors-system"
-                name="ignition::gazebo::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-        </plugin>
-    </plugins>
-    </server_config>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin> 
+
 
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
@@ -62,3 +88,4 @@
 
   </world>
 </sdf>
+

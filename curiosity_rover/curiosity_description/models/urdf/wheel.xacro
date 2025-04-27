@@ -14,7 +14,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/wheel_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/wheel_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 

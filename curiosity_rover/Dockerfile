@@ -1,13 +1,15 @@
-FROM osrf/space-ros:humble-2024.10.0
+FROM osrf/space-ros:jazzy-2025.01.0
 
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-ENV ROS_DISTRO=humble
+ENV ROS_DISTRO=jazzy
 ENV HOME=/home/spaceros-user
 
 # Install dependencies
 # Related to space-ros/space-ros#195
-RUN sudo apt update && sudo apt install -y ros-${ROS_DISTRO}-control-msgs \
-    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
+RUN sudo apt update && \
+    sudo apt install -y \
+      ros-${ROS_DISTRO}-control-msgs \
+      ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
 
 # Prepare the workspace
 SHELL ["bash", "-c"]
