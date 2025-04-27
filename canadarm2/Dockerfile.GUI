@@ -9,41 +9,40 @@ ENV HOME=/home/spaceros-user
 ENV GZ_VERSION=harmonic
 
 # Install dependencies
-RUN apt update && apt install -y ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
-    wget \
-    curl \
+RUN apt update && \
+    apt install -y \
+      ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+      wget \
+      curl \
     && apt clean  \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg\
-    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 
 # Install Gazebo
-RUN apt-get update -qq \
-    && apt-get install -y \
-    gz-${GZ_VERSION} \
-    libgz-sim8 \
-    libgz-transport13 \
-    libgz-gui8 \
-    build-essential\
-    ros-${ROS_DISTRO}-rcl-interfaces\
-    ros-${ROS_DISTRO}-rclcpp\
-    ros-${ROS_DISTRO}-builtin-interfaces\
-    ros-${ROS_DISTRO}-ros-gz\
-    ros-${ROS_DISTRO}-sdformat-urdf\
-    ros-${ROS_DISTRO}-vision-msgs\
-    ros-${ROS_DISTRO}-actuator-msgs\
-    ros-${ROS_DISTRO}-image-transport\
-    ros-${ROS_DISTRO}-xacro\
+RUN apt-get update -qq && \
+    apt-get install -y \
+      gz-${GZ_VERSION} \
+      build-essential\
+      ros-${ROS_DISTRO}-rcl-interfaces\
+      ros-${ROS_DISTRO}-rclcpp\
+      ros-${ROS_DISTRO}-builtin-interfaces\
+      ros-${ROS_DISTRO}-ros-gz\
+      ros-${ROS_DISTRO}-sdformat-urdf\
+      ros-${ROS_DISTRO}-vision-msgs\
+      ros-${ROS_DISTRO}-actuator-msgs\
+      ros-${ROS_DISTRO}-image-transport\
+      ros-${ROS_DISTRO}-xacro\
     && rm -rf /var/lib/apt/lists/*
 
 
 # Install Rviz2
-RUN apt-get update -qq \
-    && apt-get install -y \
-    ros-${ROS_DISTRO}-rviz2 \
-    ros-${ROS_DISTRO}-moveit-ros-visualization \
-    ros-${ROS_DISTRO}-nav2-rviz-plugins \
+RUN apt-get update -qq && \
+    apt-get install -y \
+      ros-${ROS_DISTRO}-rviz2 \
+      ros-${ROS_DISTRO}-moveit-ros-visualization \
+      ros-${ROS_DISTRO}-nav2-rviz-plugins \
     && rm -rf /var/lib/apt/lists/*
 
 # Demo package
@@ -60,16 +59,18 @@ RUN apt update \
     && rosdep init \
     && rosdep update
 
-RUN . /opt/ros/jazzy/setup.sh \
-    && cd ${HOME}/canadarm2_ws \
-    && apt update \
-    && rosdep install --from-paths src --ignore-src -r -y \
-    && colcon build
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    cd ${HOME}/canadarm2_ws && \
+    apt update && \
+    rosdep install --from-paths src --ignore-src -r -y && \
+    colcon build
 
 WORKDIR ${HOME}/canadarm2_ws
 
-RUN apt update && apt install -y gz-harmonic
-RUN echo "source /opt/ros/jazzy/setup.bash" >> ${HOME}/.bashrc
+RUN apt update && \
+    apt install -y \
+      ros-${ROS_DISTRO}-ros-gz
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ${HOME}/.bashrc
 RUN echo "source ${HOME}/canadarm2_ws/install/setup.bash" >> ${HOME}/.bashrc
 
 CMD gz sim

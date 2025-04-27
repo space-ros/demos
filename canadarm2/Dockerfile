@@ -6,8 +6,10 @@ ENV HOME=/home/spaceros-user
 
 # Install dependencies
 # Related to space-ros/space-ros#195 and space-ros/space-ros#196
-RUN sudo apt update && sudo apt install -y ros-${ROS_DISTRO}-control-msgs \
-    ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
+RUN sudo apt update && \
+    sudo apt install -y \
+      ros-${ROS_DISTRO}-control-msgs \
+      ros-${ROS_DISTRO}-rmw-cyclonedds-cpp
 
 # Prepare the workspace
 SHELL ["bash", "-c"]
