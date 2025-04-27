@@ -8,14 +8,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/left_axis_jointfix_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 
@@ -38,14 +38,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 
@@ -80,14 +80,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 
@@ -150,14 +150,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_arm_B2_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 
@@ -221,14 +221,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_steer_F_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 
@@ -356,14 +356,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/suspension_steer_B_L_fixed.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 

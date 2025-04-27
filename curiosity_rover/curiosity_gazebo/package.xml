@@ -16,7 +16,7 @@
   <depend>ament_cmake_python</depend>
   <depend>ros_gz</depend>
 
-  <exec_depend>ign_ros2_control</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
   <exec_depend>ros2_control</exec_depend>
   <exec_depend>ros2_controllers</exec_depend>
 

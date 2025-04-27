@@ -24,14 +24,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</collision>
 
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
+					<mesh filename="file://$(find curiosity_description)/models/meshes/chassis_full_fixed_glitch_v2.dae" scale="${scale_XYZ} ${scale_XYZ} ${scale_XYZ}"/>
 				</geometry>
 			</visual>
 

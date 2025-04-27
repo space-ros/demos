@@ -9,6 +9,7 @@ from launch.actions import (
     ExecuteProcess,
     RegisterEventHandler,
     IncludeLaunchDescription,
+    SetEnvironmentVariable
 )
 from launch.substitutions import (
     TextSubstitution,
@@ -32,21 +33,21 @@ def generate_launch_description():
     curiosity_gazebo_path = get_package_share_directory("curiosity_gazebo")
     curiosity_rover_models_path = get_package_share_directory("curiosity_description")
 
-    env = {
-        "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": ":".join(
+    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', 
+        os.pathsep.join(
             [
-                os.environ.get("IGN_GAZEBO_SYSTEM_PLUGIN_PATH", default=""),
-                os.environ.get("LD_LIBRARY_PATH", default=""),
+                os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
+                os.environ.get("LD_LIBRARY_PATH", default="")
             ]
-        ),
-        "IGN_GAZEBO_RESOURCE_PATH": ":".join(
+    ))
+    env_gz_resource = SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", 
+        os.pathsep.join(
             [
-                os.environ.get("IGN_GAZEBO_RESOURCE_PATH", default=""),
+                os.environ.get("GZ_SIM_RESOURCE_PATH", default=""),
                 curiosity_gazebo_path + "/models",
-                curiosity_rover_models_path,
+                curiosity_rover_models_path
             ]
-        ),
-    }
+    ))
 
     urdf_model_path = os.path.join(
         curiosity_rover_models_path,
@@ -68,11 +69,15 @@ def generate_launch_description():
         output="screen",
     )
 
-    start_world = ExecuteProcess(
-        cmd=["ign gazebo", mars_world_model, "-r"],
-        output="screen",
-        additional_env=env,
-        shell=True,
+    start_world = IncludeLaunchDescription(
+            PathJoinSubstitution([get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py']),
+            launch_arguments = [
+               ('gz_args', [
+                   mars_world_model,
+                   ' -r',
+                   ' -v 4' 
+               ])
+            ]   
     )
 
     robot_state_publisher = Node(
@@ -87,9 +92,9 @@ def generate_launch_description():
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
-            "/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry",
-            "/scan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan",
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            "/model/curiosity_mars_rover/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry",
+            "/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
         ],
         output="screen",
     )
@@ -102,7 +107,7 @@ def generate_launch_description():
     )
 
     spawn = Node(
-        package="ros_ign_gazebo",
+        package="ros_gz_sim",
         executable="create",
         arguments=[
             "-name",
@@ -117,7 +122,7 @@ def generate_launch_description():
 
     ## Control Components
 
-    component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
+    component_state_msg = '{name: "GazeboSystem", target_state: {id: 3, label: ""}}'
 
     ## a hack to resolve current bug
     set_hardware_interface_active = ExecuteProcess(
@@ -205,6 +210,8 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            env_gz_plugin,
+            env_gz_resource,
             SetParameter(name="use_sim_time", value=True),
             start_world,
             robot_state_publisher,
@@ -238,3 +245,4 @@ def generate_launch_description():
             ),
         ]
     )
+
