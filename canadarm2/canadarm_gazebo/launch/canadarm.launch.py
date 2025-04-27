@@ -2,9 +2,10 @@
 
 import os
 from launch import LaunchDescription  # type: ignore
-from launch.actions import ExecuteProcess, RegisterEventHandler  # type: ignore
+from launch.actions import ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription, SetEnvironmentVariable  # type: ignore
 from launch.event_handlers import OnProcessExit  # type: ignore
 from launch_ros.actions import Node  # type: ignore
+from launch.substitutions import PathJoinSubstitution
 
 from ament_index_python.packages import get_package_share_directory  # type: ignore
 
@@ -15,22 +16,24 @@ def generate_launch_description():
     """Generate launch description with multiple components."""
 
     canadarm_gazebo_path = get_package_share_directory("canadarm_gazebo")
+
     simulation_models_path = get_package_share_directory("canadarm_description")
 
-    env = {
-        "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": ":".join(
+    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', 
+        os.pathsep.join(
             [
-                os.environ.get("IGN_GAZEBO_SYSTEM_PLUGIN_PATH", default=""),
-                os.environ.get("LD_LIBRARY_PATH", default=""),
+                os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
+                os.environ.get("LD_LIBRARY_PATH", default="")
             ]
-        ),
-        "IGN_GAZEBO_RESOURCE_PATH": ":".join(
+    ))
+    env_gz_resource = SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", 
+        os.pathsep.join(
             [
-                os.environ.get("IGN_GAZEBO_RESOURCE_PATH", default=""),
+                os.environ.get("GZ_SIM_RESOURCE_PATH", default=""),
                 canadarm_gazebo_path + "/models",
             ]
-        ),
-    }
+    ))
+
 
     urdf_model_path = os.path.join(
         simulation_models_path,
@@ -45,13 +48,17 @@ def generate_launch_description():
     )
     robot_description = {"robot_description": doc.toxml()}
 
-    start_world = ExecuteProcess(
-        cmd=["ign gazebo", leo_model, "-r"],
-        output="screen",
-        additional_env=env,
-        shell=True,
-    )
-
+    start_world = IncludeLaunchDescription(
+            PathJoinSubstitution([get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py']),
+            launch_arguments = [
+               ('gz_args', [
+                   leo_model,
+                   ' -r',
+                   ' -v 4' 
+               ])
+            ]   
+    )    
+    
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -61,7 +68,7 @@ def generate_launch_description():
     )
 
     spawn = Node(
-        package="ros_ign_gazebo",
+        package="ros_gz_sim",
         executable="create",
         arguments=[
             "-name",
@@ -97,8 +104,19 @@ def generate_launch_description():
         output="screen",
     )
 
+    gz_sim_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+        ],
+        output="screen",
+    )
+
     return LaunchDescription(
-        [
+        [   
+            env_gz_plugin,
+            env_gz_resource,
             start_world,
             robot_state_publisher,
             spawn,
@@ -114,5 +132,7 @@ def generate_launch_description():
                     on_exit=[load_canadarm_joint_controller],
                 )
             ),
+            gz_sim_bridge
         ]
     )
+

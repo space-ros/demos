@@ -4,9 +4,9 @@
     <xacro:macro name="ssrms_canadarm2_gazebo" params="command_interface:=effort">
 
 
-        <ros2_control name="IgnitionSystem" type="system">
+        <ros2_control name="GazeboSystem" type="system">
             <hardware>
-                <plugin>ign_ros2_control/IgnitionSystem</plugin>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
             </hardware>
             <joint name="Base_Joint">
                 <command_interface name="${command_interface}"/>
@@ -53,7 +53,7 @@
         </ros2_control>
 
         <gazebo>
-            <plugin filename="libign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
                 <robot_param>robot_description</robot_param>
                 <robot_param_node>robot_state_publisher</robot_param_node>
                 <parameters>$(find canadarm_description)/models/config/canadarm_control.yaml</parameters>
@@ -69,3 +69,4 @@
     </xacro:macro>
 
 </robot>  
+
