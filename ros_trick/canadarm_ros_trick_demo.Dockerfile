@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # The base image is built from
-# https://github.com/space-ros/docker/blob/humble-2024.10.0/space_robots/
-# Git tag: humble-2024.10.0.
+# https://github.com/space-ros/docker/blob/jazzy-2025.04.0/space_robots/
+# Git tag: jazzy-2025.04.0.
 FROM openrobotics/space_robots_demo:latest
 
 # Update the ROS package keys

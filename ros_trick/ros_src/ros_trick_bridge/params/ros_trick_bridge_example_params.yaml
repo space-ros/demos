@@ -2,7 +2,7 @@ ros_trick_bridge:
   ros__parameters:
     sim_directory: /home/spaceros-user/trick_sims/SIM_trick_canadarm
     sim_inputfile: RUN_2DPlanar/input.py
-    sim_executable: S_main_Linux_11.4_x86_64.exe
+    sim_executable: S_main_Linux_13.3_x86_64.exe
     sim_args: ''
     publish_clock: true
     clock_publish_period: 0.02
