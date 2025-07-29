@@ -5,7 +5,7 @@ set -e
 TAG=latest
 ROS_TRICK_BRIDGE_IMAGE_NAME=ros_trick_bridge
 CANADARM_ROS_TRICK_DEMO_NAME=canadarm_ros_trick_demo
-export SPACE_ROS_IMAGE=osrf/space-ros:jazzy-2025.04.0
+export SPACE_ROS_IMAGE=osrf/space-ros:main
 CURRENT_PATH=$(pwd)
 SPACEROS_DOCKER_REPO_PATH="${CURRENT_PATH}/docker_repo"
 
