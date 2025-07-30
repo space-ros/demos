@@ -50,19 +50,19 @@ ENV PYTHON_VERSION=3
 
 # Note: For Jazzy, we need a fix in TRICK to work in 24.04 (commit 4781cfe)
 # there is not yet a tag including the fix commit, checking out the latest one tested to work
-RUN mkdir ${HOME_DIR}/trick
-WORKDIR ${HOME_DIR}/trick
+RUN mkdir ${HOME}/trick
+WORKDIR ${HOME}/trick
 RUN git clone --branch master https://github.com/nasa/trick.git . && git checkout 1b6d75b
 RUN ./configure && make
 
 # Add ${TRICK_HOME}/bin to the PATH variable.
-ENV TRICK_HOME="${HOME_DIR}/trick"
+ENV TRICK_HOME="${HOME}/trick"
 RUN echo "export PATH=${PATH}:${TRICK_HOME}/bin" >> ~/.bashrc
 
 # Build SPACEROS workspace with ros trick bridge.
-RUN mkdir ${HOME_DIR}/ros_trick_bridge_ws
-WORKDIR ${HOME_DIR}/ros_trick_bridge_ws
-ENV ROS_TRICK_BRIDGE_WS="${HOME_DIR}/ros_trick_bridge_ws/"
+RUN mkdir ${HOME}/ros_trick_bridge_ws
+WORKDIR ${HOME}/ros_trick_bridge_ws
+ENV ROS_TRICK_BRIDGE_WS="${HOME}/ros_trick_bridge_ws/"
 COPY --chown=spaceros-user:spaceros-user ros_src/ros_trick_bridge src/
 RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
@@ -72,8 +72,8 @@ RUN rm -rf build log src
 # see fit.
 
 # Install RBDL, which is used for calculating forward dynamics in trick.
-RUN mkdir ${HOME_DIR}/rbdl
-WORKDIR ${HOME_DIR}/rbdl
+RUN mkdir ${HOME}/rbdl
+WORKDIR ${HOME}/rbdl
 RUN git clone --branch v3.3.1 --depth 1 https://github.com/rbdl/rbdl.git . \
   && git submodule update --init --remote --depth 1 addons/urdfreader/
 RUN   mkdir ./rbdl-build \
@@ -91,8 +91,8 @@ RUN   mkdir ./rbdl-build \
 ENV LD_LIBRARY_PATH="/usr/local/lib"
 
 # Copy the created canadarm trick simulation and compile it.
-RUN mkdir -p ${HOME_DIR}/trick_sims/SIM_trick_canadarm
-WORKDIR ${HOME_DIR}/trick_sims/SIM_trick_canadarm
+RUN mkdir -p ${HOME}/trick_sims/SIM_trick_canadarm
+WORKDIR ${HOME}/trick_sims/SIM_trick_canadarm
 COPY --chown=spaceros-user:spaceros-user trick_src/SIM_trick_canadarm/ .
 RUN ${TRICK_HOME}/bin/trick-CP
 # Include canadarm URDF for RBDL

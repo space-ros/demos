@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     mesa-vdpau-drivers \
     mesa-vulkan-drivers
 
-ENV TRICK_DEMO_WS=${HOME_DIR}/ros_trick_demo_ws
+ENV TRICK_DEMO_WS=${HOME}/ros_trick_demo_ws
 
 RUN mkdir ${TRICK_DEMO_WS}
 WORKDIR ${TRICK_DEMO_WS}
