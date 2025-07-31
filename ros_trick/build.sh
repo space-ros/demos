@@ -11,8 +11,14 @@ SPACEROS_DOCKER_REPO_PATH="${CURRENT_PATH}/docker_repo"
 
 if [ ! -d ${SPACEROS_DOCKER_REPO_PATH} ]; then
     mkdir -p ${SPACEROS_DOCKER_REPO_PATH}
+    echo "*** Cloning space-ros/docker repository ***"
+    # Clone the space-ros/docker repository if it does not exist
+    # This repository contains the Dockerfiles for moveit2 and space_robots
+    # which are required for building the canadarm_ros_trick_demo image.
+    # The repository is cloned into the docker_repo directory.
     git clone https://github.com/space-ros/docker.git ${SPACEROS_DOCKER_REPO_PATH}
 fi
+
 echo "*** Building moveit2 ***"
 cd ${SPACEROS_DOCKER_REPO_PATH}/moveit2 && ./build.sh
 echo "*** Building space_robots ***"

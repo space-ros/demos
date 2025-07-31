@@ -12,9 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The base image is built from
-# https://github.com/space-ros/docker/blob/jazzy-2025.04.0/space_robots/
-# Git tag: jazzy-2025.04.0.
 FROM openrobotics/space_robots_demo:latest
 
 # Update the ROS package keys

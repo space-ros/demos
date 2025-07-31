@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM osrf/space-ros:jazzy-2025.04.0
+FROM osrf/space-ros:main 
 
 # Update the ROS package keys
 ADD --chmod=644 https://raw.githubusercontent.com/ros/rosdistro/master/ros.key /usr/share/keyrings/ros-archive-keyring.gpg
