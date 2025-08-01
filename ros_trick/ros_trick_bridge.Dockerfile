@@ -14,6 +14,10 @@
 
 FROM osrf/space-ros:main 
 
+RUN ls ${SPACEROS_DIR}
+RUN ls ${SPACEROS_DIR}/install
+RUN exit 1
+
 # Update the ROS package keys
 ADD --chmod=644 https://raw.githubusercontent.com/ros/rosdistro/master/ros.key /usr/share/keyrings/ros-archive-keyring.gpg
 
