@@ -19,7 +19,7 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM osrf/space-ros-moveit2:main
+FROM osrf/space-ros-moveit2:jazzy-2025.10.0
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
