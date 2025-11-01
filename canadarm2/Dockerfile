@@ -1,4 +1,4 @@
-FROM osrf/space-ros:jazzy-2025.07.0
+FROM osrf/space-ros:jazzy-2025.10.0
 
 ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV ROS_DISTRO=jazzy
