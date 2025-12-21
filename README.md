@@ -1,6 +1,6 @@
 # Space ROS Demos
 
-This repository provides examples for running robots using Space ROS
+This repository provides examples for running robots using Space ROS.
 
 Submissions to this repo should include:
 1) A Dockerfile or docker-compose.yaml file for building on top of the `osrf/space-ros:latest`
@@ -15,4 +15,4 @@ Submissions to this repo should include:
 3. [Nav2 Demo](nav2_demo/README.md)
 4. [ROS Trick Demo](ros_trick/README.md)
 5. [Space Robots Demo](space_robots/README.md)
-
+6. [`spaceros_gz_demos`](spaceros_gz_demos/README.md)

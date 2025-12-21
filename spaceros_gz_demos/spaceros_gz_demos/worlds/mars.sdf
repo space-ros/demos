@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.9">
+  <world name="mars">
+    <gravity>0 0 -3.71</gravity>
+
+    <scene>
+      <grid>false</grid>
+      <ambient>1.0 1.0 0.8</ambient>
+      <background>0.8 0.8 0.6</background>
+    </scene>
+
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.05 0.05 0.05 1</specular>
+      <direction>-1 0.0 -0.4</direction>
+      <visualize>false</visualize>
+    </light>
+
+    <include>
+      <uri> martian_surface </uri>
+    </include>
+
+    <include>
+      <uri> nasa_perseverance </uri>
+    </include>
+
+    <include>
+      <uri> nasa_ingenuity </uri>
+    </include>
+
+  </world>
+</sdf>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+    <model name="enceladus_surface">
+        <static>true</static>
+        <pose>500 500 710 1.5 -0.2 1.57</pose>
+        <link name="base_link">
+            <collision name="base_link_collision">
+                <geometry>
+                    <mesh>
+                        <uri>models://enceladus_surface/resources/glaci.obj</uri>
+                        <scale>50 50 50</scale>
+                    </mesh>
+                </geometry>
+            </collision>
+            <visual name="base_link_visual">
+                <geometry>
+                    <mesh>
+                        <uri>models://enceladus_surface/resources/glaci.obj</uri>
+                        <scale>50 50 50</scale>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+    </model>
+</sdf>
