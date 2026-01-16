@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>lunar_sun_gz_plugin</name>
+    <version>1.0.0</version>
+
+    <description>Plugins for dynamic sun in lunar world</description>
+
+    <maintainer email="munir.azme@elementrobotics.space">Munir Azme</maintainer>
+    <license>Apache License 2.0</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <!-- Garden -->
+    <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-plugin2</depend>
+    <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-sim7</depend>
+    <!-- Fortress (default) -->
+    <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">gz-plugin</depend>
+    <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">gz-sim6</depend>
+    <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">gz-plugin</depend>
+    <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">gz-sim6</depend>
+
+    <test_depend>ament_lint_auto</test_depend>
+    <test_depend>ament_cmake_copyright</test_depend>
+    <test_depend>ament_cmake_cpplint</test_depend>
+    <test_depend>ament_cmake_lint_cmake</test_depend>
+    <test_depend>ament_cmake_uncrustify</test_depend>
+    <test_depend>ament_cmake_xmllint</test_depend>
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>
