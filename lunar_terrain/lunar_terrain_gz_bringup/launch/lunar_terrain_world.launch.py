@@ -64,7 +64,7 @@ def generate_launch_description():
         executable="parameter_bridge",
         name="clock_bridge",
         arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock]",
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]",
         ],
         parameters=[
             {
