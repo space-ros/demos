@@ -60,6 +60,10 @@ RUN git clone https://github.com/space-ros/simulation.git ${DEMO_DIR}/src/simula
 # Space Robots and RACS2 both reuse other demo assets and can lead to conflicts
 # This is a temporary fix for [issue #130](https://github.com/space-ros/demos/issues/130)
 RUN rm -r ${DEMO_DIR}/src/demos/racs2_demos_on_spaceros
+# the next 2 demos are not related to space_robots so we drop them from this build to not conflict on versions
+RUN rm -r ${DEMO_DIR}/src/demos/lunar_terrain
+RUN rm -r ${DEMO_DIR}/src/demos/ros_trick
+
 
 # Get a list of all installed ros2 packges
 RUN source "${SPACEROS_DIR}/setup.bash" && \
