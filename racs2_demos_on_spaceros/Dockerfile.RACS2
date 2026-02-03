@@ -1,0 +1,112 @@
+FROM osrf/space-ros:jazzy-2026.01.0
+
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+ENV ROS_DISTRO=jazzy
+ENV HOME=/home/spaceros-user
+ENV RACS2_DEMO_DIR=${HOME}/racs2_ws
+ENV RACS2_VENV_DIR=${RACS2_DEMO_DIR}/venv
+ENV CURIOSITY_DIR=${HOME}/curiosity_ws
+# ENV PYTHONPATH=${RACS2_VENV_DIR}/lib/python3.12/site-packages:${PYTHONPATH:-}
+
+# Prepare RACS2 workspace
+RUN mkdir -p ${RACS2_DEMO_DIR}
+WORKDIR ${RACS2_DEMO_DIR}
+
+# Fix: expired ROS 2 GPG key
+RUN sudo rm -f /usr/share/keyrings/ros-archive-keyring.gpg && \
+    curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | \
+    sudo gpg --dearmor --batch -o /usr/share/keyrings/ros-archive-keyring.gpg && \
+    sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") main" > /etc/apt/sources.list.d/ros2.list'
+
+# Install dependencies
+ARG DEBIAN_FRONTEND=noninteractive
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+    libwebsockets-dev protobuf-c-compiler libprotobuf-c-dev \
+    # python3-pip python3-venv python3-rosdep tmux gdb \
+    python3-pip python3-venv tmux gdb \
+    ros-jazzy-rosidl-default-generators \
+    ros-jazzy-ament-lint-auto \
+    ros-jazzy-ament-lint-common \
+    ros-jazzy-ros2-control \
+    ros-jazzy-ros2-controllers \
+    ros-jazzy-robot-state-publisher \
+    ros-jazzy-ros2controlcli \
+    ros-jazzy-control-msgs \
+    ros-jazzy-rmw-cyclonedds-cpp \
+    && sudo rm -rf /var/lib/apt/lists/*
+RUN python3 -m venv --system-site-packages ${RACS2_VENV_DIR}
+RUN ${RACS2_VENV_DIR}/bin/python -m pip install --upgrade pip setuptools wheel && \
+    ${RACS2_VENV_DIR}/bin/pip install --no-cache-dir protobuf==3.20.0 websockets==12.0
+ENV PATH=${RACS2_VENV_DIR}/bin:${PATH}
+ENV PYTHONPATH=${RACS2_VENV_DIR}/lib/python3.12/site-packages:${PYTHONPATH}
+
+# Get the cFS source code
+RUN git clone --recursive -b v6.7.0a https://github.com/nasa/cFS/ cfs
+WORKDIR ${RACS2_DEMO_DIR}/cfs
+RUN git submodule init
+RUN git submodule update
+
+# Get the RACS2 source code
+WORKDIR ${RACS2_DEMO_DIR}
+RUN git clone https://github.com/jaxa/racs2_bridge -b v1.1.1
+
+# Get the demo source code
+# rename old demo directory and exclude from build
+WORKDIR ${CURIOSITY_DIR}/src
+
+COPY curiosity_rover_demo/ ${CURIOSITY_DIR}/src/curiosity_rover_demo/
+
+# Customize cFS to run the bridge
+WORKDIR ${RACS2_DEMO_DIR}/cfs
+RUN cp cfe/cmake/Makefile.sample Makefile
+RUN cp -r cfe/cmake/sample_defs sample_defs
+RUN cp -pr ${RACS2_DEMO_DIR}/racs2_bridge/cFS/Bridge/Client_C/apps/racs2_bridge_client apps/
+
+# Deploy the run_app application and adjust the startup scripts
+COPY cFS/sample_defs/cpu1_cfe_es_startup.scr  ${RACS2_DEMO_DIR}/cfs/sample_defs/cpu1_cfe_es_startup.scr
+COPY cFS/sample_defs/racs2_bridge_config.txt ${RACS2_DEMO_DIR}/cfs/sample_defs/racs2_bridge_config.txt
+COPY cFS/sample_defs/targets.cmake  ${RACS2_DEMO_DIR}/cfs/sample_defs/targets.cmake
+COPY cFS/apps/run_app  ${RACS2_DEMO_DIR}/cfs/apps/run_app
+
+# This is necessary to run cFS inside docker
+RUN sed -i -e 's/^#undef OSAL_DEBUG_PERMISSIVE_MODE/#define OSAL_DEBUG_PERMISSIVE_MODE 1/g' sample_defs/default_osconfig.h
+RUN sed -i -e 's/^#undef OSAL_DEBUG_DISABLE_TASK_PRIORITIES/#define OSAL_DEBUG_DISABLE_TASK_PRIORITIES 1/g' sample_defs/default_osconfig.h
+
+# This is only needed because docker by default starts in IPv4. This setting
+# is specific to the JAXA bridge.
+RUN sed -i -e 's/^wss_uri=.*/wss_uri=127.0.0.1/g' sample_defs/racs2_bridge_config.txt
+
+# Compile cFS
+RUN make SIMULATION=native prep
+RUN make
+RUN make install
+
+# Prepare ROS packages
+WORKDIR ${CURIOSITY_DIR}
+# Copy bridge & racs2_msg node
+RUN cp -pr ${RACS2_DEMO_DIR}/racs2_bridge/ROS2/Bridge/Server_Python/bridge_py_s src/
+RUN cp -pr ${RACS2_DEMO_DIR}/racs2_bridge/Example/Case.1/ROS2/racs2_msg src/
+
+# Build the demo
+#RUN /bin/bash -c 'source /opt/ros/jazzy/setup.bash && \
+#    colcon build --packages-select \
+#    curiosity_rover_demo racs2_msg bridge_py_s'
+ARG RACS2_EXTRA_CXX_FLAGS="-Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-reorder"
+ENV RACS2_EXTRA_CXX_FLAGS="${RACS2_EXTRA_CXX_FLAGS}"
+
+RUN /bin/bash -lc '\
+  source /opt/ros/jazzy/setup.bash && \
+  colcon build --merge-install \
+    --packages-select bridge_py_s \
+    --cmake-args \
+      -DPYTHON_EXECUTABLE=${RACS2_VENV_DIR}/bin/python3 \
+      "-DCMAKE_CXX_FLAGS=${RACS2_EXTRA_CXX_FLAGS}" && \
+  colcon build --merge-install \
+    --packages-select racs2_msg curiosity_rover_demo \
+    --cmake-args \
+      "-DCMAKE_CXX_FLAGS=${RACS2_EXTRA_CXX_FLAGS}"'
+# copy the start script
+USER root
+COPY start_racs2_demo.sh ${HOME}/start_racs2_demo.sh
+RUN chmod +x ${HOME}/start_racs2_demo.sh
+USER spaceros-user

@@ -2,26 +2,70 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
+  discover-scripts:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Discover build scripts
+        id: set-matrix
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Get the repository tree recursively using GitHub API
+            const { data: tree } = await github.rest.git.getTree({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tree_sha: context.sha,
+              recursive: true
+            });
+
+            // Filter for build.sh files
+            const buildScripts = tree.tree.filter(item =>
+              item.type === 'blob' && item.path.endsWith('/build.sh')
+            );
+
+            // Create matrix with script path and readable name
+            const matrix = buildScripts.map(item => {
+              const path = require('path');
+              const parentDir = path.dirname(item.path);
+              const name = path.basename(parentDir);
+
+              return {
+                script: item.path,
+                name: name
+              };
+            });
+
+            console.log('Found scripts:', matrix);
+            core.setOutput('matrix', JSON.stringify(matrix));
 
   build:
-
+    needs: discover-scripts
     runs-on: ubuntu-latest
+    if: ${{ fromJson(needs.discover-scripts.outputs.matrix) != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.discover-scripts.outputs.matrix) }}
+
+    name: Build ${{ matrix.name }}
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Run the build.sh scripts
-      run: |
-            # find the build.sh scripts and execute them
-            echo "Running all build.sh scripts in repo"
-            path=$(pwd)
-            for f in $(find . -iname 'build.sh')
-            do 
-              (cd $(dirname $f) && ./build.sh && cd $path) || (echo $f "Failed" && exit 1)
-            done
-            echo "Done running build.sh scripts"
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run build script - ${{ matrix.script }}
+        run: |
+          echo "Running build script: ${{ matrix.script }}"
+          script_dir=$(dirname "${{ matrix.script }}")
+          echo "Changing to directory: ${script_dir}"
+          cd "${script_dir}"
+          chmod +x build.sh
+          ./build.sh
+          echo "Build script ${{ matrix.script }} completed successfully"

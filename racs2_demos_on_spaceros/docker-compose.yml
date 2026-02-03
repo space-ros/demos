@@ -1,0 +1,15 @@
+services:
+  curiosity_gui:
+    extends:
+     file: ../curiosity_rover/docker-compose.yml
+     service: curiosity_gui
+  racs2_demo:
+    image: jaxa/space-ros:racs2_demo
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.RACS2
+    environment:
+      - PYTHONUNBUFFERED=1 # important to show error messages if a ros service crashes!
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    network_mode: host
+    command: ["/bin/bash", "-c", "/home/spaceros-user/start_racs2_demo.sh"]
