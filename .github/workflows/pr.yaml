@@ -11,5 +11,5 @@ jobs:
     name: Space ROS Commit Message Standards
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: space-ros/check-commit-message-action@main
