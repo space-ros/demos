@@ -19,7 +19,7 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM osrf/space-ros:humble-2024.10.0
+FROM osrf/space-ros:jazzy-2025.10.0
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
@@ -36,15 +36,14 @@ LABEL org.label-schema.vcs-url="https://github.com/space-ros/docker"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Clone all space-ros sources
-RUN mkdir ${SPACEROS_DIR}/src \
-  && vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/exact.repos
+RUN sudo vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/scripts/spaceros.repos
 
 # Define a few key variables
-ENV DEMO_DIR=${HOME_DIR}/demos_ws
-ENV GZ_VERSION=garden
+ENV DEMO_DIR=${HOME}/demos_ws
+ENV GZ_VERSION=harmonic
 ENV GZ_PARTITION=spaceros
-ENV GZ_SIM_RESOURCE_PATH=/home/spaceros-user/demos_ws/src/simulation/models/lunar_terrain/models
-ENV ROS_DISTRO=humble
+ENV GZ_SIM_RESOURCE_PATH=$DEMO_DIR/src/simulation/models/lunar_terrain/models
+ENV ROS_DISTRO=jazzy
 
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -57,11 +56,9 @@ ADD --chmod=644 https://raw.githubusercontent.com/ros/rosdistro/master/ros.key /
 # the cache won't make it into the built image but will be maintained between steps.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get dist-upgrade -y
-RUN rosdep update
+  sudo apt-get update \
+  && sudo apt-get dist-upgrade -y
+RUN sudo rosdep init && rosdep update
 
 # Install the various build and test tools
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -71,39 +68,41 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   clang-format \
   cmake \
   git \
+  git-lfs \
   libbullet-dev \
   python3-colcon-common-extensions \
   python3-flake8 \
   python3-pip \
   python3-pytest-cov \
+  python3-rosinstall-generator \
   python3-rosdep \
   python3-setuptools \
   python3-vcstool \
   wget
 
+# Install git-lfs for big files in simulation repo
+RUN git lfs install
+
 RUN sudo add-apt-repository ppa:kisak/kisak-mesa
 
 RUN sudo apt install xterm -y
 
-# Get rosinstall_generator
-# Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
-# the cache won't make it into the built image but will be maintained between steps.
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo apt-get update -y && sudo apt-get install -y python3-rosinstall-generator
+# Install Gazebo Harmonic, GZ ROS packages and rviz2 from offical binaries
+RUN sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 
-# Install Gazebo Garden
-# Using Docker BuildKit cache mounts for /var/cache/apt and /var/lib/apt ensures that
-# the cache won't make it into the built image but will be maintained between steps.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && sudo apt-get update -y && sudo apt-get install -y gz-garden && sudo apt-get install -y git-lfs && git lfs install
+  sudo apt-get update -y \
+  && sudo apt-get install -y gz-$GZ_VERSION \
+  && sudo apt-get install -y ros-${ROS_DISTRO}-ros-gz \
+  && sudo apt-get install -y ros-${ROS_DISTRO}-rviz2
+
+ENV SPACEROS_USER spaceros-user
 
 # Generate repos file for demo dependencies, excluding packages from Space ROS core.
-COPY --chown=${USERNAME}:${USERNAME} demo-pkgs.txt /tmp/
-COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} demo-pkgs.txt /tmp/
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} excluded-pkgs.txt /tmp/
 RUN rosinstall_generator \
   --rosdistro ${ROS_DISTRO} \
   --deps \
@@ -112,44 +111,48 @@ RUN rosinstall_generator \
   -- $(cat /tmp/demo-pkgs.txt) \
   > /tmp/demo_generated_pkgs.repos
 
+# Create workspace for lunar_terrain demo
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
 RUN vcs import src < /tmp/demo_generated_pkgs.repos
 
-# Install system dependencies
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash' \
-  && rosdep install --from-paths ${SPACEROS_DIR}/src src --ignore-src --rosdistro ${ROS_DISTRO} -r -y --skip-keys "console_bridge generate_parameter_library fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos diagnostic_aggregator diagnostic_updater joy qt_gui rqt_gui rqt_gui_py"
-
 # Get the source for the dependencies
 # RUN vcs import src < /tmp/demo_generated_pkgs.repos
-COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
-RUN vcs import src < /tmp/demo_manual_pkgs.repos && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"'
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} demo_manual_pkgs.repos /tmp/
+RUN vcs import src < /tmp/demo_manual_pkgs.repos
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y \
-&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
-&& rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROS_DISTRO}
+  && /bin/bash -c 'source /opt/ros/${ROS_DISTRO}/setup.bash \
+  && source "${SPACEROS_DIR}/setup.bash" \
+  && rosdep install \
+     --simulate \
+     --from-paths src \
+     --ignore-src \
+     -r -y \
+     --rosdistro ${ROS_DISTRO} > /tmp/rosdep-commands.sh \
+  && chmod +x /tmp/rosdep-commands.sh \
+  && /tmp/rosdep-commands.sh'
 
 # Copy the demo source code
-COPY --chown=${USERNAME}:${USERNAME} lunar_sun_gz_plugin src/lunar_sun_gz_plugin
-COPY --chown=${USERNAME}:${USERNAME} lunar_terrain_gz_bringup src/lunar_terrain_gz_bringup
-COPY --chown=${USERNAME}:${USERNAME} lunar_terrain_gz_worlds src/lunar_terrain_gz_worlds
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} lunar_sun_gz_plugin src/lunar_sun_gz_plugin
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} lunar_terrain_gz_bringup src/lunar_terrain_gz_bringup
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} lunar_terrain_gz_worlds src/lunar_terrain_gz_worlds
 
 # Build the demo
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+RUN /bin/bash -c 'source /opt/ros/${ROS_DISTRO}/setup.bash \
+  && source ${SPACEROS_DIR}/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release'
 
 # Create the render group if it doesn't exist
 RUN sudo groupadd -f render
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
-RUN sudo usermod -aG render $USERNAME
+RUN sudo usermod -aG render ${SPACEROS_USER}
 
 # Setup the entrypoint
-COPY --chown=${USERNAME}:${USERNAME} ./entrypoint.sh /
+COPY --chown=${SPACEROS_USER}:${SPACEROS_USER} ./entrypoint.sh /
 # RUN chown appuser:appuser /entrypoint.sh && chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]

@@ -12,7 +12,7 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
-  <exec_depend>ros_ign_gazebo</exec_depend>
+  <exec_depend>ros_gz</exec_depend>
   <exec_depend>leo_description</exec_depend>
 
   <export>
