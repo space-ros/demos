@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <include file="$(find-pkg-share robot_gazebo)/launch/start_world.launch.py"/>
+
+    <include file="$(find-pkg-share robot_gazebo)/launch/spawn_with_control.launch.xml">
+            <arg name="robot_name" value="robot_1"/>
+            <arg name="robot_file" value="robot.xacro"/>
+            <arg name="x_spawn" value="0"/>
+            <arg name="y_spawn" value="4.5"/>
+            <arg name="z_spawn" value="0.0"/>
+            <arg name="roll_spawn" value="0.0"/>
+            <arg name="pitch_spawn" value="0.0"/>
+            <arg name="yaw_spawn" value="1.57"/>
+    </include>
+
+    <include file="$(find-pkg-share robot_gazebo)/launch/spawn_with_control.launch.xml">
+            <arg name="robot_name" value="robot_2"/>
+            <arg name="robot_file" value="robot.xacro"/>
+            <arg name="x_spawn" value="4.5"/>
+            <arg name="y_spawn" value="0.0"/>
+            <arg name="z_spawn" value="0.0"/>
+            <arg name="roll_spawn" value="0.0"/>
+            <arg name="pitch_spawn" value="0.0"/>
+            <arg name="yaw_spawn" value="0.0"/>
+    </include>
+
+    <include file="$(find-pkg-share robot_gazebo)/launch/spawn_with_control.launch.xml">
+            <arg name="robot_name" value="robot_3"/>
+            <arg name="robot_file" value="robot.xacro"/>
+            <arg name="x_spawn" value="-2.5"/>
+            <arg name="y_spawn" value="-2.5"/>
+            <arg name="z_spawn" value="0.0"/>
+            <arg name="roll_spawn" value="0.0"/>
+            <arg name="pitch_spawn" value="0.0"/>
+            <arg name="yaw_spawn" value="-2.3"/>
+    </include>
+
+    <node pkg="rviz2" exec="rviz2" name="rviz" output="screen" args="-d $(find-pkg-share robot_description)/rviz/CADRE.rviz">
+    </node>
+
+<!-- 
+    <node pkg="rtabmap_ros" exec="rtabmap" name="rtabmap_1" output="screen" namespace="robot_1">
+        <param name="frame_id" value="robot_1_base_link"/>
+        <param name="subscribe_depth" value="true"/>
+        <param name="subscribe_rgb" value="false"/>
+        <param name="approx_sync" value="true"/>
+        <remap from="/rtabmap/odom" to="/robot_1/__odom"/>
+        <remap from="/rtabmap/rgbd_image" to="/robot_1/robot_1_camera/__points"/>
+    </node> -->
+
+    <!-- <node pkg="slam_toolbox" exec="async_slam_toolbox_node" name="slam_1" output="screen" namespace="robot_1">
+        <param name="slam_params_file" value="$(find-pkg-share robot_description)/config/mapper_params_online_async.yaml"/>
+    
+    </node> -->
+
+    
+
+</launch>

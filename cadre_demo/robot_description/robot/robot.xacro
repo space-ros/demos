@@ -1,0 +1,358 @@
+<?xml version="1.0" ?>
+
+<robot name="omni_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find robot_description)/robot/parts/lrf/lrf.xacro"/>
+  <xacro:include filename="$(find robot_description)/robot/parts/camera/camera.xacro"/>
+  <xacro:include filename="$(find robot_description)/robot/parts/imu/imu.urdf.xacro"/>
+  <!-- <xacro:include filename="$(find robot_description)/robot/parts/sensors.xacro"/> -->
+
+
+  <xacro:arg name="robot_name" default="robot_1"/>
+ 
+ 
+  <link name="$(arg robot_name)_base_link">
+    <inertial>
+      <origin rpy="0.0 0 0" xyz="0.0172135177936195 -1.14385581850528E-05 -0.0536201606696958"/>
+      <mass value="7.289342987569"/>
+      <inertia ixx="0.145206537433384" ixy="1.43923471773063E-06" ixz="-0.0870870676509049" iyy="0.393381877550795" iyz="8.4523238199881E-07" izz="0.448115668671779"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/base_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/base_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="$(arg robot_name)_Left_front_wheel_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="4.10879071321979E-08 1.59579960877509E-08 -0.0134913589136655"/>
+      <mass value="0.301609877533069"/>
+      <inertia ixx="0.00092337705809606" ixy="-1.11287629204213E-10" ixz="-9.28718015940215E-11" iyy="0.000923377144551089" iyz="-3.60526237294195E-11" izz="0.00178709216193593"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Left_front_wheel_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Left_front_wheel_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_Left_front_wheel_joint" type="continuous">
+    <origin rpy="-1.5708 0 0" xyz="0.24547 0.20957 -0.081274"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_Left_front_wheel_link"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="10" velocity="10"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <link name="$(arg robot_name)_Left_back_wheel_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-4.6774E-09 4.3829E-08 -0.013491"/>
+      <mass value="0.30161"/>
+      <inertia ixx="0.00092338" ixy="7.4328E-11" ixz="1.0556E-11" iyy="0.00092338" iyz="-9.9063E-11" izz="0.0017871"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Left_back_wheel_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Left_back_wheel_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_Left_back_wheel_joint" type="continuous">
+    <origin rpy="-1.5708 -0.2606 0" xyz="-0.17058 0.20957 -0.19222"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_Left_back_wheel_link"/>
+    <axis xyz="0 0 -1"/>
+    <limit effort="10" velocity="10"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <link name="$(arg robot_name)_right_back_wheel_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-4.33303539160157E-08 -8.08419348130585E-09 0.0134913589136655"/>
+      <mass value="0.301609877533068"/>
+      <inertia ixx="0.000923376982423818" ixy="1.07889777166057E-11" ixz="-9.79312028416197E-11" iyy="0.000923377220223332" iyz="-1.8287775345518E-11" izz="0.00178709216193593"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/right_back_wheel_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/right_back_wheel_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_right_back_wheel_joint" type="continuous">
+    <origin rpy="-1.5708 -0.2606 0" xyz="-0.17058 -0.20959 -0.19222"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_right_back_wheel_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <link name="$(arg robot_name)_right_front_wheel_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="3.59983871878189E-08 2.54359955841055E-08 0.0134913589136655"/>
+      <mass value="0.301609877533068"/>
+      <inertia ixx="0.00092337701568607" ixy="-8.31851667065812E-11" ixz="8.13532326388978E-11" iyy="0.000923377186961082" iyz="5.75031720480376E-11" izz="0.00178709216193594"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/right_front_wheel_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/right_front_wheel_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_right_front_wheel_joint" type="continuous">
+    <origin rpy="-1.5708 -0.2606 0" xyz="0.24547 -0.20959 -0.081274"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_right_front_wheel_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="10"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <link name="$(arg robot_name)_Solar1_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.076412 -0.012053 -0.1054"/>
+      <mass value="0.7"/>
+      <inertia ixx="0.048188" ixy="0.00063738" ixz="-0.00016997" iyy="0.048138" iyz="-0.011901" izz="0.006682"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Solar1_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.9216 0.1961 0.93333 1"/>
+       
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Solar1_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_Solar1_joint" type="revolute">
+    <origin rpy="1.5708 0 1.5708" xyz="0.09857 -0.16877 0.041327"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_Solar1_link"/>
+    <axis xyz="0 0.25766 0.96623"/>
+    <limit effort="10" lower="-2.96706" upper="0" velocity="0.05236"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+  <link name="$(arg robot_name)_Solar2_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.076412 -0.012053 -0.1054"/>
+      <mass value="0.7"/>
+      <inertia ixx="0.048188" ixy="-0.00063738" ixz="0.00016997" iyy="0.048138" iyz="-0.011901" izz="0.006682"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Solar2_link.stl"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="file:///home/ros2/multi_space_ros/src/robot_description/meshes/Solar2_link.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="$(arg robot_name)_Solar2_joint" type="revolute">
+    <origin rpy="1.5708 0 1.5708" xyz="0.09857 0.16874 0.041327"/>
+    <parent link="$(arg robot_name)_base_link"/>
+    <child link="$(arg robot_name)_Solar2_link"/>
+    <axis xyz="0 0.25766 0.96623"/>
+    <limit effort="10" lower="0" upper="2.96706" velocity="0.0523599"/>
+    <dynamics damping="0.1" friction="0.1"/>
+  </joint>
+
+
+
+
+  <xacro:lrf_v0 prefix = "$(arg robot_name)_front" parent="$(arg robot_name)_base_link">
+	<origin xyz="0.21 0 0.03" rpy="0 -0.15 0"/>
+  </xacro:lrf_v0>
+
+
+  <xacro:lrf_gazebo_v0 prefix = "$(arg robot_name)_front" min_rad = "-0.84" max_rad = "0.84" min_range = "0.1" max_range = "10"/>
+
+  <xacro:imu robot_namee = "$(arg robot_name)"/>
+
+
+
+  <xacro:camera_rgb robot_name="$(arg robot_name)" parent_name="$(arg robot_name)_base_link" origin_xyz="0.1 0.0 0.2" camera_ROLL="0.0" camera_PITCH="0.0" camera_YAW="0.0"/>
+
+
+  <!-- <xacro:sensor_d435 name="$(arg robot_name)_d435" parent="$(arg robot_name)_base_link">
+    <origin xyz="0.5 0.0 0.2" rpy="0 0 0"/> 
+  </xacro:sensor_d435> -->
+
+
+
+
+
+  <gazebo reference="$(arg robot_name)_base_link">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_Solar2_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_Solar1_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_Left_back_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_Left_front_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_right_back_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  <gazebo reference="$(arg robot_name)_right_front_wheel_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+  
+  
+  <gazebo>
+    <plugin filename="libgazebo_ros_joint_state_publisher.so" name="$(arg robot_name)_joint_state">
+      <ros>
+        <namespace>$(arg robot_name)</namespace>
+      </ros>
+      <update_rate>30</update_rate>
+      <joint_name>$(arg robot_name)_Left_back_wheel_joint</joint_name>
+      <joint_name>$(arg robot_name)_Left_front_wheel_joint</joint_name>
+      <joint_name>$(arg robot_name)_right_back_wheel_joint</joint_name>
+      <joint_name>$(arg robot_name)_right_front_wheel_joint</joint_name>
+      <joint_name>$(arg robot_name)_Solar2_joint</joint_name>
+      <joint_name>$(arg robot_name)_Solar1_joint</joint_name>
+   
+    </plugin>
+    
+    <plugin filename="libgazebo_ros_diff_drive.so" name="$(arg robot_name)_differential_drive_controller">
+      <ros>
+          <namespace>$(arg robot_name)</namespace>
+          <argument>--ros-args --remap /cmd_vel:=/$(arg robot_name)/cmd_vel /odom:=/$(arg robot_name)/odom</argument>
+      </ros>
+
+      <legacyMode>false</legacyMode>
+
+      <num_wheel_pairs>2</num_wheel_pairs>
+      
+      <right_joint>$(arg robot_name)_right_back_wheel_joint</right_joint>
+      
+      <left_joint>$(arg robot_name)_Left_front_wheel_joint</left_joint>
+      <left_joint>$(arg robot_name)_Left_back_wheel_joint</left_joint>
+      <right_joint>$(arg robot_name)_right_front_wheel_joint</right_joint>
+      
+    
+      <wheel_separation>0.418</wheel_separation>
+      <wheel_diameter>0.195</wheel_diameter>
+
+      <!-- limits -->
+      <!-- <max_wheel_torque>3</max_wheel_torque>
+      <max_wheel_acceleration>2</max_wheel_acceleration> -->
+
+
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+
+      <!-- <legacyMode>true</legacyMode> -->
+
+      <odometry_frame>$(arg robot_name)_odom</odometry_frame>
+      <robot_base_frame>$(arg robot_name)_base_link</robot_base_frame>
+
+
+    </plugin>
+
+    <!-- <ros2_control name="$(arg robot_name)_GazeboSystem" type="system">
+      <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+      
+      <joint name="$(arg robot_name)_Solar2_joint">
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="$(arg robot_name)_Solar1_joint">
+        <command_interface name="velocity">
+          <param name="min">-3.14</param>
+          <param name="max">3.14</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+      </joint>
+
+    </ros2_control> -->
+
+
+<!-- 
+    <plugin filename="libgazebo_ros2_control.so" name="$(arg robot_name)_gazebo_ros2_control">
+      <ros>
+        <namespace>$(arg robot_name)</namespace>
+      </ros>
+      <parameters>/home/ros2/multi_space_ros/install/robot_description/share/robot_description/config/$(arg robot_name)_controllers.yaml</parameters>
+      <robot_param_node>/$(arg robot_name)_robot_state_publisher</robot_param_node>
+      
+    </plugin>
+     -->
+
+
+
+
+  </gazebo>
+
+  
+
+</robot>
