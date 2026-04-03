@@ -12,68 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ignition/gazebo/System.hh>
-#include <ignition/gazebo/World.hh>
-#include <ignition/gazebo/Model.hh>
-#include <ignition/gazebo/EntityComponentManager.hh>
-#include <ignition/math/Vector3.hh>
-#include <ignition/math/Pose3.hh>
+#include <gz/sim/System.hh>
+#include <gz/sim/World.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/EntityComponentManager.hh>
+#include <gz/math/Vector3.hh>
+#include <gz/math/Pose3.hh>
 #include <sdf/Light.hh>
-#include <ignition/gazebo/components.hh>
-#include <ignition/plugin/Register.hh>
-#include <ignition/gazebo/Actor.hh>
-#include <ignition/transport/Node.hh>
+#include <gz/sim/components.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/sim/components/Actor.hh>
+#include <gz/transport/Node.hh>
 #include <random>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
-#ifdef USE_IGNITION
-namespace gazebo = ignition::gazebo;
-#else
-namespace gazebo = gz::sim;
-#endif
 
-class LunarSun : public gazebo::System,
-         public gazebo::ISystemConfigure,
-         public gazebo::ISystemUpdate {
+class LunarSun : public gz::sim::System,
+         public gz::sim::ISystemConfigure,
+         public gz::sim::ISystemUpdate {
   // Model entity
-  gazebo::World world_{gazebo::kNullEntity};
+  gz::sim::World world_{gz::sim::kNullEntity};
 
 
   // Joint entities
-  gazebo::Entity actorEntity, lightEntity;
+  gz::sim::Entity actorEntity, lightEntity;
 
   // Whether the system has been properly configured
   bool configured_{false};
 
 public:
-  void Configure(const gazebo::Entity& entity,
-         const std::shared_ptr<const sdf::Element>& sdf,
-         gazebo::EntityComponentManager& ecm,
-         gazebo::EventManager& /*eventMgr*/) override {
-    this->world_ = gazebo::World(entity);
+  void Configure(const gz::sim::Entity& entity,
+         const std::shared_ptr<const sdf::Element>& /*sdf*/,
+         gz::sim::EntityComponentManager& ecm,
+         gz::sim::EventManager& /*eventMgr*/) override {
+    this->world_ = gz::sim::World(entity);
 
     this->actorEntity =
-      ecm.EntityByComponents(gazebo::components::Name("animated_sun"));
+      ecm.EntityByComponents(gz::sim::components::Name("animated_sun"));
 
     LoadCSV("/home/spaceros-user/demos_ws/src/lunar_sun_gz_plugin/horizons_az_el.csv");
 
-    ignition::math::Pose3d startPose(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    gz::math::Pose3d startPose(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     // Position the light above the ground
     ecm.CreateComponent(this->actorEntity,
-              gazebo::components::Pose(startPose));
+              gz::sim::components::Pose(startPose));
     ecm.CreateComponent(this->actorEntity,
-              gazebo::components::TrajectoryPose(
+              gz::sim::components::TrajectoryPose(
                 this->trajectory[0]));
     configured_ = true;
   }
 
-  void Update(const gazebo::UpdateInfo& info,
-        gazebo::EntityComponentManager& ecm) override {
-    // Get actor pose
-    auto actor = gazebo::Actor(this->actorEntity);
-    auto actorPosition = actor.WorldPose(ecm);
-
-
+  void Update(const gz::sim::UpdateInfo& info,
+        gz::sim::EntityComponentManager& ecm) override {
     // Get the current simulation time
     this->currentSimTime = info.simTime;
 
@@ -81,28 +73,28 @@ public:
     std::chrono::_V2::steady_clock::duration elapsedTime =
       this->currentSimTime - this->startWaypointTime;
 
-    double secondElapsed =
-      std::chrono::duration_cast<std::chrono::seconds>(elapsedTime).count();
-
     if (elapsedTime >= waypointDuration) {
       // Move to the next waypoint
       this->startWaypointTime = this->currentSimTime;
       this->trajectoryIndex++;
-      if (this->trajectoryIndex >= this->trajectory.size()) {
+      if (static_cast<size_t>(this->trajectoryIndex) >= this->trajectory.size()) {
       this->trajectoryIndex = 0;
       }
       // Set the actor's trajectory pose
-      actor.SetTrajectoryPose(ecm, this->trajectory[this->trajectoryIndex]);
-      ecm.SetChanged(this->actorEntity, gazebo::components::TrajectoryPose::typeId,
-             gazebo::ComponentState::PeriodicChange);
+      auto trajPoseComp = ecm.Component<gz::sim::components::TrajectoryPose>(this->actorEntity);
+      if (trajPoseComp) {
+        trajPoseComp->Data() = this->trajectory[this->trajectoryIndex];
+        ecm.SetChanged(this->actorEntity, gz::sim::components::TrajectoryPose::typeId,
+               gz::sim::ComponentState::PeriodicChange);
+      }
 
-      ignition::msgs::Light lightMsg;
+      gz::msgs::Light lightMsg;
       lightMsg.set_name("sunlight");
-      lightMsg.set_type(ignition::msgs::Light::DIRECTIONAL);
+      lightMsg.set_type(gz::msgs::Light::DIRECTIONAL);
 
       // Set the pose in the light message
       // Directly set the position components
-      ignition::msgs::Pose* poseLight2 = lightMsg.mutable_pose();
+      gz::msgs::Pose* poseLight2 = lightMsg.mutable_pose();
       poseLight2->mutable_position()->set_x(
         this->trajectory[this->trajectoryIndex].X());
       poseLight2->mutable_position()->set_y(
@@ -140,16 +132,16 @@ public:
 
       // Publish the light message to the light config service
       bool result;
-      ignition::msgs::Boolean res;
-      ignition::transport::Node node;
+      gz::msgs::Boolean res;
+      gz::transport::Node node;
       constexpr unsigned int timeout = 5000;
-      bool executed = node.Request("/world/dem_heightmap/light_config", lightMsg,
-                     timeout, res, result);
+      node.Request("/world/dem_heightmap/light_config", lightMsg,
+                   timeout, res, result);
 
-      ecm.SetChanged(this->lightEntity, gazebo::components::Pose::typeId,
-             gazebo::ComponentState::PeriodicChange);
-      ecm.SetChanged(this->lightEntity, gazebo::components::Light::typeId,
-             gazebo::ComponentState::PeriodicChange);
+      ecm.SetChanged(this->lightEntity, gz::sim::components::Pose::typeId,
+             gz::sim::ComponentState::PeriodicChange);
+      ecm.SetChanged(this->lightEntity, gz::sim::components::Light::typeId,
+             gz::sim::ComponentState::PeriodicChange);
     } else {
       return;
     }
@@ -192,17 +184,17 @@ private:
       double elevation = std::stod(elevationStr);
 
       // Convert azimuth and elevation to radians and then to a Pose
-      ignition::math::Vector3d position(
+      gz::math::Vector3d position(
         100000 * cos(azimuth * M_PI / 180.0) * cos(elevation * M_PI / 180.0),
         100000 * sin(azimuth * M_PI / 180.0) * cos(elevation * M_PI / 180.0),
         (100000 * sin(elevation * M_PI / 180.0)) - 10000);
 
-      ignition::math::Pose3d pose(position, ignition::math::Quaterniond::Identity);
+      gz::math::Pose3d pose(position, gz::math::Quaterniond::Identity);
       this->trajectory.push_back(pose);
     }
   }
 
-  std::vector<ignition::math::Pose3d> trajectory;
+  std::vector<gz::math::Pose3d> trajectory;
   int trajectoryIndex = 0;
   std::chrono::_V2::steady_clock::duration startWaypointTime =
     std::chrono::steady_clock::duration::zero();
@@ -211,5 +203,5 @@ private:
     std::chrono::hours(1);
 };
 
-IGNITION_ADD_PLUGIN(LunarSun, gazebo::System, LunarSun::ISystemConfigure,
+GZ_ADD_PLUGIN(LunarSun, gz::sim::System, LunarSun::ISystemConfigure,
           LunarSun::ISystemUpdate)
