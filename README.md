@@ -12,4 +12,4 @@ Submissions to this repo should include:
 
 Please refer to the [dockerfile repo](https://github.com/space-ros/docker/tree/main/space_robots) for instructions on running the existing demos
 
-## This repo is foked from Space ROS. To check out my work pls open "cadre_demo"
+## This repo is forked from Space ROS. To check out my work pls open "cadre_demo"
