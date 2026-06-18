@@ -18,7 +18,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/ee.dae</uri>
+            <uri>model://canadarm/meshes/ee.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -64,7 +64,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -110,7 +110,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -156,7 +156,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -165,7 +165,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/long_link_1_v2_2.dae</uri>
+            <uri>model://canadarm/meshes/long_link_1_v2_2.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -174,7 +174,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v3_0.dae</uri>
+            <uri>model://canadarm/meshes/joint_v3_0.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -229,7 +229,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -238,7 +238,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/long_link_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/long_link_v2_1.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -247,7 +247,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -289,7 +289,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -335,7 +335,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/joint_v2_1.dae</uri>
+            <uri>model://canadarm/meshes/joint_v2_1.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -381,7 +381,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>package://simulation/models/canadarm/meshes/ee.dae</uri>
+            <uri>model://canadarm/meshes/ee.dae</uri>
           </mesh>
         </geometry>
         <material>
