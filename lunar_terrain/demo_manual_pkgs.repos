@@ -6,4 +6,4 @@ repositories:
   simulation:
     type: git
     url: https://github.com/space-ros/simulation.git
-    version: main
+    version: develop-fix-humble-jazzy

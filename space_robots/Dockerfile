@@ -55,7 +55,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       python3-rosinstall-generator
 
 RUN git clone https://github.com/space-ros/demos.git ${DEMO_DIR}/src/demos
-RUN git clone https://github.com/space-ros/simulation.git ${DEMO_DIR}/src/simulation
+RUN git clone -b develop-fix-humble-jazzy https://github.com/space-ros/simulation.git ${DEMO_DIR}/src/simulation
 
 # Space Robots and RACS2 both reuse other demo assets and can lead to conflicts
 # This is a temporary fix for [issue #130](https://github.com/space-ros/demos/issues/130)
