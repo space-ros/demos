@@ -1,0 +1,239 @@
+#!/usr/bin/env python3
+
+import rclpy
+from rclpy.node import Node
+from builtin_interfaces.msg import Duration
+
+from std_msgs.msg import Float64MultiArray
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from geometry_msgs.msg import Twist
+import math
+
+
+class MoveWheel(Node):
+
+    def __init__(self):
+        super().__init__('wheel_node')
+        self.wheel_publisher_ = self.create_publisher(
+            Float64MultiArray,
+            '/wheel_velocity_controller/commands', 10)
+        self.steer_publisher_ = self.create_publisher(
+            JointTrajectory,
+            '/steer_position_controller/joint_trajectory', 10)
+        timer_period = 0.1  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+
+        self.vel_sub = self.create_subscription(
+            Twist, '/cmd_vel', self.vel_callback, 10)
+        self.cmd_msg = Twist()
+
+        # Wheel steering angles
+        # [front_left, rear_front, front_right, rear_right]
+        self.wheel_steer_angles = [0, 0, 0, 0]
+        self.prev_steer = self.wheel_steer_angles
+        # Wheel linear velocities
+        # [front_left, rear_front, front_right, rear_right]
+        self.wheel_linear_velocities = [0, 0, 0, 0]
+
+        # Robot characteristics
+        self.wheel_radius = 0.225
+        self.L = 0.870  # Chassis Length
+        self.T = 1.050  # Chassis Width
+        self.wheel_steer_limit = 0.9
+        # Angle to apply to wheel steer to be perpendicular to robot center
+        self.wheel_steer_centering_angle = math.atan(self.L / self.T)
+        # Distance between wheel steering axis and robot center
+        self.dist_wheel_center = math.sqrt(
+            (self.L / 2)**2 +
+            (self.T / 2)**2)
+
+    def vel_callback(self, msg):
+        self.cmd_msg = msg
+
+    def compute_command(self, msg):
+        ## Rotate on place
+        if (
+            (abs(msg.angular.z) > 0.01) and
+            (msg.linear.x == 0) and
+            (msg.linear.y == 0)
+        ):
+            self.set_rotate_on_place(msg.angular.z)
+
+        ## Stop motion
+        elif (
+            (abs(msg.angular.z) < 0.01) and
+            (abs(msg.linear.x) < 0.001) and
+            (abs(msg.linear.y) < 0.001)
+        ):
+            self.wheel_steer_angles = [0.0, 0.0, 0.0, 0.0]
+            self.wheel_linear_velocities = [0.0, 0.0, 0.0, 0.0]
+
+        ## Combined motion
+        else:
+            # Set first translational motion
+            common_steer_angle, wheel_lin_vel = self.get_translation_motion(
+                msg.linear.x, msg.linear.y)
+
+            # If angular vel not negligeable, add to steer angles and
+            # wheel velocities
+            if (abs(msg.angular.z) > 0.01):
+                self.wheel_steer_angles, self.wheel_linear_velocities = self.get_rotation_motion(
+                    common_steer_angle,
+                    wheel_lin_vel,
+                    msg.angular.z)
+            else:
+                # Wheel steering angles for a translation motion (same for all)
+                # [front_left, rear_front, front_right, rear_right]
+                self.wheel_steer_angles = [
+                    common_steer_angle,
+                    common_steer_angle,
+                    common_steer_angle,
+                    common_steer_angle]
+
+                # Wheel linear velocities for a translation motion (same for all)
+                # [front_left, rear_front, front_right, rear_right]
+                self.wheel_linear_velocities = [
+                    wheel_lin_vel,
+                    wheel_lin_vel,
+                    wheel_lin_vel,
+                    wheel_lin_vel]
+
+    def normalize(self, angle):
+        return math.atan2(math.sin(angle), math.cos(angle))
+
+    def set_rotate_on_place(self, angular_vel):
+        # Wheel steering angles to rotate on place
+        # [front_left, rear_front, front_right, rear_right]
+        self.wheel_steer_angles = [
+            -self.wheel_steer_centering_angle,
+            self.wheel_steer_centering_angle,
+            self.wheel_steer_centering_angle,
+            -self.wheel_steer_centering_angle]
+
+        # Calculate wheel linear velocities
+        # [front_left, rear_front, front_right, rear_right]
+        wheel_lin_vel = self.dist_wheel_center * angular_vel
+        self.wheel_linear_velocities = [
+            -wheel_lin_vel,
+            -wheel_lin_vel,
+            wheel_lin_vel,
+            wheel_lin_vel]
+
+    def get_translation_motion(self, linear_vel_x, linear_vel_y):
+        vel_norm = math.sqrt(linear_vel_x**2 + linear_vel_y**2)
+        common_steer_angle = math.atan2(linear_vel_y, linear_vel_x)
+
+        if abs(common_steer_angle) > (math.pi / 2):
+            common_steer_angle = self.normalize(common_steer_angle - math.pi)
+            vel_norm = - vel_norm
+
+        return common_steer_angle, vel_norm
+
+    def get_rotation_motion(self, robot_side_angle, lin_vel, angular_vel):
+        # Robot turning radius according to Ideal Ackerman Steering
+        steering_radius = lin_vel / angular_vel
+
+        # Center of rotation (rotated by previous robot side motion 
+        # direction angle)
+        xR = - steering_radius * math.sin(robot_side_angle)
+        yR = steering_radius * math.cos(robot_side_angle)
+
+        # Each wheel coordinate (frame in the center of the robot)
+        # [front_left, rear_front, front_right, rear_right]
+        wheel_coords = [
+            (self.L / 2, self.T / 2),
+            (- self.L / 2, self.T / 2),
+            (self.L / 2, -self.T / 2),
+            (-self.L / 2, -self.T / 2),
+        ]
+
+        wheel_steer_angles = [0, 0, 0, 0]
+        wheel_velocities = [0, 0, 0, 0]
+        # vector from rotation center to robot center
+        rot_center_to_robot = (-xR, -yR)
+        for i in range(len(wheel_coords)):
+            # vector from rotation center to wheel point
+            rot_center_to_wheel = (
+                wheel_coords[i][0] - xR,
+                wheel_coords[i][1] - yR)
+
+            # https://wumbo.net/formulas/angle-between-two-vectors-2d/
+            # Get the angle between the rotation center and the wheel to steer
+            # the wheel so that it runs perpendicular to the turning radius
+            wheel_steer_angles[i] = robot_side_angle + math.atan2(
+                rot_center_to_wheel[1] * rot_center_to_robot[0] - rot_center_to_wheel[0] * rot_center_to_robot[1],
+                rot_center_to_wheel[0] * rot_center_to_robot[0] + rot_center_to_wheel[1] * rot_center_to_robot[1])
+            # Adjust wheel velocity according to distance to rotation center
+            dist_rot_center_to_wheel = math.sqrt(
+                rot_center_to_wheel[0]**2 + rot_center_to_wheel[1]**2)
+            wheel_velocities[i] = math.copysign(
+                angular_vel * dist_rot_center_to_wheel, lin_vel)
+
+        return wheel_steer_angles, wheel_velocities
+
+    def publish_wheel_vel_control(self):
+        wheel_rotation_vel = [
+            (vel / self.wheel_radius) for vel in self.wheel_linear_velocities
+            ]
+        target_vel = Float64MultiArray()
+        target_vel.data = wheel_rotation_vel
+        self.wheel_publisher_.publish(target_vel)
+
+    def clamp_steer_angle(self, angle) -> float:
+        return min(
+            self.wheel_steer_limit, max(angle, - self.wheel_steer_limit))
+
+    def publish_wheel_steer_control(self):
+        # clamp steering angles
+        clamped_angles = [
+            self.clamp_steer_angle(angle) for angle in self.wheel_steer_angles
+        ]
+        # Check if steering changed
+        changed = False
+        for i in range(len(clamped_angles)):
+            if abs(self.prev_steer[i] - clamped_angles[i]) > 1e-3:
+                changed = True
+                break
+
+        if changed:
+            target_steer = JointTrajectory()
+            target_steer.joint_names = [
+                "front_left_wheel_axle_joint",
+                "rear_left_wheel_axle_joint",
+                "front_right_wheel_axle_joint",
+                "rear_right_wheel_axle_joint"]
+            steer_point = JointTrajectoryPoint()
+
+            steer_point.positions = clamped_angles
+            steer_point.time_from_start = Duration(sec=0, nanosec=1000000)
+            target_steer.points.append(steer_point)
+
+            self.steer_publisher_.publish(target_steer)
+            self.prev_steer = clamped_angles
+
+    def timer_callback(self):
+        self.compute_command(self.cmd_msg)
+        self.publish_wheel_vel_control()
+        self.publish_wheel_steer_control()
+
+        # Reset command (will stop robot if not receiving
+        # commands at a higher rate than timer)
+        self.cmd_msg = Twist()
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    wheel_node = MoveWheel()
+
+    rclpy.spin(wheel_node)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    wheel_node.destroy_node()
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
