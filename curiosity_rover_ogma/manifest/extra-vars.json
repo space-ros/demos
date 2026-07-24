@@ -1,0 +1,5 @@
+{ "target_extra_dependencies": [ "nav_msgs" ]
+, "package_extra_depend": [ "nav_msgs" ]
+, "impl_extra_header": [ "#include \"nav_msgs/msg/odometry.hpp\"" ]
+, "BASE_DOCKER_IMAGE": "osrf/space-ros:curiosity_demo"
+}
