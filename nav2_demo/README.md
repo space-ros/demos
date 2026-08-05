@@ -1,51 +1,91 @@
-# This folder contains the necessary files for running Nav2 on the Mars Rover demo
+# Nav2 Curiosity Rover Demo
 
-This demo is a preliminary release, please file any issues found.
+Run Nav2 localization and navigation against the [Curiosity rover](../curiosity_rover) Gazebo simulation.
 
-First build this container using the build script
+This demo is a preliminary release; please file any issues found.
+
+## Build
+
+Build Curiosity (simulation + control) first, then this demo image:
 
 ```bash
+cd ../curiosity_rover
+./build.sh
+
+cd ../nav2_demo
 ./build.sh
 ```
 
-There will now be a docker image called "osrf/space-ros-nav2-demo:latest".
+That produces `osrf/space-ros:curiosity_gui`, `osrf/space-ros:curiosity_demo`, and `osrf/space-ros-nav2-demo:latest`.
 
-## Run the Mars Rover demo with Nav2 and SLAM toolbox
+## Run
 
-## Terminal 1 - launch the mars_rover demo
+Allow Docker to use the host display:
 
-Follow the instructions to build and run the mars rover demo in [space-robots/README.md](../space_robots/README.md).
-
-## Terminal 2 - launch Nav2
-
-Start the space-ros-nav2 container and launch the navigation2 nodes:
-
+```bash
+xhost +local:docker
 ```
+
+Start components in order. Curiosity must be running (and Gazebo playing) before Nav2, so `/clock`, odometry TF, and `/scan` are available.
+
+### Terminal 1 — Curiosity (Gazebo + rover control)
+
+```bash
+cd ../curiosity_rover
 ./run.sh
+```
+
+In Gazebo, click **Play**.
+
+### Terminal 2 — Nav2 navigation
+
+```bash
+cd ../nav2_demo
+./run.sh
+```
+
+Inside the container:
+
+```bash
 ros2 launch space_ros_nav2_bringup navigation_launch.py use_sim_time:=True params_file:=nav2_params.yaml
 ```
 
-## Terminal 3 - launch localization with map
+Leave this running.
 
-```
+### Terminal 3 — Localization + map
+
+```bash
 docker exec -it osrf_space-ros-nav2-demo bash
-source install/setup.bash
+```
+
+```bash
 ros2 launch space_ros_nav2_bringup localization_launch.py use_sim_time:=True map:=mars_map.yaml params_file:=nav2_params.yaml
 ```
 
-## Terminal 4 - launch Rviz
+(`./run.sh` already sources the workspace via the image entrypoint.)
 
-Exec into the same space-ros-nav2 container and launch Rviz2:
+### Terminal 4 — RViz
 
-```
+```bash
 docker exec -it -e DISPLAY osrf_space-ros-nav2-demo bash
-source /opt/ros/humble/setup.bash
-source install/setup.bash
-ros2 launch nav2_bringup rviz_launch.py
 ```
 
-## Localize the robot and send a Nav2 goal
+```bash
+ros2 launch nav2_demo_rviz rviz_launch.py
+```
 
-In the Rviz GUI, localize robot in Rviz using 2D Pose estimate tool, with an arrow pointing up at the center of the grid.
-Wait for Nav2 to initialize / costmaps to appear.
-When the costmap appears, send a goal using the "Nav2 goal" tool in Rviz
+If OpenGL is unreliable (for example in a VM), use software rendering:
+
+```bash
+LIBGL_ALWAYS_SOFTWARE=1 ros2 launch nav2_demo_rviz rviz_launch.py
+```
+
+## Localize and send a goal
+
+1. In RViz, use **2D Pose Estimate** — place an arrow pointing up near the center of the grid.
+2. Wait for Nav2 to initialize and for the costmaps to appear.
+3. Use the **Nav2 Goal** tool to send a goal.
+
+You should see something like this:
+
+![Nav2 Curiosity demo in RViz](nav2_demo_image.jpg)
