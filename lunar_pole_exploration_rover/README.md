@@ -193,6 +193,8 @@ Our contribution is as follows:
 
 ### Why It Matters
 
+<!-- The following line contains a link that is valid, but gives a 403 when accessed using automated tools like wget or markdown-link-check. We disable the check to prevent the failures from being reported. -->
+<!-- markdown-link-check-disable-next-line -->
 Our motivation and rational for this contribution is firstly based on the renewed global interest for the moon. The polar regions in particular are of high interest due to the high chance of water ice being present in permanently shaded craters. Said water could be used to establish a long lasting human presence on the moon (https://www.weforum.org/agenda/2023/08/space-water-ice-moon-south-pole/).
 
 Unique challenges have to be addressed in this environment and would be interesting to simulate in Space ROS. In particular the power generation and management:
