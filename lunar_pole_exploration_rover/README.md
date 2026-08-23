@@ -221,7 +221,7 @@ Total power of the solar panel is 450W [[source]](https://science.nasa.gov/missi
 
 #### Sensor suit
 
-It features a similar sensor suit of the real VIPER rover. Detailed characteristics were obtained from [359199649_VIPER_Visible_Imaging_System](https://www.researchgate.net/publication/359199649_VIPER_Visible_Imaging_System) and [20210015009 - Colaprete-VIPER PIP final.pdf](https://ntrs.nasa.gov/api/citations/20210015009/downloads/20210015009%20-%20Colaprete-VIPER%20PIP%20final.pdf) and [viper-moon-rover-head-neck-mast-installed](https://www.space.com/viper-moon-rover-head-neck-mast-installed).
+It features a similar sensor suit of the real VIPER rover. Detailed characteristics were obtained from [359199649_VIPER_Visible_Imaging_System](https://www.hou.usra.edu/meetings/lpsc2022/pdf/2466.pdf) and [20210015009 - Colaprete-VIPER PIP final.pdf](https://ntrs.nasa.gov/api/citations/20210015009/downloads/20210015009%20-%20Colaprete-VIPER%20PIP%20final.pdf) and [viper-moon-rover-head-neck-mast-installed](https://www.space.com/viper-moon-rover-head-neck-mast-installed).
 
 - A pair of monochrome cameras for navigation, NavCam, mounted on the rover mast. Each camera has 70° x 70° FOV and the image sensors have 2048 ×
 2048 pixels. The camera can pan 360° and tilt vertically in both directions at a maximum angle of 75°.
