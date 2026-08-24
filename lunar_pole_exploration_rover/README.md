@@ -1,4 +1,4 @@
-# lunar_pole_exploration_rover <a name="top"></a>
+# lunar_pole_exploration_rover
 
 ![Demo Banner](assets/resources/images/demo_banner.png)
 
@@ -16,40 +16,40 @@ This package and associated plugins and models were developed by [Robin Baran](h
 
 # Table of contents
 
-1. [Running the demo](#running_demo)
-   1. [Building the docker](#building_docker)
-   2. [Running the docker](#running_docker)
-   3. [Controlling the rover](#controlling_rover)
-      1. [Setup](#setup_rover)
-      2. [Available commands](#available_commands)
-   4. [Solar panel and power](#solar_panel_and_power)
-2. [Contribution details](#contrib)
-   1. [Why It Matters](#why_it_matters)
-   2. [Lunar Pole Exploration Rover](#lunar_pole_exploration_rover)
-      1. [Sensor suit](#sensor_suit)
-      2. [Power system](#power_system)
-      3. [Control node](#control_node)
-         1. [Motion types](#motion_types)
-      4. [Rover model API](#rover_api)
-         1. [Subscribed Topics ](#sub_topics)
-         2. [Published Topics](#pub_topics)
+1. [Running the demo](#running-the-demo)
+   1. [Building the docker](#building-the-docker)
+   2. [Running the docker](#running-the-docker)
+   3. [Controlling the rover](#controlling-the-rover)
+      1. [Setup](#setup)
+      2. [Available commands](#available-commands)
+   4. [Solar panel and power](#solar-panel-and-power)
+2. [Contribution details](#contribution-details)
+   1. [Why It Matters](#why-it-matters)
+   2. [Lunar Pole Exploration Rover](#lunar-pole-exploration-rover)
+      1. [Sensor suit](#sensor-suit)
+      2. [Power system](#power-system)
+      3. [Control node](#control-node)
+         1. [Motion types](#motion-types)
+      4. [Rover model API](#rover-model-api)
+         1. [Subscribed Topics ](#subscribed-topics)
+         2. [Published Topics](#published-topics)
          3. [Services](#services)
-         4. [Controllable Joint Interfaces](#control_joint_interfaces)
-   3. [Mons Mouton World](#mons_mouton_world)
-      1. [Mons Mouton Terrain Model](#mons_mouton_terrain_model)
-   4. [Power System Plugins](#power_system_plugins)
-      1. [SolarPanelPlugin](#solar_panel_plugin)
-         1. [How to setup the plugin](#solar_panel_plugin_setup)
-      2. [RadioisotopeThermalGeneratorPlugin](#rtg_plugin)
-         1. [How to setup the plugin](#rtg_plugin_setup)
-      3. [RechargeableBatteryPlugin](#bat_plugin)
-         1. [How to setup the plugin](#bat_plugin_setup)
-      4. [SensorPowerSystemPlugin](#sensor_system_plugin)
-         1. [How to setup the plugin](#sensor_system_plugin_setup)
+         4. [Controllable Joint Interfaces](#controllable-joint-interfaces)
+   3. [Mons Mouton World](#mons-mouton-world)
+      1. [Mons Mouton Terrain Model](#mons-mouton-terrain-model)
+   4. [Power System Plugins](#power-system-plugins)
+      1. [SolarPanelPlugin](#solarpanelplugin)
+         1. [How to setup the plugin](#how-to-setup-the-plugin)
+      2. [RadioisotopeThermalGeneratorPlugin](#radioisotopethermalgeneratorplugin)
+         1. [How to setup the plugin](#how-to-setup-the-plugin-1)
+      3. [RechargeableBatteryPlugin](#rechargeablebatteryplugin)
+         1. [How to setup the plugin](#how-to-setup-the-plugin-2)
+      4. [SensorPowerSystemPlugin](#sensorpowersystemplugin)
+         1. [How to setup the plugin](#how-to-setup-the-plugin-3)
 
-## Running the demo <a name="running_demo"></a>
+## Running the demo
 
-### Building the docker <a name="building_docker"></a>
+### Building the docker
 
 To build the docker image, go to the main folder of the `lunar_pole_exploration_rover` package and run:
 
@@ -59,7 +59,7 @@ To build the docker image, go to the main folder of the `lunar_pole_exploration_
 
 The build process will take about 30 minutes, depending on the host computer.
 
-### Running the docker <a name="running_docker"></a>
+### Running the docker
 
 After building the image, you can see the newly-built image by running:
 
@@ -96,11 +96,11 @@ Once the container is running, launch the demo by typing the following command:
 ros2 launch lunar_pole_exploration_rover lunar_pole_exploration_rover.launch.py
 ```
 
-### Controlling the rover <a name="controlling_rover"></a>
+### Controlling the rover
 
 **The Gazebo simulation may run slowly (real-time factor of 5%) when simulating cameras if no hardware acceleration is present**
 
-#### Setup <a name="setup_rover"></a>
+#### Setup
 
 Open a new terminal and attach the current running container:
 
@@ -114,7 +114,7 @@ Source the necessary packages.
 source ~/demos_ws/install/setup.bash
 ```
 
-#### Available commands <a name="available_commands"></a>
+#### Available commands
 
 ```bash
 ros2 service call /move_forward std_srvs/srv/Empty
@@ -156,7 +156,7 @@ Center the camera
 ros2 service call /camera_center std_srvs/srv/Empty
 ```
 
-### Solar panel and power <a name="solar_panel_and_power"></a>
+### Solar panel and power
 
 The power output of each panel can be printed by typing either of the following. When moving the rover, the power can be seen to vary as the panel position relative to the sun is changing.
 
@@ -178,7 +178,7 @@ The power being produced is sent to a rechargeable battery. The state of the bat
 ros2 topic echo /model/lunar_pole_exploration_rover/battery/rechargeable_battery/state
 ```
 
-## Contribution details <a name="contrib"></a>
+## Contribution details
 
 Our contribution is as follows:
 
@@ -191,8 +191,10 @@ Our contribution is as follows:
   * A modified version of the linear battery plugin that is able to take as charge input the power outputs of the two previous plugins.
   * A sensor power load system plugin to simulate the power drawn by sensors
 
-### Why It Matters <a name="why_it_matters"></a>
+### Why It Matters
 
+<!-- The following line contains a link that is valid, but gives a 403 when accessed using automated tools like wget or markdown-link-check. We disable the check to prevent the failures from being reported. -->
+<!-- markdown-link-check-disable-next-line -->
 Our motivation and rational for this contribution is firstly based on the renewed global interest for the moon. The polar regions in particular are of high interest due to the high chance of water ice being present in permanently shaded craters. Said water could be used to establish a long lasting human presence on the moon (https://www.weforum.org/agenda/2023/08/space-water-ice-moon-south-pole/).
 
 Unique challenges have to be addressed in this environment and would be interesting to simulate in Space ROS. In particular the power generation and management:
@@ -203,7 +205,7 @@ Unique challenges have to be addressed in this environment and would be interest
 
 In addition, power generation and management strategies are a cornerstone of any space mission, and in particular space robotic missions. Many space missions have been saved or got extended beyond their initially planned lifetimes through the careful management of power loads. Deactivating science equipment, sensors and even actuators to reduce consumption. For example, the Opportunity and Spirit rovers extended their mission life well beyond the planned 90 days by deactivating non-essential equipment and reducing communication during dust storms (https://web.archive.org/web/20140902071407/http://www.nasa.gov/mission_pages/mer/mer-20070824.html). Being able to simulate those behaviors and strategies seems of great added value to Space ROS.
 
-### Lunar Pole Exploration Rover <a name="lunar_pole_exploration_rover"></a>
+### Lunar Pole Exploration Rover
 
 The rover gazebo model is designed to be as close as possible to the real NASA VIPER rover.
 
@@ -217,9 +219,9 @@ The rover is powered by a battery. The battery capacity is estimated to be aroun
 The battery is charged by three solar panels: one on the left, one on the right and on at the back of the rover. The panels are tilted sideways to face the sun which is low on the horizon when close to the moon south pole.
 Total power of the solar panel is 450W [[source]](https://science.nasa.gov/mission/viper/in-depth/) and therefor each panel was estimated to produce 150W at full capacity (sun hitting horizontally). The solar panels are simulated using a specifically developed plugin, detailed later in the document.
 
-#### Sensor suit <a name="sensor_suit"></a>
+#### Sensor suit
 
-It features a similar sensor suit of the real VIPER rover. Detailed characteristics were obtained from [359199649_VIPER_Visible_Imaging_System](https://www.researchgate.net/publication/359199649_VIPER_Visible_Imaging_System) and [20210015009 - Colaprete-VIPER PIP final.pdf](https://ntrs.nasa.gov/api/citations/20210015009/downloads/20210015009%20-%20Colaprete-VIPER%20PIP%20final.pdf) and [viper-moon-rover-head-neck-mast-installed](https://www.space.com/viper-moon-rover-head-neck-mast-installed).
+It features a similar sensor suit of the real VIPER rover. Detailed characteristics were obtained from [359199649_VIPER_Visible_Imaging_System](https://www.hou.usra.edu/meetings/lpsc2022/pdf/2466.pdf) and [20210015009 - Colaprete-VIPER PIP final.pdf](https://web.archive.org/web/20240519045445/https://ntrs.nasa.gov/api/citations/20210015009/downloads/20210015009%20-%20Colaprete-VIPER%20PIP%20final.pdf) and [viper-moon-rover-head-neck-mast-installed](https://www.space.com/viper-moon-rover-head-neck-mast-installed).
 
 - A pair of monochrome cameras for navigation, NavCam, mounted on the rover mast. Each camera has 70° x 70° FOV and the image sensors have 2048 ×
 2048 pixels. The camera can pan 360° and tilt vertically in both directions at a maximum angle of 75°.
@@ -234,15 +236,15 @@ It features a similar sensor suit of the real VIPER rover. Detailed characterist
 
 - An Odometry plugin to simulate wheel encoders.
 
-#### Power system <a name="power_system"></a>
+#### Power system
 
 The rover is powered by a simulated rechargeable battery. The battery is recharged by the solar panels and drained by the rover motion and sensors. A set of custom made Gazebo plugins is used to simulate this behavior. The plugins simulate the power generation depending on the sun position relative to the panels, the charge of the battery and the power of the sensors. Details on the plugins are given in the dedicated section later in the document.
 
-#### Control node <a name="control_node"></a>
+#### Control node
 
 The `move_wheel` node provides the ROS 2 standard `cmd_vel` control topic to drive the rover.
 
-##### Motion types <a name="motion_types"></a>
+##### Motion types
 
 The control nodes considers four different types of motion depending on the values of the field of the `cmd_vel` control topic.
 
@@ -260,9 +262,9 @@ The control nodes considers four different types of motion depending on the valu
 
 ![Rover Possible Motions Schematics](assets/resources/images/motions.png)
 
-#### Rover model API <a name="rover_api"></a>
+#### Rover model API
 
-##### Subscribed Topics  <a name="sub_topics"></a>
+##### Subscribed Topics
 
 * **/cmd_vel** (`geometry_msgs/msg/Twist`) -- Velocity command to the rover
 * **/model/lunar_pole_exploration_rover/sensor/aft_cam_left/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
@@ -274,7 +276,7 @@ The control nodes considers four different types of motion depending on the valu
 * **/model/lunar_pole_exploration_rover/sensor/haz_cam_left_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
 * **/model/lunar_pole_exploration_rover/sensor/haz_cam_right_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
 
-##### Published Topics <a name="pub_topics"></a>
+##### Published Topics
 
 * **/model/lunar_pole_exploration_rover/left_solar_panel/solar_panel_output** (`std_msgs/msg/Float32`) -- Publishes the current output of the left solar panel in watt
 * **/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output** (`std_msgs/msg/Float32`) -- Publishes the current output of the right solar panel in watt
@@ -302,7 +304,7 @@ The control nodes considers four different types of motion depending on the valu
 * **haz_cam_right_front/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right front camera image
 * **haz_cam_right_rear/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right rear camera image
 
-##### Services <a name="services"></a>
+##### Services
 
 * **camera_center** (`std_srvs/srv/Empty`) -- Demonstration service that center the pan of the camera and face down 45°
 * **camera_rotate** (`std_srvs/srv/Empty`) -- Demonstration service that rotate the camera around
@@ -314,7 +316,7 @@ The control nodes considers four different types of motion depending on the valu
 * **move_sideway_and_turn_left** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover sideways and rotate (combined motion)
 * **move_stop** (`std_srvs/srv/Empty`) -- Demonstration service that stops the rover
 
-##### Controllable Joint Interfaces <a name="control_joint_interfaces"></a>
+##### Controllable Joint Interfaces
 
 * mast_head_pivot_joint (`revolute`) -- NavCam pan joint
 * mast_camera_joint (`revolute`) -- NavCam tilt joint
@@ -327,7 +329,7 @@ The control nodes considers four different types of motion depending on the valu
 * front_right_wheel_axle_joint (`revolute`) -- front right wheel steer joint
 * rear_right_wheel_axle_joint (`revolute`) -- rear right wheel steer joint
 
-### Mons Mouton World <a name="mons_mouton_world"></a>
+### Mons Mouton World
 
 A world and associated Gazebo terrain model for the Mons Mouton mountain located near the lunar south pole (also formally referred to as Leibnitz Beta).
 
@@ -340,7 +342,7 @@ The differentiating characteristics of the Gazebo world are as follows:
 * Atmosphere being neglected (`<pressure>0.0</pressure>`)
 * Sun light entity is placed low on the horizon and direction is set to mimic real sunlight conditions at Mons Mouton.
 
-#### Mons Mouton Terrain Model <a name="mons_mouton_terrain_model"></a>
+#### Mons Mouton Terrain Model
 
 This model represents the 1sqkm area at Long31.00, Lat84.6 and was generated by using DEM data (site20) from the NASA LRO mission: https://pgda.gsfc.nasa.gov/products/78 (Barker, M.K., et al. (2021), Improved LOLA Elevation Maps for South Pole Landing Sites: Error Estimates and Their Impact on Illumination Conditions, Planetary & Space Science, Volume 203, 1 September 2021, 105119,  doi:10.1016/j.pss.2020.105119.).
 
@@ -350,9 +352,9 @@ The model was textured and additional detailed elevation noise at a higher defin
 
 ![Mons Mouton Terrain 3D Model](assets/resources/images/mons_mouton_terrain_model.jpg)
 
-### Power System Plugins <a name="power_system_plugins"></a>
+### Power System Plugins
 
-#### SolarPanelPlugin <a name="solar_panel_plugin"></a>
+#### SolarPanelPlugin
 
 The solar panel plugin allows to simulate solar panel power output depending on the panel orientation relative to the sun and LOS.
 
@@ -363,7 +365,7 @@ The solar panel plugin allows to simulate solar panel power output depending on 
 * Publications
   * **/model/`<model_name>`/`<link_name>`/solar_panel_output** (`std_msgs/msg/Float`) -- Publishes the current solar panel output in watt.
 
-##### How to setup the plugin <a name="solar_panel_plugin_setup"></a>
+##### How to setup the plugin
 
 The plugin needs to be attached to a model. The link specified by **<link_name>** is the solar panel.
 
@@ -408,7 +410,7 @@ The plugin needs to be attached to a model. The link specified by **<link_name>*
 
 - **Power computation**: The plugin computes the power generated by the panel by checking the angle between the Z-axis of the solar panel link and the `direction` vector of the sun according to the [cosine effect](https://www.e-education.psu.edu/eme812/node/896). The value given by nominal_power is multiplied by the result of the cosine of the angle between the sun direction vector and the solar panel z-axis.
 
-#### RadioisotopeThermalGeneratorPlugin <a name="rtg_plugin"></a>
+#### RadioisotopeThermalGeneratorPlugin
 
 The radioisotope thermal generator plugin allows to simulate an RTG power output. It provides a constant power supply.
 
@@ -419,7 +421,7 @@ The radioisotope thermal generator plugin allows to simulate an RTG power output
 * Publications
   * **/model/`<model_name>`/`<link_name>`/radioisotope_thermal_generator_output** (`std_msgs/msg/Float`) -- Publishes the current solar panel output in watt.
 
-##### How to setup the plugin <a name="rtg_plugin_setup"></a>
+##### How to setup the plugin
 
 The plugin needs to be attached to a model. Example below:
 
@@ -430,7 +432,7 @@ The plugin needs to be attached to a model. Example below:
 </plugin>
 ```
 
-#### RechargeableBatteryPlugin <a name="bat_plugin"></a>
+#### RechargeableBatteryPlugin
 
 The rechargeable battery plugin is a modified version of the stock LinearBatteryPlugin to allow recharge at a variable rate. It can be charged by any plugin providing a power output in watts on a Gazebo topic. In addition, by default, if no start draining topic is defined, the battery starts to drain as soon as the robot starts to move.
 
@@ -453,7 +455,7 @@ The rechargeable battery plugin is a modified version of the stock LinearBattery
  * Publications
    * **/model/`<model_name>`/battery/`<battery_name>`/state** (`sensor_msgs/msg/BatterySate`) -- Publishes the current state of the battery
 
-##### How to setup the plugin <a name="bat_plugin_setup"></a>
+##### How to setup the plugin
 
 The plugin needs to be attached to a model. Example below:
 
@@ -483,7 +485,7 @@ The plugin needs to be attached to a model. Example below:
   * **SolarPanelPlugin**: with topic `<link_name>/solar_panel_output`
   * **RadioisotopeThermalGeneratorPlugin**: with topic `<link_name>/radioisotope_thermal_generator_output`
 
-#### SensorPowerSystemPlugin <a name="sensor_system_plugin"></a>
+#### SensorPowerSystemPlugin
 
 The sensor power system plugin pairs with the RechargeableBatteryPlugin allowing one to define for each sensor the power load it consumes from any battery in the model. Sensors can be deactivated to save power (as it is often the case on real space missions). When the battery is too low, the sensors managed by the plugin will also be deactivated. In addition, topics are exposed to disable the power load of each sensor consumption on demand. The topic uses the following format.
 
@@ -493,7 +495,7 @@ The sensor power system plugin pairs with the RechargeableBatteryPlugin allowing
 
 The model can have multiple batteries and each sensor consumes from any of those batteries.
 
-#### How to setup the plugin <a name="sensor_system_plugin_setup"></a>
+#### How to setup the plugin
 
 The plugin needs to be attached to a model. Example below:
 
