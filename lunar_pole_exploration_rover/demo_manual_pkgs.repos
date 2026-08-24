@@ -7,10 +7,6 @@ repositories:
     type: git
     url: https://github.com/space-ros/simulation.git
     version: main
-  qt_gui_core:
-    type: git
-    url: https://github.com/ros-visualization/qt_gui_core.git
-    version: humble
   ros2_control:
     type: git
     url: https://github.com/ros-controls/ros2_control.git
