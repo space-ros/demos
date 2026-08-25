@@ -116,6 +116,10 @@ source ~/demos_ws/install/setup.bash
 
 #### Available commands
 
+Each command sets a motion that continues until another command is issued.
+
+Move the rover forward
+
 ```bash
 ros2 service call /move_forward std_srvs/srv/Empty
 ```
