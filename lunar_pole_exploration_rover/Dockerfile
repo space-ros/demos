@@ -126,6 +126,28 @@ RUN vcs import src < /tmp/demo_manual_pkgs.repos \
   && vcs custom ${SPACEROS_DIR}/src --args lfs pull \
   && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"'
 
+# Drop packages that arrive with the repos above but that this demo never uses.
+# They are not free: vision_msgs_rviz_plugins does find_package(rviz_common), which
+# pulls the whole RViz stack (rviz_ogre_vendor and friends) into the source build,
+# and the upstream demo packages make rosdep apt-install ~200 ros-humble-* debs into
+# /opt/ros/humble, which nothing ever sources. The rqt tools could not run here in
+# any case: rqt_gui is not in the workspace, only as one of those unsourced debs.
+# The list is dependency-closed - ros_gz and ros_ign are metapackages that exec_depend
+# on the demo packages, and gz_ros2_control_tests tests them, so leaving any of those
+# behind just makes rosdep try to apt-install what was removed.
+RUN set -e; for pkg in \
+      vision_msgs/vision_msgs_rviz_plugins \
+      ros_gz/ros_gz \
+      ros_gz/ros_ign \
+      ros_gz/ros_gz_sim_demos \
+      ros_gz/ros_ign_gazebo_demos \
+      gz_ros2_control/gz_ros2_control_demos \
+      gz_ros2_control/ign_ros2_control_demos \
+      gz_ros2_control/gz_ros2_control_tests \
+      ros2_control/rqt_controller_manager \
+      ros2_controllers/rqt_joint_trajectory_controller \
+    ; do touch "src/$pkg/COLCON_IGNORE"; done
+
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y \
