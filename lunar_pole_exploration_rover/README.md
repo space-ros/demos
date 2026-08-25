@@ -141,7 +141,7 @@ ros2 service call /turn_right std_srvs/srv/Empty
 Rotate in place
 
 ```bash
-ros2 service call /turn_right std_srvs/srv/Empty
+ros2 service call /rotate_on_place std_srvs/srv/Empty
 ```
 
 Rotate the camera
