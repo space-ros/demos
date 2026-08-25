@@ -148,6 +148,32 @@ Rotate in place
 ros2 service call /rotate_on_place std_srvs/srv/Empty
 ```
 
+Move sideways to the left
+
+```bash
+ros2 service call /move_sideway_left std_srvs/srv/Empty
+```
+
+Move sideways to the right
+
+```bash
+ros2 service call /move_sideway_right std_srvs/srv/Empty
+```
+
+Move sideways and turn left at the same time
+
+```bash
+ros2 service call /move_sideway_and_turn_left std_srvs/srv/Empty
+```
+
+The rover can also be driven directly by publishing a velocity command, which
+the `move_wheel` node subscribes to. Linear `x` drives forwards and backwards,
+linear `y` drives sideways, and angular `z` alone rotates the rover in place.
+
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist '{linear: {x: 0.3}, angular: {z: 0.2}}'
+```
+
 Rotate the camera
 
 ```bash
