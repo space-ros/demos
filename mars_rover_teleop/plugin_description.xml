@@ -1,0 +1,7 @@
+<library path="mars_rover_teleop">
+  <class name="MarsRoverTeleop" 
+  	type="MarsRoverTeleop" 
+  	base_class_type="rviz_common::Panel">
+    <description>Custom teleoperation panel for controlling Mars Rover.</description>
+  </class>
+</library>
