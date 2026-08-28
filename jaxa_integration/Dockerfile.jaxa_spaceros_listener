@@ -1,0 +1,23 @@
+FROM osrf/space-ros:latest
+
+# Define key locations
+ENV JAXA_ROS_DIR=${HOME_DIR}/jaxa_comm_ws
+ENV JAXA_COMM_DIR=${JAXA_ROS_DIR}/src/jaxa_comm_spaceros
+ENV JAXA_MSG_DIR=${JAXA_ROS_DIR}/src/racs2_msg
+
+# Copy package files for jaxa bridge
+RUN mkdir -p $JAXA_COMM_DIR
+COPY --chown=${USERNAME}:${USERNAME} ./jaxa_comm_spaceros $JAXA_COMM_DIR
+RUN mkdir -p $JAXA_MSG_DIR
+COPY --chown=${USERNAME}:${USERNAME} ./racs2_msg $JAXA_MSG_DIR
+
+# install protobuf
+RUN pip install protobuf==3.20.1
+
+# Build packages
+WORKDIR ${JAXA_ROS_DIR} 
+
+RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+  && colcon build' 
+
+CMD ["bash"]

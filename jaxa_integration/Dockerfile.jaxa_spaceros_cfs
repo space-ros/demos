@@ -1,0 +1,71 @@
+# -----------------------------------------------------------------------------
+# Dockerfile for setting up an environment with Space ROS and cFS
+# Author: Minahil Raza
+# Date: minahilrz@gmail.com
+# -----------------------------------------------------------------------------
+
+FROM osrf/space-ros:latest
+
+# Set environment variables
+ENV JAXA_BRIDGE_DIR=/tmp/racs2_bridge
+ENV CFS_DIR=${HOME_DIR}/cfs
+
+# Install dependencies for the ROS - cFS bridge
+RUN sudo apt-get install -y libwebsockets-dev protobuf-c-compiler libprotobuf-c-dev python3-pip git \
+    && pip3 install protobuf websockets
+
+# Set working directory and clone the JAXA bridge repository
+WORKDIR ${HOME_DIR}
+RUN git clone https://github.com/jaxa/racs2_bridge ${JAXA_BRIDGE_DIR}
+
+# Prepare cFS
+
+## Clone cFS repository
+RUN git clone --recursive -b v6.7.0a https://github.com/nasa/cFS/ ${CFS_DIR}
+WORKDIR ${CFS_DIR}
+RUN git submodule init \
+    && git submodule update
+
+## Customize cFS to run the bridge
+RUN cp cfe/cmake/Makefile.sample Makefile \
+    && cp -r cfe/cmake/sample_defs sample_defs \
+    && cp -pr ${JAXA_BRIDGE_DIR}/cFS/Bridge/Client_C/apps/racs2_bridge_client ${CFS_DIR}/apps/
+
+# Uncomment the following line if you only want the bridge and not the sample app.
+# RUN cp -p ${JAXA_BRIDGE_DIR}/cFS/Bridge/Client_C/sample_defs/* ${CFS_DIR}/sample_defs/
+
+## Deploy the sample talker application and adjust the startup scripts
+RUN cp -pr ${JAXA_BRIDGE_DIR}/Example/Case.1/cFS/sample_defs/* ${CFS_DIR}/sample_defs/
+COPY ./cFS_app_examples/space_robots/cfs_app/sample_talker ${CFS_DIR}/apps/sample_talker
+
+## Adjust settings for running cFS inside Docker
+RUN sed -i -e 's/^#undef OSAL_DEBUG_PERMISSIVE_MODE/#define OSAL_DEBUG_PERMISSIVE_MODE 1/g' sample_defs/default_osconfig.h \
+    && sed -i -e 's/^#undef OSAL_DEBUG_DISABLE_TASK_PRIORITIES/#define OSAL_DEBUG_DISABLE_TASK_PRIORITIES 1/g' sample_defs/default_osconfig.h \
+    && sed -i -e 's/^wss_uri=.*/wss_uri=127.0.0.1/g' sample_defs/racs2_bridge_config.txt
+
+## Compile cFS
+RUN make SIMULATION=native prep \
+    && make \
+    && make install
+
+# Prepare ROS packages
+
+## Create ROS workspace
+WORKDIR ${HOME_DIR}
+RUN mkdir -p ros2-project/src
+
+## Copy bridge and example packages into the workspace
+RUN cp -pr ${JAXA_BRIDGE_DIR}/ROS2/Bridge/Server_Python/bridge_py_s ${HOME_DIR}/ros2-project/src/
+COPY ./racs2_msg ${HOME_DIR}/ros2-project/src/racs2_msg
+
+## Compile and install ROS 2 packages
+WORKDIR ${HOME_DIR}/ros2-project
+SHELL ["/bin/bash", "-c"]
+RUN source ${HOME_DIR}/spaceros/install/setup.bash && colcon build --symlink-install
+
+## Adjust configuration for the JAXA bridge (IPv4 settings)
+RUN sed -i -e 's/wss_uri:.*/wss_uri: "127.0.0.1"/g' ./src/bridge_py_s/config/params.yaml
+
+# Set the default shell in screen to bash
+RUN echo "defshell -bash" > ${HOME_DIR}/.screenrc
+
