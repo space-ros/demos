@@ -44,3 +44,18 @@ services:
         "-c",
         "source /home/spaceros-user/canadarm_ws/install/setup.bash && ros2 launch canadarm_demo canadarm.launch.py",
       ]
+  canadarm_demo_isaacsim:
+    image: osrf/space-ros:canadarm_demo_isaacsim
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1 # important to show error messages if a ros service crashes!
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    network_mode: host
+    command:
+      [
+        "bash",
+        "-c",
+        "source /home/spaceros-user/canadarm_ws/install/setup.bash && ros2 launch canadarm_demo canadarm.launch.py environment:=isaacsim",
+      ]
