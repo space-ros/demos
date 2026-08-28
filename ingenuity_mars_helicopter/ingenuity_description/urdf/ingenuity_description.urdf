@@ -1,0 +1,237 @@
+<robot name="ingenuity_model" version="1.0">
+  <!-- Dummy link without inertials connect to the-->
+  <link name="ingenuity_world">
+  </link>
+  <joint name="lift_drag_to_ingenuity_model" type="fixed">
+    <parent link="ingenuity_world"/>
+    <child link="ingenuity_model"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  <!-- Link Definitions -->
+  <link name="ingenuity_model">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="10.0"/>
+      <inertia ixx="1.8" ixy="0.0" ixz="0.0" iyy="1.8" iyz="0.0" izz="1.8"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="1 1 1"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0.50" rpy="0 0 0"/>
+      <!-- <geometry>
+        <box size="1 1 1"/>
+      </geometry> -->
+      <geometry>
+        <mesh filename="package://ingenuity_description/meshes/base_one_part.dae" scale="1 1 1"/>
+      </geometry>
+      <!-- <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material> -->
+    </visual>
+    
+  </link>
+  
+  <link name="ingenuity_model/rod_1">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.012" ixy="0.0" ixz="0.0" iyy="0.012" iyz="0.0" izz="0.0012"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0 1.25" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.5"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 -0.75" rpy="0 0 0"/>
+      <!-- <geometry>
+        <box size="0.02 0.02 0.5"/>
+      </geometry> -->
+      <geometry>
+        <mesh filename="package://ingenuity_description/meshes/rotor_blade_bottom.dae" scale="1 1 1"/>
+      </geometry>
+      <!-- <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material> -->
+    </visual>
+  </link>
+  
+  <link name="ingenuity_model/blade_1">
+    <inertial>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0000465" ixy="0.0" ixz="0.0" iyy="0.0000006" iyz="0.0" izz="0.0000470"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0.5 1.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+    </collision>
+    <!-- <visual>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material>
+    </visual> -->
+  </link>
+  
+  <link name="ingenuity_model/blade_2">
+    <inertial>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0000465" ixy="0.0" ixz="0.0" iyy="0.0000006" iyz="0.0" izz="0.0000470"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0.5 1.5" rpy="0 0 3.141593"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+    </collision>
+    <!-- <visual>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material>
+    </visual> -->
+  </link>
+  
+  <link name="ingenuity_model/rod_2">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.012" ixy="0.0" ixz="0.0" iyy="0.012" iyz="0.0" izz="0.0012"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0 1.75" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.5"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 -1.25" rpy="0 0 0"/>
+      <!-- <geometry>
+        <box size="0.02 0.02 0.5"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material> -->
+      <geometry>
+        <mesh filename="package://ingenuity_description/meshes/rotor_blade_top.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+  
+  <link name="ingenuity_model/blade_3">
+    <inertial>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0000465" ixy="0.0" ixz="0.0" iyy="0.0000006" iyz="0.0" izz="0.0000470"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0.5 2.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+    </collision>
+    <!-- <visual>
+      <origin xyz="0 0.5 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material>
+    </visual> -->
+  </link>
+
+  <link name="ingenuity_model/blade_4">
+    <inertial>
+      <origin xyz="0 0.5 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.0000465" ixy="0.0" ixz="0.0" iyy="0.0000006" iyz="0.0" izz="0.0000470"/>
+    </inertial>
+    <collision>
+      <origin xyz="0 0.5 2.0" rpy="0 0 3.141593"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+    </collision>
+    <!-- <visual>
+      <origin xyz="0 0.5 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.2 1.0 0.01"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.421 0.225 0.0 1.0"/>
+      </material>
+    </visual> -->
+  </link>
+
+
+
+  <!-- <link name="solar_panel">
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+    <visual>
+      <geometry>
+        <mesh filename="package://ingenuity_description/meshes/solar_panel_one_part.dae" scale="1 1 1"/>
+      </geometry>
+    </visual>
+  </link> -->
+
+
+  <!-- Joint Definitions -->
+  <joint name="ingenuity_model/rod_1_joint" type="continuous">
+    <parent link="ingenuity_model"/>
+    <child link="ingenuity_model/rod_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 -1"/>
+    <dynamics damping="0.0001" friction="0.1"/>
+    <limit effort="30" velocity="1e16" />
+  </joint>
+  
+  <joint name="ingenuity_model/blade_1_joint" type="fixed">
+    <parent link="ingenuity_model/rod_1"/>
+    <child link="ingenuity_model/blade_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
+  <joint name="ingenuity_model/blade_2_joint" type="fixed">
+    <parent link="ingenuity_model/rod_1"/>
+    <child link="ingenuity_model/blade_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
+  <joint name="ingenuity_model/rod_2_joint" type="continuous">
+    <parent link="ingenuity_model"/>
+    <child link="ingenuity_model/rod_2"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <dynamics damping="0.0001" friction="0.1"/>
+    <limit effort="30" velocity="1e16"/>
+  </joint>
+  
+  <joint name="ingenuity_model/blade_3_joint" type="fixed">
+    <parent link="ingenuity_model/rod_2"/>
+    <child link="ingenuity_model/blade_3"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
+  <joint name="ingenuity_model/blade_4_joint" type="fixed">
+    <parent link="ingenuity_model/rod_2"/>
+    <child link="ingenuity_model/blade_4"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+  
+</robot>

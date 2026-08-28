@@ -1,0 +1,10 @@
+<library path="HelicopterFlightSimulation">
+  <class
+    name="helicopter_flight_simulation"
+    type="helicopter_flight_simulation"
+    base_class_type="System">
+    <description>
+      Simulates the lift, drag and collective and cyclic controls of a helicopter
+    </description>
+  </class>
+</library>
