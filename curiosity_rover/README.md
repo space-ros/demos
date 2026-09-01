@@ -43,7 +43,7 @@ This will start the demo in one terminal and gazebo in another terminal. To cont
     ros2 service call /turn_right std_srvs/srv/Empty
 
     # Stop
-    ros2 service call /stop std_srvs/srv/Empty
+    ros2 service call /move_stop std_srvs/srv/Empty
     ```
 2. To control the arm of the rover, you can run the following services,
     ```bash
