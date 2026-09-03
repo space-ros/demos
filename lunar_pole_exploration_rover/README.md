@@ -105,7 +105,7 @@ ros2 launch lunar_pole_exploration_rover lunar_pole_exploration_rover.launch.py
 Open a new terminal and attach the current running container:
 
 ```bash
-docker exec -it lunar_pole_exploration_rover bash
+docker exec -it osrf_lunar_pole_exploration_rover_demo bash
 ```
 
 Source the necessary packages.
