@@ -1,0 +1,370 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+  <model name="nasa_ingenuity">
+	<pose>0 -2.5 3.6 3.14 0 0</pose>
+	<link name="base_link"> </link>
+    <link name="Body_MHS_MainBody_v16">
+        <inertial>
+            <mass>2</mass>
+            <inertia>
+                <ixx>1.5</ixx>
+                <iyy>1.5</iyy>
+                <izz>1.5</izz>
+            </inertia>
+        </inertial>
+        <visual name="VisGeom_MHS_MainBody_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_MainBody_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_MainBody_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_MainBody_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+        <sensor name="camera" type="camera">
+            <pose relative_to="Body_RA_Link5">0 0 0.2 0 -1.57 0</pose>
+            <camera>
+            <horizontal_fov>1.05</horizontal_fov>
+            <image>
+                <width>256</width>
+                <height>256</height>
+            </image>
+            <clip>
+                <near>0.1</near>
+                <far>100</far>
+            </clip>
+            </camera>
+            <update_rate>30</update_rate>
+            <topic>nasa_ingenuity/camera</topic>
+        </sensor>
+        <sensor name="depth_camera" type="depth_camera">
+            <pose relative_to="Body_RA_Link5">0 0 0.2 0 -1.57 0</pose>
+            <camera>
+            <horizontal_fov>1.05</horizontal_fov>
+            <image>
+                <width>256</width>
+                <height>256</height>
+                <format>R_FLOAT32</format>
+            </image>
+            <clip>
+                <near>0.1</near>
+                <far>100</far>
+            </clip>
+            </camera>
+            <update_rate>30</update_rate>
+            <topic>nasa_ingenuity/depth_camera</topic>
+        </sensor>
+    </link>
+
+    <link name="Swashplate1"> </link>
+    <link name="Swashplate2"> </link>
+
+    <link name="Body_MHS_TopBlades_v16">
+        <visual name="VisGeom_MHS_TopBlades_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_TopBlades_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_TopBlades_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_TopBlades_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Body_MHS_BottomBlades_v16">
+        <visual name="VisGeom_MHS_BottomBlades_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_BottomBlades_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_BottomBlades_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_BottomBlades_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Body_Joint_Leg02_Axis"> </link>
+
+    <link name="Body_MHS_Leg02_v16">
+        <visual name="VisGeom_MHS_Leg02_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg02_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_Leg02_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg02_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Body_Joint_Leg01_Axis"> </link>
+
+    <link name="Body_MHS_Leg01_v16">
+        <visual name="VisGeom_MHS_Leg01_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg01_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_Leg01_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg01_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Body_Joint_Leg03_Axis"> </link>
+
+    <link name="Body_MHS_Leg03_v16">
+        <visual name="VisGeom_MHS_Leg03_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg03_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_Leg03_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg03_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="Body_Joint_Leg04_Axis"> </link>
+
+    <link name="Body_MHS_Leg04_v16">
+        <visual name="VisGeom_MHS_Leg04_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg04_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="ColGeom_MHS_Leg04_v16">
+            <geometry>
+                <mesh>
+                    <uri>model://nasa_ingenuity/meshes/MHS_Leg04_v16.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+	<link name="Frame_MHS_NAVCAM"> </link>
+
+    <joint name="MHS_MainBody_v16" type="fixed">
+        <parent>base_link</parent>
+        <child>Body_MHS_MainBody_v16</child>
+    </joint>
+    
+    <joint name="MHS_TopBlades_v16" type="revolute">
+        <parent>Body_MHS_BottomBlades_v16</parent>
+        <child>Body_MHS_TopBlades_v16</child>
+        <axis>
+            <xyz>0 0 -1</xyz>
+            <limit>
+                <lower>-1e+16</lower>
+                <upper>1e+16</upper>
+            </limit>
+            <dynamics>
+                <damping>0.1</damping>
+                <friction>0.1</friction>
+            </dynamics>
+            <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+    </joint>
+    
+    <joint name="MHS_BottomBlades_v16" type="revolute">
+        <pose>0 0 0 0 0 0.994839</pose>
+        <parent>Swashplate2</parent>
+        <child>Body_MHS_BottomBlades_v16</child>
+        <axis>
+            <xyz>0 0 -1</xyz>
+            <limit>
+                <lower>-1e+16</lower>
+                <upper>1e+16</upper>
+            </limit>
+            <dynamics>
+                <damping>0.1</damping>
+                <friction>0.1</friction>
+            </dynamics>
+            <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+    </joint>
+
+    <joint name="Swashplate1_Joint" type="revolute">
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Swashplate1</child>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>-0.3</lower>
+                <upper>0.3</upper>
+            </limit>
+        </axis>
+    </joint>
+
+    <joint name="Swashplate2_Joint" type="revolute">
+        <parent>Swashplate1</parent>
+        <child>Swashplate2</child>
+        <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+                <lower>-0.3</lower>
+                <upper>0.3</upper>
+            </limit>
+        </axis>
+    </joint>
+    
+    <joint name="Joint_Leg02_Axis" type="fixed">
+        <pose>0.0799965 0.0899998 0.013566 0.0338305 0.721918 0.0511692</pose>
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Body_Joint_Leg02_Axis</child>
+    </joint>
+    
+    <joint name="MHS_Leg02_v16" type="fixed">
+        <pose>0.0544521 0.0879744 0.0630787 1.11631e09 0.722567 0.0383972</pose>
+        <parent>Body_Joint_Leg02_Axis</parent>
+        <child>Body_MHS_Leg02_v16</child>
+    </joint>
+    
+    <joint name="Joint_Leg01_Axis" type="fixed">
+        <pose>0.0804546 0.0897671 0.013368 0.180504 0.364465 0.473174</pose>
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Body_Joint_Leg01_Axis</child>
+    </joint>
+    
+    <joint name="MHS_Leg01_v16" type="fixed">
+        <pose>0.0239246 0.110467 0.0439815 -5.70219e08 0.404917 0.439824</pose>
+        <parent>Body_Joint_Leg01_Axis</parent>
+        <child>Body_MHS_Leg01_v16</child>
+    </joint>
+    
+    <joint name="Joint_Leg03_Axis" type="fixed">
+        <pose>0.0799965 0.0899998 0.013566 0.0338306 0.721918 0.0511692</pose>
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Body_Joint_Leg03_Axis</child>
+    </joint>
+    
+    <joint name="MHS_Leg03_v16" type="fixed">
+        <pose>0.0544521 0.0879744 0.0630787 9.26579e09 0.722567 0.0383972</pose>
+        <parent>Body_Joint_Leg03_Axis</parent>
+        <child>Body_MHS_Leg03_v16</child>
+    </joint>
+    
+    <joint name="Joint_Leg04_Axis" type="fixed">
+        <pose>0.0804546 0.0898284 0.013315 6.77871e07 0.460765 0.364774</pose>
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Body_Joint_Leg04_Axis</child>
+    </joint>
+    
+    <joint name="MHS_Leg04_v16" type="fixed">
+        <pose>0.032699 0.112619 0.0310971 0.175269 0.428359 0.402991</pose>
+        <parent>Body_Joint_Leg04_Axis</parent>
+        <child>Body_MHS_Leg04_v16</child>
+    </joint>
+    
+    <joint name="MHS_NAVCAM" type="fixed">
+        <pose>0.0 0.0616891 0.13743 0.0027478 0.0580433 -1.57391594</pose>
+        <parent>Body_MHS_MainBody_v16</parent>
+        <child>Frame_MHS_NAVCAM</child>
+    </joint>
+
+    <plugin
+        filename="gz-sim-odometry-publisher-system"
+        name="gz::sim::systems::OdometryPublisher">
+    </plugin>
+
+    <plugin
+        filename="gz-sim-thruster-system"
+        name="gz::sim::systems::Thruster">
+        <joint_name>MHS_TopBlades_v16</joint_name>
+        <thrust_coefficient>0.0005</thrust_coefficient>
+        <fluid_density>1</fluid_density>
+        <propeller_diameter>1.2</propeller_diameter>
+        <max_thrust_cmd>100</max_thrust_cmd>
+        <min_thrust_cmd>0</min_thrust_cmd>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-thruster-system"
+        name="gz::sim::systems::Thruster">
+        <joint_name>MHS_BottomBlades_v16</joint_name>
+        <thrust_coefficient>-0.0005</thrust_coefficient>
+        <fluid_density>1</fluid_density>
+        <propeller_diameter>1.2</propeller_diameter>
+        <max_thrust_cmd>100</max_thrust_cmd>
+        <min_thrust_cmd>0</min_thrust_cmd>
+    </plugin>
+
+    <plugin filename="gz-sim-linearbatteryplugin-system"
+        name="gz::sim::systems::LinearBatteryPlugin">
+        <battery_name>ingenuity_battery</battery_name>
+        <power_draining_topic>/model/nasa_ingenuity/joint/MHS_TopBlades_v16/cmd_thrust</power_draining_topic>
+        <power_draining_topic>/model/nasa_ingenuity/joint/MHS_BottomBlades_v16/cmd_thrust</power_draining_topic>
+        <!-- Ingenuity has a 6 cell LiPo battery pack -->
+        <voltage>22.2</voltage>
+        <open_circuit_voltage_constant_coef>22.2</open_circuit_voltage_constant_coef>
+        <capacity>1.2009</capacity>
+        <power_load>6.6</power_load>
+        <fix_issue_225>true</fix_issue_225>
+        <enable_recharge>true</enable_recharge>
+        <charging_time>3.0</charging_time>
+        <power_load>2.1</power_load>
+        <recharge_by_topic>true</recharge_by_topic>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>Swashplate1_Joint</joint_name>
+        <topic>nasa_ingenuity/swashplate1_joint_cmd</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>1</cmd_max>
+        <cmd_min>-1</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>Swashplate2_Joint</joint_name>
+        <topic>nasa_ingenuity/swashplate2_joint_cmd</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>1</cmd_max>
+        <cmd_min>-1</cmd_min>
+    </plugin>
+
+	</model>
+</sdf>

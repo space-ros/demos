@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+    <model name="moon_base">
+        <static>true</static>
+        <pose>16.80 -18.64 4.23 1.57 0 2.63</pose>
+        <link name="moon_base">
+            <visual name="moon_base_visual">
+                <geometry>
+                    <mesh>
+                        <uri>model://moon_base/resources/moon_base.glb</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+            <collision name="moon_base_collision">
+                <geometry>
+                    <mesh>
+                        <uri>model://moon_base/resources/moon_base.glb</uri>
+                    </mesh>
+                </geometry>
+            </collision>
+        </link>
+        <link name="foundation1">
+            <pose>2 -1.2 6 1.57 0 0</pose>
+            <visual name="foundation_visual">
+                <geometry>
+                    <cylinder>
+                        <radius>5</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Gray</name>
+                    </script>
+                </material>
+            </visual>
+            <collision name="foundation_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>5</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+        </link>
+        <link name="foundation2">
+            <pose>4 -1.2 -2 1.57 0 0</pose>
+            <visual name="foundation_visual">
+                <geometry>
+                    <cylinder>
+                        <radius>5</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Gray</name>
+                    </script>
+                </material>
+            </visual>
+            <collision name="foundation_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>5</radius>
+                        <length>2</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+        </link>
+    </model>
+</sdf>

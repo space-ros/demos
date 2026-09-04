@@ -1,0 +1,1694 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version='1.11'>
+  <model name='nasa_perseverance'>
+    <self_collide>1</self_collide>
+    <pose>0.7 0 3.2 3.1 0.13 2.75</pose>
+    <link name='Body_Chassis'>
+      <inertial>
+        <pose>0.37474510256410237 0.1091289179487179 -1.012679384615385 0 0 0</pose>
+        <mass>900</mass>
+      </inertial>
+      <visual name='Body_Chassis_fixed_joint_lump__VisGeom_CHASSIS_visual'>
+        <pose>0.090020000000000003 0 -1.1333800000000001 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/CHASSIS.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_Chassis_collision'>
+        <pose>0.090020000000000003 0 -1.1333800000000001 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>2 1 1</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='CENTER_DIFFERENTIAL' type='revolute'>
+      <pose relative_to='Body_Chassis'>-0.051979999999999998 0 -1.1333800000000001 0 0 0</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_Differential</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_Differential'>
+      <pose relative_to='CENTER_DIFFERENTIAL'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.070999999999999994 0 0 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_Differential_fixed_joint_lump__VisGeom_CenterDifferential_visual'>
+        <pose>0.14199999999999999 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/CenterDifferential.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HGA_AZ' type='revolute'>
+      <pose relative_to='Body_Chassis'>-0.36997999999999998 -0.47499999999999998 -1.1328800000000001 0 0 0.43633200000000005</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_HGA_AZ</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_HGA_AZ'>
+      <pose relative_to='HGA_AZ'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.23000000000000001 0.23749999999999999 -0.00025000000000000001 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_HGA_AZ_fixed_joint_lump__VisGeom_HGA_AZ_visual'>
+        <pose>0.46000000000000002 0.47499999999999998 -0.00050000000000000001 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/HGA_AZ.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HGA_EL' type='revolute'>
+      <pose relative_to='Body_HGA_AZ'>0 0 -0.248 0.78539799999999982 0 0</pose>
+      <parent>Body_HGA_AZ</parent>
+      <child>Body_HGA_EL</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_HGA_EL'>
+      <pose relative_to='HGA_EL'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.3342 0.23749999999999999 0.12375 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_HGA_EL_fixed_joint_lump__VisGeom_HGA_EL_visual'>
+        <pose>0.46000000000000002 0.47499999999999998 0.2475 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/HGA_EL.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='JOINT1_ENC' type='revolute'>
+      <pose relative_to='Body_Chassis'>1.26562 -0.45150000000000001 -0.82178000000000007 0 0 0</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_RA_Link1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-3.145</lower>
+          <upper>1.5920000000000001</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RA_Link1'>
+      <pose relative_to='JOINT1_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.42793333333333328 0.14493666666666671 -0.11219999999999999 0 0 0</pose>
+        <mass>3</mass>
+      </inertial>
+      <visual name='Body_RA_Link1_fixed_joint_lump__VisGeom_Arm_LINK_1_visual'>
+        <pose>-1.1756 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_1.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_RA_Link1_fixed_joint_lump__VisGeom_Arm_LINK_1_collision'>
+        <pose>-1.1756 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_1.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='JOINT2_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link1'>0.16600000000000001 0 0 0 0 0</pose>
+      <parent>Body_RA_Link1</parent>
+      <child>Body_RA_Link2</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-3.2669999999999999</lower>
+          <upper>0.126</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RA_Link2'>
+      <pose relative_to='JOINT2_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.67079999999999995 0.22575000000000001 -0.15579999999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RA_Link2_fixed_joint_lump__VisGeom_Arm_LINK_2_visual'>
+        <pose>-1.3415999999999999 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_2.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_RA_Link2_fixed_joint_lump__VisGeom_Arm_LINK_2_collision'>
+        <pose>-1.3415999999999999 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_2.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='JOINT3_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link2'>0.81940000000000002 0 0 0 0 0</pose>
+      <parent>Body_RA_Link2</parent>
+      <child>Body_RA_Link3</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.57</lower>
+          <upper>1.57</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RA_Link3'>
+      <pose relative_to='JOINT3_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.0805 0.22575000000000001 -0.15579999999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RA_Link3_fixed_joint_lump__VisGeom_Arm_LINK_3_visual'>
+        <pose>-2.161 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_3.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_RA_Link3_fixed_joint_lump__VisGeom_Arm_LINK_3_collision'>
+        <pose>-2.161 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_3.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='JOINT4_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link3'>0.75329999999999997 0 0 0 0 0</pose>
+      <parent>Body_RA_Link3</parent>
+      <child>Body_RA_Link4</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-0.17799999999999999</lower>
+          <upper>3.669</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RA_Link4'>
+      <pose relative_to='JOINT4_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.4571499999999999 0.22575000000000001 -0.15579999999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RA_Link4_fixed_joint_lump__VisGeom_Arm_LINK_4_visual'>
+        <pose>-2.9142999999999999 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_4.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_RA_Link4_fixed_joint_lump__VisGeom_Arm_LINK_4_collision'>
+        <pose>-2.9142999999999999 0.45150000000000001 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_4.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='JOINT5_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link4'>-0.1757 0.17910000000000001 0 0 0 0</pose>
+      <parent>Body_RA_Link4</parent>
+      <child>Body_RA_Link5</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.35299999999999998</lower>
+          <upper>6.6360000000000001</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RA_Link5'>
+      <pose relative_to='JOINT5_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.45281849999999979 0.043122916666666657 -0.27691758333333338 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RA_Link5_fixed_joint_lump__VisGeom_Arm_LINK_5_visual'>
+        <pose>-2.7385999999999999 0.27239999999999998 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_5.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_RA_Link5_fixed_joint_lump__VisGeom_Arm_LINK_5_collision'>
+        <pose>-2.7385999999999999 0.27239999999999998 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Arm_LINK_5.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='Body_RA_Link5_fixed_joint_lump__VisGeom_Turret_visual_1'>
+        <pose>-2.7385999999999999 0.27239999999999998 -0.31159999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Turret.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='DRILL_FEED' type='prismatic'>
+      <pose relative_to='Body_RA_Link5'>-0.20849999999999991 5.0999999999967738e-05 -0.32846560000000002 0 0 0</pose>
+      <parent>Body_RA_Link5</parent>
+      <child>Body_CorerFeed</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-0.05</lower>
+          <upper>0.05</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_CorerFeed'>
+      <pose relative_to='DRILL_FEED'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-2.5301 0.27234900000000001 0.016865600000000001 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_CorerFeed_fixed_joint_lump__VisGeom_AbradingBit_visual'>
+        <pose>0.20849899999999999 -5.1e-05 -3.4379999999999999e-05 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/AbradingBitInTurretAtZeroFeed.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='SHERLOC_CAP_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link5'>0.1222400000000001 -0.31198999999999999 -0.2991374 0 0 0</pose>
+      <parent>Body_RA_Link5</parent>
+      <child>Body_SHERLOC_Cap</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_SHERLOC_Cap'>
+      <pose relative_to='SHERLOC_CAP_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-2.86084 0.58438999999999997 -0.012462600000000001 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_SHERLOC_Cap_fixed_joint_lump__VisGeom_SHERLOC_Cap_visual'>
+        <pose>-2.86084 0.58438999999999997 -0.012462600000000001 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/ContextImager_Cap.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='STABILIZER_LOWER' type='prismatic'>
+      <pose relative_to='Body_RA_Link5'>-0.20849999999999991 5.0999999999967738e-05 -0.32846560000000002 0 0 0</pose>
+      <parent>Body_RA_Link5</parent>
+      <child>Body_StabilizerFar</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.05</lower>
+          <upper>0.05</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_StabilizerFar'>
+      <pose relative_to='STABILIZER_LOWER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-2.5301 0.27234900000000001 0.016865600000000001 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_StabilizerFar_fixed_joint_lump__VisGeom_StabilizerFar_visual'>
+        <pose>0.20849899999999999 -5.1e-05 -3.4379999999999999e-05 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/StabilizerFarInTurret.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='STABILIZER_UPPER' type='prismatic'>
+      <pose relative_to='Body_RA_Link5'>-0.20849999999999991 5.0999999999967738e-05 -0.32846560000000002 0 0 0</pose>
+      <parent>Body_RA_Link5</parent>
+      <child>Body_StabilizerNear</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.05</lower>
+          <upper>0.05</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_StabilizerNear'>
+      <pose relative_to='STABILIZER_UPPER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-2.5301 0.27234900000000001 0.016865600000000001 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_StabilizerNear_fixed_joint_lump__VisGeom_StabilizerNear_visual'>
+        <pose>0.20849899999999999 -5.1e-05 -3.4379999999999999e-05 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/StabilizerNearInTurret.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='WATSON_CAP_ENC' type='revolute'>
+      <pose relative_to='Body_RA_Link5'>-0.13609999999999989 -0.30880400000000008 -0.34251029999999999 0 0 0</pose>
+      <parent>Body_RA_Link5</parent>
+      <child>Body_WATSON_Cap</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WATSON_Cap'>
+      <pose relative_to='WATSON_CAP_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-2.6025 0.58120400000000005 0.030910300000000002 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_WATSON_Cap_fixed_joint_lump__VisGeom_WATSON_Cap_visual'>
+        <pose>-2.6025 0.58120400000000005 0.030910300000000002 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/WATSON_Camera_Cap.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='LEFT_DIFFERENTIAL' type='revolute'>
+      <pose relative_to='Body_Chassis'>0.30402000000000001 -0.79959000000000002 -0.89288000000000001 0 0 0</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_RockerLeft</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.2</lower>
+          <upper>0.2</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RockerLeft'>
+      <pose relative_to='LEFT_DIFFERENTIAL'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.107 0.39979500000000001 -0.12025 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RockerLeft_fixed_joint_lump__VisGeom_Left_Rocker_visual'>
+        <pose>-0.214 0.79959000000000002 -0.24049999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Left_Rocker.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='LEFT_BOGIE' type='revolute'>
+      <pose relative_to='Body_RockerLeft'>-0.754 -0.12 0.23000000000000001 0 0 0</pose>
+      <parent>Body_RockerLeft</parent>
+      <child>Body_BogieLeft</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_BogieLeft'>
+      <pose relative_to='LEFT_BOGIE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.27000000000000002 0.45979500000000001 -0.23524999999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_BogieLeft_fixed_joint_lump__VisGeom_Left_Bogie_visual'>
+        <pose>0.54000000000000004 0.91959000000000002 -0.47049999999999997 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Left_Bogie.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='LM_DRIVE' type='revolute'>
+      <pose relative_to='Body_BogieLeft'>0.44997999999999999 -0.26490999999999998 0.40000000000000002 0 0 0</pose>
+      <parent>Body_BogieLeft</parent>
+      <child>Body_WheelLeftMiddle</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelLeftMiddle'>
+      <pose relative_to='LM_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.045010000000000001 0.59225000000000005 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelLeftMiddle_fixed_joint_lump__VisGeom_Wheel_LeftMiddle_visual'>
+        <pose>0.090020000000000003 1.1845000000000001 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftMiddle.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelLeftMiddle_fixed_joint_lump__VisGeom_Wheel_LeftMiddle_collision'>
+        <pose>0.090020000000000003 1.1845000000000001 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftMiddle.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='LR_STEER' type='fixed'>
+      <pose relative_to='Body_BogieLeft'>-0.625 -0.14291000000000001 0.40000000000000002 0 0 0</pose>
+      <parent>Body_BogieLeft</parent>
+      <child>Body_SteerLeftRear</child>
+    </joint>
+    <link name='Body_SteerLeftRear'>
+      <pose relative_to='LR_STEER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.58250000000000002 0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_SteerLeftRear_fixed_joint_lump__VisGeom_Steer_LeftRear_visual'>
+        <pose>1.165 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Steer_LeftRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='LR_DRIVE' type='revolute'>
+      <pose relative_to='Body_SteerLeftRear'>0 0 0 0 0 0</pose>
+      <parent>Body_SteerLeftRear</parent>
+      <child>Body_WheelLeftRear</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelLeftRear'>
+      <pose relative_to='LR_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.58250000000000002 0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelLeftRear_fixed_joint_lump__VisGeom_Wheel_LeftRear_visual'>
+        <pose>1.165 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelLeftRear_fixed_joint_lump__VisGeom_Wheel_LeftRear_collision'>
+        <pose>1.165 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='LF_STEER' type='fixed'>
+      <pose relative_to='Body_RockerLeft'>0.88100000000000001 -0.26290999999999998 0.63 0 0 0</pose>
+      <parent>Body_RockerLeft</parent>
+      <child>Body_SteerLeftFront</child>
+    </joint>
+    <link name='Body_SteerLeftFront'>
+      <pose relative_to='LF_STEER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.54749999999999999 0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_SteerLeftFront_fixed_joint_lump__VisGeom_Steer_LeftFront_visual'>
+        <pose>-1.095 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Steer_LeftFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='LF_DRIVE' type='revolute'>
+      <pose relative_to='Body_SteerLeftFront'>0 0 0 0 0 0</pose>
+      <parent>Body_SteerLeftFront</parent>
+      <child>Body_WheelLeftFront</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelLeftFront'>
+      <pose relative_to='LF_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.54749999999999999 0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelLeftFront_fixed_joint_lump__VisGeom_Wheel_LeftFront_visual'>
+        <pose>-1.095 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelLeftFront_fixed_joint_lump__VisGeom_Wheel_LeftFront_collision'>
+        <pose>-1.095 1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_LeftFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='RIGHT_DIFFERENTIAL' type='revolute'>
+      <pose relative_to='Body_Chassis'>0.30402000000000001 0.79959000000000002 -0.89288000000000001 0 0 0</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_RockerRight</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-0.2</lower>
+          <upper>0.2</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RockerRight'>
+      <pose relative_to='RIGHT_DIFFERENTIAL'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.107 -0.39979500000000001 -0.12025 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RockerRight_fixed_joint_lump__VisGeom_Right_Rocker_visual'>
+        <pose>-0.214 -0.79959000000000002 -0.24049999999999999 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Right_Rocker.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='RF_STEER' type='fixed'>
+      <pose relative_to='Body_RockerRight'>0.88100000000000001 0.26290999999999998 0.63 0 0 0</pose>
+      <parent>Body_RockerRight</parent>
+      <child>Body_SteerRightFront</child>
+    </joint>
+    <link name='Body_SteerRightFront'>
+      <pose relative_to='RF_STEER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.54749999999999999 -0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_SteerRightFront_fixed_joint_lump__VisGeom_Steer_RightFront_visual'>
+        <pose>-1.095 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Steer_RightFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='RF_DRIVE' type='revolute'>
+      <pose relative_to='Body_SteerRightFront'>0 0 0 0 0 0</pose>
+      <parent>Body_SteerRightFront</parent>
+      <child>Body_WheelRightFront</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelRightFront'>
+      <pose relative_to='RF_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.54749999999999999 -0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelRightFront_fixed_joint_lump__VisGeom_Wheel_RightFront_visual'>
+        <pose>-1.095 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelRightFront_fixed_joint_lump__VisGeom_Wheel_RightFront_collision'>
+        <pose>-1.095 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightFront.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='RIGHT_BOGIE' type='revolute'>
+      <pose relative_to='Body_RockerRight'>-0.754 0.12 0.23000000000000001 0 0 0</pose>
+      <parent>Body_RockerRight</parent>
+      <child>Body_BogieRight</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+            <lower>-1.57</lower>
+            <upper>1.57</upper>
+            <effort>100</effort>
+            <velocity>0.1</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_BogieRight'>
+      <pose relative_to='RIGHT_BOGIE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.27000000000000002 -0.45979500000000001 -0.23524999999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_BogieRight_fixed_joint_lump__VisGeom_Right_Bogie_visual'>
+        <pose>0.54000000000000004 -0.91959000000000002 -0.47049999999999997 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Right_Bogie.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='RM_DRIVE' type='revolute'>
+      <pose relative_to='Body_BogieRight'>0.44997999999999999 0.26490999999999998 0.40000000000000002 0 0 0</pose>
+      <parent>Body_BogieRight</parent>
+      <child>Body_WheelRightMiddle</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelRightMiddle'>
+      <pose relative_to='RM_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.045010000000000001 -0.59225000000000005 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelRightMiddle_fixed_joint_lump__VisGeom_Wheel_RightMiddle_visual'>
+        <pose>0.090020000000000003 -1.1845000000000001 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightMiddle.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelRightMiddle_fixed_joint_lump__VisGeom_Wheel_RightMiddle_collision'>
+        <pose>0.090020000000000003 -1.1845000000000001 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightMiddle.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='RR_STEER' type='fixed'>
+      <pose relative_to='Body_BogieRight'>-0.625 0.14291000000000001 0.40000000000000002 0 0 0</pose>
+      <parent>Body_BogieRight</parent>
+      <child>Body_SteerRightRear</child>
+    </joint>
+    <link name='Body_SteerRightRear'>
+      <pose relative_to='RR_STEER'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.58250000000000002 -0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_SteerRightRear_fixed_joint_lump__VisGeom_Steer_RightRear_visual'>
+        <pose>1.165 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Steer_RightRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='RR_DRIVE' type='revolute'>
+      <pose relative_to='Body_SteerRightRear'>0 0 0 0 0 0</pose>
+      <parent>Body_SteerRightRear</parent>
+      <child>Body_WheelRightRear</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-1.7976900000000001e+308</lower>
+          <upper>1.7976900000000001e+308</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_WheelRightRear'>
+      <pose relative_to='RR_DRIVE'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.58250000000000002 -0.53125 -0.43525000000000003 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_WheelRightRear_fixed_joint_lump__VisGeom_Wheel_RightRear_visual'>
+        <pose>1.165 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name='Body_WheelRightRear_fixed_joint_lump__VisGeom_Wheel_RightRear_collision'>
+        <pose>1.165 -1.0625 -0.87050000000000005 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/Wheel_RightRear.gltf</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    </link>
+    <joint name='RSM_AZ_ENC' type='revolute'>
+      <pose relative_to='Body_Chassis'>0.804037 0.55902799999999997 -1.91927 0 0 3.1241400000000001</pose>
+      <parent>Body_Chassis</parent>
+      <child>Body_RSM_AZ</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>6.3180899999999998</upper>
+          <effort>1.7976900000000001e+308</effort>
+          <velocity>1.7976900000000001e+308</velocity>
+        </limit>
+        <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='Body_RSM_AZ'>
+      <pose relative_to='RSM_AZ_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.35700850000000001 -0.27951399999999998 0.39294499999999999 0 0 0</pose>
+        <mass>2</mass>
+      </inertial>
+      <visual name='Body_RSM_AZ_fixed_joint_lump__VisGeom_RSM_visual'>
+        <pose>-0.71401700000000001 -0.55902799999999997 0.78588999999999998 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/RSM.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='RSM_EL_ENC' type='fixed'>
+      <!-- Revolute in reality, but keep fixed so that camera isn't moving in pitch by default (more stable). -->
+      <pose relative_to='Body_RSM_AZ'>0 0 0 0 0 3.1415899999999999</pose>
+      <parent>Body_RSM_AZ</parent>
+      <child>Body_RSM_EL</child>
+    </joint>
+    <link name='Body_RSM_EL'>
+      <pose relative_to='RSM_EL_ENC'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.057893499999999973 -0.085143833333333321 -0.027353416666666661 0 0 0</pose>
+        <mass>1</mass>
+      </inertial>
+      <visual name='Body_RSM_EL_fixed_joint_lump__VisGeom_RSM_HEAD_visual'>
+        <pose>-0.71401700000000001 -0.55902799999999997 0.78588999999999998 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>./meshes/RSM_Head.gltf</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name="camera" type="camera">
+        <pose relative_to="Body_RSM_EL">0.2 0 0 3.14 0 0</pose>
+        <camera>
+          <horizontal_fov>1.05</horizontal_fov>
+          <image>
+            <width>256</width>
+            <height>256</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <update_rate>30</update_rate>
+        <topic>nasa_perseverance/camera</topic>
+        <visualize>true</visualize>
+      </sensor>
+      <sensor name="depth_camera" type="depth_camera">
+        <pose relative_to="Body_RSM_EL">0.2 0 0 3.14 0 0</pose>
+        <camera>
+          <horizontal_fov>1.05</horizontal_fov>
+          <image>
+            <width>256</width>
+            <height>256</height>
+            <format>R_FLOAT32</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <update_rate>30</update_rate>
+        <topic>nasa_perseverance/depth_camera</topic>
+      </sensor>
+    </link>
+    <frame name='JointRobotArmBase' attached_to='Body_Chassis'>
+      <pose>0.090020000000000003 0 -1.1333800000000001 0 0 0</pose>
+    </frame>
+    <frame name='Body_RA_Base' attached_to='JointRobotArmBase'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_CAL_PIXL' attached_to='Body_RA_Link1'>
+      <pose>-0.1082 -0.01669 -0.025000000000000001 0 0 2.6179899999999998</pose>
+    </frame>
+    <frame name='Frame_CAL_PIXL' attached_to='Joint_for_Frame_CAL_PIXL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA1' attached_to='Body_RA_Link1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RA1' attached_to='Joint_for_Frame_RA1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA2' attached_to='Body_RA_Link2'>
+      <pose>0 0 0 1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_RA2' attached_to='Joint_for_Frame_RA2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA3' attached_to='Body_RA_Link3'>
+      <pose>0 0 0 1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_RA3' attached_to='Joint_for_Frame_RA3'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA4' attached_to='Body_RA_Link4'>
+      <pose>0 0 0 1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_RA4' attached_to='Joint_for_Frame_RA4'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='JointTurret' attached_to='Body_RA_Link5'>
+      <pose>-2.7385999999999999 0.27239999999999998 -0.31159999999999999 0 0 0</pose>
+    </frame>
+    <frame name='Body_Turret' attached_to='JointTurret'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_DOCKING_POST' attached_to='Body_RA_Link5'>
+      <pose>0.29715000000000003 0 -0.32850000000000001 0 0 0</pose>
+    </frame>
+    <frame name='Frame_DOCKING_POST' attached_to='Joint_for_Frame_DOCKING_POST'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_DRILL' attached_to='Body_RA_Link5'>
+      <pose>0.373 0 -0.32850000000000001 0 0 0</pose>
+    </frame>
+    <frame name='Frame_DRILL' attached_to='Joint_for_Frame_DRILL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FCS' attached_to='Body_RA_Link5'>
+      <pose>-0.37137999999999999 0 -0.27039999999999997 0 0 3.1415899999999999</pose>
+    </frame>
+    <frame name='Frame_FCS' attached_to='Joint_for_Frame_FCS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_GDRT' attached_to='Body_RA_Link5'>
+      <pose>-0.28343600000000002 0.23783099999999999 -0.26250000000000001 0 0 2.44346</pose>
+    </frame>
+    <frame name='Frame_GDRT' attached_to='Joint_for_Frame_GDRT'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_PIXL' attached_to='Body_RA_Link5'>
+      <pose>0 0.35770000000000002 -0.33850000000000002 0 0 1.5708</pose>
+    </frame>
+    <frame name='Frame_PIXL' attached_to='Joint_for_Frame_PIXL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA5' attached_to='Body_RA_Link5'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RA5' attached_to='Joint_for_Frame_RA5'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA6' attached_to='Body_RA_Link5'>
+      <pose>0 0 -0.20799999999999999 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RA6' attached_to='Joint_for_Frame_RA6'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_SHERLOC' attached_to='Body_RA_Link5'>
+      <pose>0.14358499999999999 -0.30541099999999999 -0.292126 0 0 -1.22173</pose>
+    </frame>
+    <frame name='Frame_SHERLOC' attached_to='Joint_for_Frame_SHERLOC'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_TURRET' attached_to='Body_RA_Link5'>
+      <pose>0 0 -0.32850000000000001 0 0 0</pose>
+    </frame>
+    <frame name='Frame_TURRET' attached_to='Joint_for_Frame_TURRET'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WATSON' attached_to='Body_RA_Link5'>
+      <pose>-0.115541 -0.31744499999999998 -0.34278500000000001 0 0 -1.9198599999999999</pose>
+    </frame>
+    <frame name='Frame_WATSON' attached_to='Joint_for_Frame_WATSON'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ATS1' attached_to='Body_Chassis'>
+      <pose>0.84602699999999997 0.59754300000000005 -1.4418800000000001 1.5708 0 2.4432299999999998</pose>
+    </frame>
+    <frame name='Frame_ATS1' attached_to='Joint_for_Frame_ATS1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ATS2' attached_to='Body_Chassis'>
+      <pose>0.74964699999999995 0.57617700000000005 -1.49028 -1.5708 0 1.13391</pose>
+    </frame>
+    <frame name='Frame_ATS2' attached_to='Joint_for_Frame_ATS2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ATS3' attached_to='Body_Chassis'>
+      <pose>0.816326 0.50341000000000002 -1.4418800000000001 1.5708 0 0.34899199999999986</pose>
+    </frame>
+    <frame name='Frame_ATS3' attached_to='Joint_for_Frame_ATS3'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ATS4' attached_to='Body_Chassis'>
+      <pose>0.896872 -0.63405 -0.87907400000000002 -1.5708 -5.5511151231257827e-17 -1.5708</pose>
+    </frame>
+    <frame name='Frame_ATS4' attached_to='Joint_for_Frame_ATS4'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ATS5' attached_to='Body_Chassis'>
+      <pose>0.896872 0.63405 -0.83067400000000002 1.5708 -5.5511151231257827e-17 1.5708</pose>
+    </frame>
+    <frame name='Frame_ATS5' attached_to='Joint_for_Frame_ATS5'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_CAL_MC1' attached_to='Body_Chassis'>
+      <pose>-0.28517999999999999 0.41400799999999999 -1.3025199999999999 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_CAL_MC1' attached_to='Joint_for_Frame_CAL_MC1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_CAL_MC2' attached_to='Body_Chassis'>
+      <pose>-0.23089000000000001 0.43600800000000001 -1.26302 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_CAL_MC2' attached_to='Joint_for_Frame_CAL_MC2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_CAL_SC' attached_to='Body_Chassis'>
+      <pose>-0.73816999999999999 0.53649999999999998 -1.2948200000000001 2.26898 5.5511151231257827e-17 1.5708</pose>
+    </frame>
+    <frame name='Frame_CAL_SC' attached_to='Joint_for_Frame_CAL_SC'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_CAL_SHERLOC' attached_to='Body_Chassis'>
+      <pose>1.32087 0.48799999999999999 -0.87887999999999999 0 0 0</pose>
+    </frame>
+    <frame name='Frame_CAL_SHERLOC' attached_to='Joint_for_Frame_CAL_SHERLOC'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC1' attached_to='Body_Chassis'>
+      <pose>1.0395799999999999 0.22609399999999999 -0.76060799999999995 -0.17484099999999989 1.1170000000000013 -0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC1' attached_to='Joint_for_Frame_FHC1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC1_FOV' attached_to='Body_Chassis'>
+      <pose>1.09534 0.237039 -0.73341100000000004 -0.17484099999999989 1.1170000000000013 -0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC1_FOV' attached_to='Joint_for_Frame_FHC1_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC2' attached_to='Body_Chassis'>
+      <pose>1.05159 -0.002264 -0.75474600000000003 0.17484099999999989 1.1170000000000013 0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC2' attached_to='Joint_for_Frame_FHC2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC2_FOV' attached_to='Body_Chassis'>
+      <pose>1.1073599999999999 -0.0132091 -0.727549 0.17484099999999989 1.1170000000000013 0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC2_FOV' attached_to='Joint_for_Frame_FHC2_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC3' attached_to='Body_Chassis'>
+      <pose>1.05159 0.15026400000000001 -0.75474600000000003 -0.17484099999999989 1.1170000000000013 -0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC3' attached_to='Joint_for_Frame_FHC3'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC3_FOV' attached_to='Body_Chassis'>
+      <pose>1.1073599999999999 0.16120899999999999 -0.727549 -0.17484099999999989 1.1170000000000013 -0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC3_FOV' attached_to='Joint_for_Frame_FHC3_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC4' attached_to='Body_Chassis'>
+      <pose>1.0395799999999999 -0.078093999999999997 -0.76060799999999995 0.17484099999999989 1.1170000000000013 0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC4' attached_to='Joint_for_Frame_FHC4'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHC4_FOV' attached_to='Body_Chassis'>
+      <pose>1.09534 -0.089039099999999996 -0.73341100000000004 0.17484099999999989 1.1170000000000013 0.00024767599999993138</pose>
+    </frame>
+    <frame name='Frame_FHC4_FOV' attached_to='Joint_for_Frame_FHC4_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_FHCB' attached_to='Body_Chassis'>
+      <pose>0.95652000000000004 0.073999999999999996 -0.76858000000000004 0 0 0</pose>
+    </frame>
+    <frame name='Frame_FHCB' attached_to='Joint_for_Frame_FHCB'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_HGAS' attached_to='Body_Chassis'>
+      <pose>-0.36997999999999998 -0.47499999999999998 -1.1328800000000001 0 0 0.43631599999999987</pose>
+    </frame>
+    <frame name='Frame_HGAS' attached_to='Joint_for_Frame_HGAS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_HS' attached_to='Body_Chassis'>
+      <pose>0.74344299999999996 0.57633699999999999 -1.5059800000000001 -0.46364300000951042 1.5707900000980688 0.46364299999185293</pose>
+    </frame>
+    <frame name='Frame_HS' attached_to='Joint_for_Frame_HS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ICU' attached_to='Body_Chassis'>
+      <pose>0.179008 -0.20899999999999999 -1.04738 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_ICU' attached_to='Joint_for_Frame_ICU'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MI' attached_to='Body_Chassis'>
+      <pose>0.804037 0.55902799999999997 -1.1328800000000001 0 0 0</pose>
+    </frame>
+    <frame name='Frame_MI' attached_to='Joint_for_Frame_MI'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MOXIE' attached_to='Body_Chassis'>
+      <pose>-0.193552 -0.50800000000000001 -1.04738 0 0 0</pose>
+    </frame>
+    <frame name='Frame_MOXIE' attached_to='Joint_for_Frame_MOXIE'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RA_BASE' attached_to='Body_Chassis'>
+      <pose>0.96787100000000004 -0.56100000000000005 -0.90837999999999997 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RA_BASE' attached_to='Joint_for_Frame_RA_BASE'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RDS' attached_to='Body_Chassis'>
+      <pose>0.138992 -0.298597 -1.1794800000000001 3.1415899999999999 -1.0587911840678754e-22 -0.15704400000000013</pose>
+    </frame>
+    <frame name='Frame_RDS' attached_to='Joint_for_Frame_RDS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RHC1' attached_to='Body_Chassis'>
+      <pose>-1.00766 -0.46700000000000003 -0.77468000000000004 -2.9945275602387965e-22 0.78533600000000003 3.1415899999999999</pose>
+    </frame>
+    <frame name='Frame_RHC1' attached_to='Joint_for_Frame_RHC1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RHC1_FOV' attached_to='Body_Chassis'>
+      <pose>-1.0522 -0.46700000000000003 -0.73012999999999995 -2.9945275602387965e-22 0.78533600000000003 3.1415899999999999</pose>
+    </frame>
+    <frame name='Frame_RHC1_FOV' attached_to='Joint_for_Frame_RHC1_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RHC2' attached_to='Body_Chassis'>
+      <pose>-1.00766 0.46700000000000003 -0.77468000000000004 -2.9945275602387965e-22 0.78533600000000003 3.1415899999999999</pose>
+    </frame>
+    <frame name='Frame_RHC2' attached_to='Joint_for_Frame_RHC2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RHC2_FOV' attached_to='Body_Chassis'>
+      <pose>-1.0522 0.46700000000000003 -0.73012999999999995 -2.9945275602387965e-22 0.78533600000000003 3.1415899999999999</pose>
+    </frame>
+    <frame name='Frame_RHC2_FOV' attached_to='Joint_for_Frame_RHC2_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RIMFAX' attached_to='Body_Chassis'>
+      <pose>-0.79478000000000004 0 -0.71723999999999999 -0.68683399999999983 -1.1102230246251565e-16 1.5708</pose>
+    </frame>
+    <frame name='Frame_RIMFAX' attached_to='Joint_for_Frame_RIMFAX'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RIMUA' attached_to='Body_Chassis'>
+      <pose>0.31090600000000002 -0.44158599999999998 -1.04738 0 0 -1.5708</pose>
+    </frame>
+    <frame name='Frame_RIMUA' attached_to='Joint_for_Frame_RIMUA'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RIMUB' attached_to='Body_Chassis'>
+      <pose>0.40390599999999999 -0.44158599999999998 -1.04738 0 0 -1.5708</pose>
+    </frame>
+    <frame name='Frame_RIMUB' attached_to='Joint_for_Frame_RIMUB'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RMECH' attached_to='Body_Chassis'>
+      <pose>0.090020000000000003 0 -1.1333800000000001 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RMECH' attached_to='Joint_for_Frame_RMECH'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_RNAV' attached_to='Body_Chassis'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_RNAV' attached_to='Joint_for_Frame_RNAV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_TIRS' attached_to='Body_Chassis'>
+      <pose>0.80259100000000005 0.61637399999999998 -1.5538799999999999 0 0 -1.5362100000000001</pose>
+    </frame>
+    <frame name='Frame_TIRS' attached_to='Joint_for_Frame_TIRS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WS1' attached_to='Body_Chassis'>
+      <pose>0.85425700000000004 0.59751399999999999 -1.59588 0 0 0.10416599999999999</pose>
+    </frame>
+    <frame name='Frame_WS1' attached_to='Joint_for_Frame_WS1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WS2' attached_to='Body_Chassis'>
+      <pose>0.80138600000000004 0.62389799999999995 -1.6243799999999999 0 0 2.1992400000000001</pose>
+    </frame>
+    <frame name='Frame_WS2' attached_to='Joint_for_Frame_WS2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_DIFF' attached_to='Body_Differential'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_DIFF' attached_to='Joint_for_Frame_DIFF'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_HGAG' attached_to='Body_HGA_AZ'>
+      <pose>0 0 0 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_HGAG' attached_to='Joint_for_Frame_HGAG'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ANT' attached_to='Body_HGA_EL'>
+      <pose>0.2084 0 0 2.3561899999999998 0 0</pose>
+    </frame>
+    <frame name='Frame_ANT' attached_to='Joint_for_Frame_ANT'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ROCKER_L' attached_to='Body_RockerLeft'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_ROCKER_L' attached_to='Joint_for_Frame_ROCKER_L'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_BOGIE_L' attached_to='Body_BogieLeft'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_BOGIE_L' attached_to='Joint_for_Frame_BOGIE_L'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_LM' attached_to='Body_WheelLeftMiddle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_LM' attached_to='Joint_for_Frame_WHEEL_LM'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_STEER_LR' attached_to='Body_SteerLeftRear'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_STEER_LR' attached_to='Joint_for_Frame_STEER_LR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_LR' attached_to='Body_WheelLeftRear'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_LR' attached_to='Joint_for_Frame_WHEEL_LR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_STEER_LF' attached_to='Body_SteerLeftFront'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_STEER_LF' attached_to='Joint_for_Frame_STEER_LF'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_LF' attached_to='Body_WheelLeftFront'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_LF' attached_to='Joint_for_Frame_WHEEL_LF'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_ROCKER_R' attached_to='Body_RockerRight'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_ROCKER_R' attached_to='Joint_for_Frame_ROCKER_R'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_STEER_RF' attached_to='Body_SteerRightFront'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_STEER_RF' attached_to='Joint_for_Frame_STEER_RF'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_RF' attached_to='Body_WheelRightFront'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_RF' attached_to='Joint_for_Frame_WHEEL_RF'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_BOGIE_R' attached_to='Body_BogieRight'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_BOGIE_R' attached_to='Joint_for_Frame_BOGIE_R'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_RM' attached_to='Body_WheelRightMiddle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_RM' attached_to='Joint_for_Frame_WHEEL_RM'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_STEER_RR' attached_to='Body_SteerRightRear'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_STEER_RR' attached_to='Joint_for_Frame_STEER_RR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_WHEEL_RR' attached_to='Body_WheelRightRear'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_WHEEL_RR' attached_to='Joint_for_Frame_WHEEL_RR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MAZ' attached_to='Body_RSM_AZ'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Frame_MAZ' attached_to='Joint_for_Frame_MAZ'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MCL' attached_to='Body_RSM_EL'>
+      <pose>-0.085135000000000002 -0.126634 -0.065127000000000004 0 0 0.021995399999999988</pose>
+    </frame>
+    <frame name='Frame_MCL' attached_to='Joint_for_Frame_MCL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MCR' attached_to='Body_RSM_EL'>
+      <pose>-0.085134000000000001 0.121506 -0.065128000000000005 0 0 -0.022002799999999999</pose>
+    </frame>
+    <frame name='Frame_MCR' attached_to='Joint_for_Frame_MCR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_MEL' attached_to='Body_RSM_EL'>
+      <pose>0 0 0 -1.5708 0 0</pose>
+    </frame>
+    <frame name='Frame_MEL' attached_to='Joint_for_Frame_MEL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_NCL' attached_to='Body_RSM_EL'>
+      <pose>0.080595 -0.214392 -0.057109 1.570789999986651 1.5707900000278763 1.5707899999638137</pose>
+    </frame>
+    <frame name='Frame_NCL' attached_to='Joint_for_Frame_NCL'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_NCL_FOV' attached_to='Body_RSM_EL'>
+      <pose>0.143595 -0.214392 -0.057109 1.570789999986651 1.5707900000278763 1.5707899999638137</pose>
+    </frame>
+    <frame name='Frame_NCL_FOV' attached_to='Joint_for_Frame_NCL_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_NCR' attached_to='Body_RSM_EL'>
+      <pose>0.080595 0.20960699999999999 -0.057111000000000002 1.570789999986651 1.5707900000278763 1.5707899999638137</pose>
+    </frame>
+    <frame name='Frame_NCR' attached_to='Joint_for_Frame_NCR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_NCR_FOV' attached_to='Body_RSM_EL'>
+      <pose>0.143595 0.20960699999999999 -0.057111000000000002 1.570789999986651 1.5707900000278763 1.5707899999638137</pose>
+    </frame>
+    <frame name='Frame_NCR_FOV' attached_to='Joint_for_Frame_NCR_FOV'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_SCI' attached_to='Body_RSM_EL'>
+      <pose>-0.071378999999999998 -0.112 -0.114609 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_SCI' attached_to='Joint_for_Frame_SCI'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_SCIR' attached_to='Body_RSM_EL'>
+      <pose>-0.062479 -0.112 -0.21360899999999999 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_SCIR' attached_to='Joint_for_Frame_SCIR'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_SCLIBS' attached_to='Body_RSM_EL'>
+      <pose>-0.062479 -0.112 -0.21360899999999999 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_SCLIBS' attached_to='Joint_for_Frame_SCLIBS'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='Joint_for_Frame_SCRMI' attached_to='Body_RSM_EL'>
+      <pose>-0.062479 -0.112 -0.21360899999999999 3.1415899999999999 0 0</pose>
+    </frame>
+    <frame name='Frame_SCRMI' attached_to='Joint_for_Frame_SCRMI'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+
+    <plugin
+      filename="gz-sim-diff-drive-system"
+      name="gz::sim::systems::DiffDrive">
+      <left_joint>LF_DRIVE</left_joint>
+      <right_joint>RF_DRIVE</right_joint>
+      <wheel_separation>2.125</wheel_separation>
+      <wheel_radius>0.526</wheel_radius>
+      <max_linear_acceleration>1</max_linear_acceleration>
+      <min_linear_acceleration>-1</min_linear_acceleration>
+      <max_angular_acceleration>2</max_angular_acceleration>
+      <min_angular_acceleration>-2</min_angular_acceleration>
+      <max_linear_velocity>10.5</max_linear_velocity>
+      <min_linear_velocity>-10.5</min_linear_velocity>
+      <max_angular_velocity>10</max_angular_velocity>
+      <min_angular_velocity>-10</min_angular_velocity>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>JOINT1_ENC</joint_name>
+        <topic>nasa_perseverance/arm_joint_1</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>3.14</cmd_max>
+        <cmd_min>-3.14</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>JOINT2_ENC</joint_name>
+        <topic>nasa_perseverance/arm_joint_2</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>3.14</cmd_max>
+        <cmd_min>-3.14</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>JOINT3_ENC</joint_name>
+        <topic>nasa_perseverance/arm_joint_3</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>3.14</cmd_max>
+        <cmd_min>-3.14</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>JOINT4_ENC</joint_name>
+        <topic>nasa_perseverance/arm_joint_4</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>3.14</cmd_max>
+        <cmd_min>-3.14</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>JOINT5_ENC</joint_name>
+        <topic>nasa_perseverance/arm_joint_5</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>3.14</cmd_max>
+        <cmd_min>-3.14</cmd_min>
+    </plugin>
+
+    <plugin
+        filename="gz-sim-joint-position-controller-system"
+        name="gz::sim::systems::JointPositionController">
+        <joint_name>RSM_AZ_ENC</joint_name>
+        <topic>nasa_perseverance/camera_yaw</topic>
+        <p_gain>1</p_gain>
+        <i_gain>0.1</i_gain>
+        <d_gain>0.01</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>6.3180899999999998</cmd_max>
+        <cmd_min>0</cmd_min>
+    </plugin>
+
+  </model>
+</sdf>
