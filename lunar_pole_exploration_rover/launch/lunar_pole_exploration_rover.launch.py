@@ -38,11 +38,11 @@ def generate_launch_description():
     lunar_pole_exploration_rover_demos_path = get_package_share_directory('lunar_pole_exploration_rover')
     lunar_pole_exploration_rover_models_path = get_package_share_directory('simulation')
 
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+    env = {'GZ_SIM_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')]),
-           'IGN_GAZEBO_RESOURCE_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_RESOURCE_PATH', default=''), lunar_pole_exploration_rover_demos_path])}
+           'GZ_SIM_RESOURCE_PATH':
+           ':'.join([environ.get('GZ_SIM_RESOURCE_PATH', default=''), lunar_pole_exploration_rover_demos_path])}
 
     urdf_model_path = os.path.join(lunar_pole_exploration_rover_models_path, 'models', 'lunar_pole_exploration_rover',
         'urdf', 'lunar_pole_exploration_rover.xacro')
@@ -76,7 +76,7 @@ def generate_launch_description():
     )
 
     start_world = ExecuteProcess(
-        cmd=['ign gazebo', lunar_pole_world_model, '-r'],
+        cmd=['gz sim', lunar_pole_world_model, '-r'],
         output='screen',
         additional_env=env,
         shell=True
@@ -93,31 +93,31 @@ def generate_launch_description():
             package='ros_gz_bridge',
             executable='parameter_bridge',
             arguments=[
-                '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
-                '/aftcam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/aftcam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/navcam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/navcam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/hazcam_left_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/hazcam_left_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/hazcam_right_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/hazcam_right_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/model/lunar_pole_exploration_rover/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
-                '/model/lunar_pole_exploration_rover/left_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
-                '/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
-                '/model/lunar_pole_exploration_rover/rear_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
-                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',
-                '/model/lunar_pole_exploration_rover/sensor/NavCam_left/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/NavCam_right/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/AftCam_left/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/AftCam_right/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_front/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/sensor/imu/activate@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply@std_msgs/msg/Float32@ignition.msgs.Float',
-                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption@std_msgs/msg/Float32@ignition.msgs.Float',
+                '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+                '/aftcam_left/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/aftcam_right/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/navcam_left/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/navcam_right/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/hazcam_left_front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/hazcam_left_rear/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/hazcam_right_front/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/hazcam_right_rear/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+                '/model/lunar_pole_exploration_rover/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+                '/model/lunar_pole_exploration_rover/left_solar_panel/solar_panel_output@std_msgs/msg/Float32[gz.msgs.Float',
+                '/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output@std_msgs/msg/Float32[gz.msgs.Float',
+                '/model/lunar_pole_exploration_rover/rear_solar_panel/solar_panel_output@std_msgs/msg/Float32[gz.msgs.Float',
+                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state@sensor_msgs/msg/BatteryState[gz.msgs.BatteryState',
+                '/model/lunar_pole_exploration_rover/sensor/NavCam_left/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/NavCam_right/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/AftCam_left/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/AftCam_right/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/HazCam_right_front/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/sensor/imu/activate@std_msgs/msg/Bool]gz.msgs.Boolean',
+                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply@std_msgs/msg/Float32[gz.msgs.Float',
+                '/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption@std_msgs/msg/Float32[gz.msgs.Float',
             ],
             output='screen')
 
@@ -170,7 +170,7 @@ def generate_launch_description():
             output='screen')
 
     spawn = Node(
-        package='ros_ign_gazebo', executable='create',
+        package='ros_gz_sim', executable='create',
         arguments=[
             '-name', 'lunar_pole_exploration_rover',
             '-topic', robot_description,
@@ -182,7 +182,7 @@ def generate_launch_description():
 
     ## Control Components
 
-    component_state_msg = '{name: "IgnitionSystem", target_state: {id: 3, label: ""}}'
+    component_state_msg = '{name: "GazeboSystem", target_state: {id: 3, label: ""}}'
 
     ## a hack to resolve current bug
     set_hardware_interface_active = ExecuteProcess(
@@ -192,27 +192,33 @@ def generate_launch_description():
              component_state_msg]
     )
 
-    load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
+    # The controller manager is clocked by /clock, so a controller activated before
+    # simulation time starts flowing would time out; the spawner keeps retrying.
+    load_joint_state_broadcaster = Node(
+        package='controller_manager', executable='spawner',
+        arguments=['joint_state_broadcaster',
+                   '--controller-manager-timeout', '60', '--switch-timeout', '60'],
         output='screen'
     )
 
-    load_mast_camera_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'mast_camera_joint_trajectory_controller'],
+    load_mast_camera_joint_traj_controller = Node(
+        package='controller_manager', executable='spawner',
+        arguments=['mast_camera_joint_trajectory_controller',
+                   '--controller-manager-timeout', '60', '--switch-timeout', '60'],
         output='screen'
     )
 
-    load_wheel_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'wheel_velocity_controller'],
+    load_wheel_joint_traj_controller = Node(
+        package='controller_manager', executable='spawner',
+        arguments=['wheel_velocity_controller',
+                   '--controller-manager-timeout', '60', '--switch-timeout', '60'],
         output='screen'
     )
 
-    load_steer_joint_traj_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'steer_position_controller'],
+    load_steer_joint_traj_controller = Node(
+        package='controller_manager', executable='spawner',
+        arguments=['steer_position_controller',
+                   '--controller-manager-timeout', '60', '--switch-timeout', '60'],
         output='screen'
     )
 
