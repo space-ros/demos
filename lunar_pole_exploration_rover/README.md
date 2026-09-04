@@ -4,6 +4,8 @@
 
 This package (and associated assets in the simulation repository) provides a Gazebo simulation of a lunar south pole exploration mission inspired by the real NASA VIPER mission.
 
+The demo runs on ROS 2 Jazzy and Gazebo Harmonic.
+
 It includes a realistic environment, the Mons Mouton, where the VIPER rover was planned to land, and a fully controllable rover model.
 
 The key elements of the simulation is the integration of specifically developed Gazebo plugins. A solar panel plugin and associated battery and power consumption plugins aim to simulate the power generation challenge of the lunar south pole.
