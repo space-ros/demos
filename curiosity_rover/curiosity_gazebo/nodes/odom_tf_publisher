@@ -12,6 +12,11 @@ from rclpy.node import Node  # type: ignore
 from tf2_ros import TransformBroadcaster  # type: ignore
 
 
+def _strip_slash(frame_id: str) -> str:
+    """Gazebo odometry often uses leading-slash frames; TF2 treats those as distinct."""
+    return frame_id[1:] if frame_id.startswith("/") else frame_id
+
+
 class OdomTFBroadcaster(Node):
     """Odometry TF Broadcaster for Curiosity Mars Rovers"""
 
@@ -20,12 +25,17 @@ class OdomTFBroadcaster(Node):
 
         # Declare the parameter for the topic name
         self.declare_parameter("odom_topic", "/model/curiosity_mars_rover/odometry")
+        self.declare_parameter("odom_out_topic", "/odom")
 
         # Get the parameter value
         odom_topic = self.get_parameter("odom_topic").get_parameter_value().string_value
+        odom_out_topic = (
+            self.get_parameter("odom_out_topic").get_parameter_value().string_value
+        )
 
         # Initialize the transform broadcaster
         self.tf_broadcaster = TransformBroadcaster(self)
+        self.odom_pub = self.create_publisher(Odometry, odom_out_topic, 10)
 
         # Subscribe to Odometry topic
         self.subscription = self.create_subscription(
@@ -34,13 +44,17 @@ class OdomTFBroadcaster(Node):
 
     def handle_odometry(self, msg):
         """Handle incoming Odometry message and broadcast it as a TF"""
+        # Normalize frame ids from Gazebo (/odom, /base_footprint)
+        frame_id = _strip_slash(msg.header.frame_id)
+        child_frame_id = _strip_slash(msg.child_frame_id)
+
         tf = TransformStamped()
 
         # Read message content and assign it to
         # corresponding tf variables
         tf.header.stamp = msg.header.stamp
-        tf.header.frame_id = msg.header.frame_id
-        tf.child_frame_id = msg.child_frame_id
+        tf.header.frame_id = frame_id
+        tf.child_frame_id = child_frame_id
 
         # get translation coordinates from the message pose
         tf.transform.translation.x = msg.pose.pose.position.x
@@ -55,6 +69,15 @@ class OdomTFBroadcaster(Node):
 
         # Send the transformation
         self.tf_broadcaster.sendTransform(tf)
+
+        # Republish cleaned odometry for Nav2 (expects /odom)
+        out = Odometry()
+        out.header = msg.header
+        out.header.frame_id = frame_id
+        out.child_frame_id = child_frame_id
+        out.pose = msg.pose
+        out.twist = msg.twist
+        self.odom_pub.publish(out)
 
 
 def main():

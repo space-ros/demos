@@ -136,14 +136,24 @@ def generate_launch_description():
         ]
     )
 
+    # GazeboSystem can take a few seconds after spawn; the first activate often
+    # times out and leaves joint_state_broadcaster inactive (no /joint_states,
+    # broken robot TF, AMCL/Nav2 cannot run). Retry until it sticks.
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=[
-            "ros2",
-            "control",
-            "load_controller",
-            "--set-state",
-            "active",
-            "joint_state_broadcaster",
+            "bash",
+            "-c",
+            (
+                "for i in $(seq 1 15); do "
+                "  if ros2 control load_controller --set-state active "
+                "joint_state_broadcaster; then exit 0; fi; "
+                "  echo \"[launch] joint_state_broadcaster activate failed "
+                "(try $i), retrying...\"; "
+                "  sleep 2; "
+                "done; "
+                "echo '[launch] joint_state_broadcaster failed after retries' >&2; "
+                "exit 1"
+            ),
         ],
         output="screen",
     )
