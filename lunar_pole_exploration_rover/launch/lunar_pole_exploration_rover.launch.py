@@ -94,14 +94,14 @@ def generate_launch_description():
             executable='parameter_bridge',
             arguments=[
                 '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
-                'aft_cam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/aft_cam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/nav_cam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/nav_cam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/haz_cam_left_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/haz_cam_left_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/haz_cam_right_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-                '/haz_cam_right_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/aftcam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/aftcam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/navcam_left/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/navcam_right/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/hazcam_left_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/hazcam_left_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/hazcam_right_front/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/hazcam_right_rear/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
                 '/model/lunar_pole_exploration_rover/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
                 '/model/lunar_pole_exploration_rover/left_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
                 '/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output@std_msgs/msg/Float32@ignition.msgs.Float',
@@ -124,49 +124,49 @@ def generate_launch_description():
     navcam_left_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['navcam_left/image_raw', 'navcam_left/image_raw'],
+            arguments=['navcam_left/image_raw'],
             output='screen')
 
     navcam_right_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['navcam_right/image_raw', 'navcam_right/image_raw'],
+            arguments=['navcam_right/image_raw'],
             output='screen')
 
     aftcam_left_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['aftcam_left/image_raw', 'aftcam_left/image_raw'],
+            arguments=['aftcam_left/image_raw'],
             output='screen')
 
     aftcam_right_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['aftcam_right/image_raw', 'aftcam_right/image_raw'],
+            arguments=['aftcam_right/image_raw'],
             output='screen')
 
     hazcam_left_front_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['hazcam_left_front/image_raw', 'hazcam_left_front/image_raw'],
+            arguments=['hazcam_left_front/image_raw'],
             output='screen')
 
     hazcam_left_rear_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['hazcam_left_rear/image_raw', 'hazcam_left_rear/image_raw'],
+            arguments=['hazcam_left_rear/image_raw'],
             output='screen')
 
     hazcam_right_front_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['hazcam_right_front/image_raw', 'hazcam_right_front/image_raw'],
+            arguments=['hazcam_right_front/image_raw'],
             output='screen')
 
     hazcam_right_rear_image_bridge = Node(
             package='ros_gz_image',
             executable='image_bridge',
-            arguments=['hazcam_right_rear/image_raw', 'hazcam_right_rear/image_raw'],
+            arguments=['hazcam_right_rear/image_raw'],
             output='screen')
 
     spawn = Node(
