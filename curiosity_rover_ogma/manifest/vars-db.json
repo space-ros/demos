@@ -1,0 +1,27 @@
+{ "inputs":
+     [ { "name": "input_signal"
+       , "type": "double"
+       , "active": true
+       , "connections":
+           [ { "scope": "ros/message"
+             , "topic": "/model/curiosity_mars_rover/odometry"
+             , "field": "pose.pose.position.x"
+             }
+           ]
+       }
+     ]
+, "topics":
+     [ { "scope": "ros/message"
+       , "topic": "/model/curiosity_mars_rover/odometry"
+       , "type":  "nav_msgs::msg::Odometry"
+       }
+     ]
+, "types": [
+       { "fromScope": "ros/message"
+       , "fromType":  "nav_msgs::msg::Odometry"
+       , "fromField": "pose.pose.position.x"
+       , "toScope":   "C"
+       , "toType":    "double"
+       }
+     ]
+}
