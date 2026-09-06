@@ -4,6 +4,8 @@
 
 This package (and associated assets in the simulation repository) provides a Gazebo simulation of a lunar south pole exploration mission inspired by the real NASA VIPER mission.
 
+The demo runs on ROS 2 Jazzy and Gazebo Harmonic.
+
 It includes a realistic environment, the Mons Mouton, where the VIPER rover was planned to land, and a fully controllable rover model.
 
 The key elements of the simulation is the integration of specifically developed Gazebo plugins. A solar panel plugin and associated battery and power consumption plugins aim to simulate the power generation challenge of the lunar south pole.
@@ -297,14 +299,15 @@ The control nodes considers four different types of motion depending on the valu
 ##### Subscribed Topics
 
 * **/cmd_vel** (`geometry_msgs/msg/Twist`) -- Velocity command to the rover
-* **/model/lunar_pole_exploration_rover/sensor/aft_cam_left/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/aft_cam_right/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/nav_cam_left/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/nav_cam_right/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_left_front/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_right_front/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_left_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_right_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/AftCam_left/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/AftCam_right/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/NavCam_left/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/NavCam_right/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_right_front/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/imu/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
 
 ##### Published Topics
 
@@ -312,27 +315,26 @@ The control nodes considers four different types of motion depending on the valu
 * **/model/lunar_pole_exploration_rover/right_solar_panel/solar_panel_output** (`std_msgs/msg/Float32`) -- Publishes the current output of the right solar panel in watt
 * **/model/lunar_pole_exploration_rover/rear_solar_panel/solar_panel_output** (`std_msgs/msg/Float32`) -- Publishes the current output of the rear solar panel in watt
 * **/model/lunar_pole_exploration_rover/odometry** (`nav_msgs/msg/Odometry`) -- Robot odometry
-* **/model/lunar_pole_exploration_rover/odometry_with_covariance**(`nav_msgs/msg/OdometryWithCovariance`) -- Robot odometry
-* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state** (`sensor_msgs/msg/BatterySate`) -- Publishes the current state of the battery `rechargeable_battery´
-* **/model/lunar_pole_exploration_rover/pose**(`geometry_msgs/msg/Pose`) -- Robot estimated pose from odometry
+* **/tf** (`tf2_msgs/msg/TFMessage`) -- `odom` → `base_footprint` transform derived from the odometry by the `odom_tf_publisher` node; the rest of the rover's frame tree comes from `robot_state_publisher`
+* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state** (`sensor_msgs/msg/BatteryState`) -- Publishes the current state of the battery `rechargeable_battery`
 * **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply**(`std_msgs/msg/Float32`) -- Total power supply from external power source to the battery `rechargeable_battery`
 * **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption**(`std_msgs/msg/Float32`) -- Total power comsumed from the battery `rechargeable_battery`
-* **aft_cam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam left camera info
-* **aft_cam_right/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam right camera info
-* **nav_cam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- NavCam left camera info
-* **nav_cam_right/camera_info** (`sensor_msgs/msg/CameraInfo`) -- NavCam right camera info
-* **haz_cam_left_front/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam left front camera info
-* **haz_cam_left_rear/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam left rear camera info
-* **haz_cam_right_front/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam right front camera info
-* **haz_cam_right_rear/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam right rear camera info
-* **aft_cam_left/image_raw** (`sensor_msgs/msg/Image`) -- AftCam left camera image
-* **aft_cam_right/image_raw** (`sensor_msgs/msg/Image`) -- AftCam right camera image
-* **nav_cam_left/image_raw** (`sensor_msgs/msg/Image`) -- NavCam left camera image
-* **nav_cam_right/image_raw** (`sensor_msgs/msg/Image`) -- NavCam right camera image
-* **haz_cam_left_front/image_raw** (`sensor_msgs/msg/Image`) -- HazCam left front camera image
-* **haz_cam_left_rear/image_raw** (`sensor_msgs/msg/Image`) -- HazCam left rear camera image
-* **haz_cam_right_front/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right front camera image
-* **haz_cam_right_rear/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right rear camera image
+* **aftcam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam left camera info
+* **aftcam_right/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam right camera info
+* **navcam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- NavCam left camera info
+* **navcam_right/camera_info** (`sensor_msgs/msg/CameraInfo`) -- NavCam right camera info
+* **hazcam_left_front/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam left front camera info
+* **hazcam_left_rear/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam left rear camera info
+* **hazcam_right_front/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam right front camera info
+* **hazcam_right_rear/camera_info** (`sensor_msgs/msg/CameraInfo`) -- HazCam right rear camera info
+* **aftcam_left/image_raw** (`sensor_msgs/msg/Image`) -- AftCam left camera image
+* **aftcam_right/image_raw** (`sensor_msgs/msg/Image`) -- AftCam right camera image
+* **navcam_left/image_raw** (`sensor_msgs/msg/Image`) -- NavCam left camera image
+* **navcam_right/image_raw** (`sensor_msgs/msg/Image`) -- NavCam right camera image
+* **hazcam_left_front/image_raw** (`sensor_msgs/msg/Image`) -- HazCam left front camera image
+* **hazcam_left_rear/image_raw** (`sensor_msgs/msg/Image`) -- HazCam left rear camera image
+* **hazcam_right_front/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right front camera image
+* **hazcam_right_rear/image_raw** (`sensor_msgs/msg/Image`) -- HazCam right rear camera image
 
 ##### Services
 
@@ -341,6 +343,7 @@ The control nodes considers four different types of motion depending on the valu
 * **move_forward** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover forward
 * **turn_left** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover forward and turn left
 * **turn_right** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover forward and turn right
+* **rotate_on_place** (`std_srvs/srv/Empty`) -- Demonstration service that rotate the rover in place
 * **move_sideway_left** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover sideways to the left
 * **move_sideway_right** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover sideways to the right
 * **move_sideway_and_turn_left** (`std_srvs/srv/Empty`) -- Demonstration service that drive the rover sideways and rotate (combined motion)
