@@ -1,0 +1,10 @@
+{
+  "auxiliary_defs": [],
+  "inputs": [ { "name":"input_signal", "type":"Double", "meaning": "InputF64" } ],
+  "properties": [
+    { "id":          "KeepRoverInCheck",
+      "formula":     "abs input_signal <= 2.5",
+      "description": "The rover stays near the starting point"
+    }
+  ]
+}

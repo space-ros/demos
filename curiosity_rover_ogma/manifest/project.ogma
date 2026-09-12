@@ -1,0 +1,11 @@
+{
+  "projectName": "Curiosity rover demo",
+  "projectInputFiles": [ [ "document.json", "cwd:default", "literal" ] ],
+  "projectVariableFiles": null,
+  "projectVariableDBFile": "vars-db.json",
+  "projectHandlerFile": null,
+  "projectCommandPropVia": null,
+  "projectTemplateDir": null,
+  "projectTargetDir": "cwd:monitor",
+  "projectExtraJSONFile": "extra-vars.json"
+}
