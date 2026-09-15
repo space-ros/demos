@@ -12,7 +12,8 @@ Submissions to this repo should include:
 
 1. [Canadarm2](canadarm2/README.md)
 2. [Curiosity Rover](curiosity_rover/README.md)
-3. [Nav2 Demo](nav2_demo/README.md)
-4. [ROS Trick Demo](ros_trick/README.md)
-5. [Space Robots Demo](space_robots/README.md)
+3. [Runtime Verification of Curiosity Rover with Ogma](curiosity_rover_ogma/README.md)
+4. [Nav2 Demo](nav2_demo/README.md)
+5. [ROS Trick Demo](ros_trick/README.md)
+6. [Space Robots Demo](space_robots/README.md)
 
