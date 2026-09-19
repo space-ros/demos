@@ -1,0 +1,6 @@
+supported_controllers:
+  wheel_velocity_controller
+  steer_position_controller
+  arm_joint_trajectory_controller
+  mast_joint_trajectory_controller
+  wheel_tree_position_controller
