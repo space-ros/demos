@@ -1,0 +1,56 @@
+{
+	"name": "${localWorkspaceFolderBasename}",
+	"build": {
+		"context": "${localWorkspaceFolder}",
+		"dockerfile": "${localWorkspaceFolder}/Dockerfile.bundle_isaac_sim",
+		"cacheFrom": "openrobotics/spaceros_procgen_envs"
+	},
+	"workspaceFolder": "/home/spaceros-user/spaceros_procgen_envs",
+	"workspaceMount": "type=bind,source=${localWorkspaceFolder},target=/home/spaceros-user/spaceros_procgen_envs",
+	"runArgs": [
+		// Network mode
+		"--network=host",
+		"--ipc=host",
+		// NVIDIA GPU
+		"--gpus=all",
+		// Other GPUs
+		"--device=/dev/dri:/dev/dri",
+		"--group-add=video"
+	],
+	"mounts": [
+		// Local time
+		"type=bind,source=/etc/localtime,target=/etc/localtime,readonly",
+		// Input devices
+		"type=bind,source=/dev/input,target=/dev/input",
+		// GUI (X11)
+		"type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix",
+		"type=bind,source=${localEnv:TMPDIR:/tmp}/xauth_docker_vsc_${localWorkspaceFolderBasename},target=${localEnv:TMPDIR:/tmp}/xauth_docker_vsc_${localWorkspaceFolderBasename}",
+		// Cache (compiled shaders, proceduraly generated assets, etc.)
+		"type=bind,source=${HOME}/.cache/spaceros_demos/isaac_sim/computecache,target=/home/spaceros-user/.nv/ComputeCache",
+		"type=bind,source=${HOME}/.cache/spaceros_demos/isaac_sim/glcache,target=/home/spaceros-user/.cache/nvidia/GLCache",
+		"type=bind,source=${HOME}/.cache/spaceros_demos/isaac_sim/kit,target=/home/spaceros-user/isaac-sim/kit/cache",
+		"type=bind,source=${HOME}/.cache/spaceros_demos/isaac_sim/ov,target=/home/spaceros-user/.cache/ov",
+		"type=bind,source=${HOME}/.cache/spaceros_demos/procgen_envs,target=/home/spaceros-user/.cache/spaceros_procgen_envs"
+	],
+	"containerEnv": {
+		// GUI (X11)
+		"DISPLAY": "${localEnv:DISPLAY}",
+		"XAUTHORITY": "${localEnv:TMPDIR:/tmp}/xauth_docker_vsc_${localWorkspaceFolderBasename}",
+		// NVIDIA GPU
+		"NVIDIA_VISIBLE_DEVICES": "all",
+		"NVIDIA_DRIVER_CAPABILITIES": "all"
+	},
+	"initializeCommand": "XAUTH=\"${localEnv:TMPDIR:/tmp}/xauth_docker_vsc_${localWorkspaceFolderBasename}\"; touch \"${XAUTH}\"; chmod a+r \"${XAUTH}\"; XAUTH_LIST=$(xauth nlist \"${localEnv:DISPLAY}\"); if [ -n \"${XAUTH_LIST}\" ]; then echo \"${XAUTH_LIST}\" | sed -e 's/^..../ffff/' | xauth -f \"${XAUTH}\" nmerge -; fi",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// Python
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-python.python",
+				"ms-python.vscode-pylance"
+				// Note: Add your preferred extensions here
+			]
+		}
+	}
+}

@@ -1,0 +1,42 @@
+[package]
+title = "Space ROS ProcGen Environments | Rendering"
+description = "Experience with rendering support for the Space ROS ProcGen Environments"
+version = "0.1.0"
+keywords = ["simulation", "robotics", "space"]
+
+
+[dependencies]
+## Inheritance
+"spaceros" = {}
+
+## Rendering
+"omni.replicator.core" = {}
+"omni.replicator.isaac" = {}
+
+[settings]
+## Name
+app.name = "Space ROS ProcGen Environments | Rendering"
+app.window.title = "Space ROS ProcGen Environments | Rendering"
+crashreporter.data.experience = "Space ROS ProcGen Environments | Rendering"
+exts."omni.kit.window.modifier.titlebar".titleFormatString = "Space ROS ProcGen Environments | Rendering"
+
+## Rendering
+rtx.raytracing.cached.enabled = false
+rtx.raytracing.lightcache.spatialCache.enabled = false
+# Note: Increase this parameter to support scenes with more camera sensors
+rtx.descriptorSets = 30000
+# Note: Sampled lighting works better for static scenes
+rtx.directLighting.sampledLighting.enabled = false
+
+## Extensions
+app.exts.folders = [
+    "${app}",
+    "${exe-path}/exts",
+    "${exe-path}/extscore",
+    "${exe-path}/../exts",
+    "${exe-path}/../extscache",
+    "${exe-path}/../extsPhysics",
+    "${exe-path}/../isaacsim/exts",
+    "${exe-path}/../isaacsim/extscache",
+    "${exe-path}/../isaacsim/extsPhysics",
+]
