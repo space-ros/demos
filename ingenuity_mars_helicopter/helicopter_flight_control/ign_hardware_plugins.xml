@@ -1,0 +1,11 @@
+<library path="HelicopterControl">
+  <class
+    name="helicopter_flight_control"
+    type="helicopter_flight_control"
+    base_class_type="System">
+    <description>
+          Helicopter control system plugin for Ignition Gazebo.
+
+    </description>
+  </class>
+</library>
