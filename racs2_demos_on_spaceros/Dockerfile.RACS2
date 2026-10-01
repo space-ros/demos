@@ -1,6 +1,6 @@
 FROM osrf/space-ros:jazzy-2026.07.0
 
-ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp 
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 ENV ROS_DISTRO=jazzy
 ENV HOME=/home/spaceros-user
 ENV RACS2_DEMO_DIR=${HOME}/racs2_ws

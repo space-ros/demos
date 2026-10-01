@@ -42,7 +42,7 @@ class OdomTFBroadcaster(Node):
         tf.transform.translation.y = msg.pose.pose.position.y
         tf.transform.translation.z = msg.pose.pose.position.z
 
-        # get rotation from the message pose 
+        # get rotation from the message pose
         tf.transform.rotation.x = msg.pose.pose.orientation.x
         tf.transform.rotation.y = msg.pose.pose.orientation.y
         tf.transform.rotation.z = msg.pose.pose.orientation.z

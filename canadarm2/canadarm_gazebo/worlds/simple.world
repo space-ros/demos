@@ -5,10 +5,10 @@
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.0 0.0 0.0 1</background>
       <grid>false</grid>
-    </scene>   
+    </scene>
 
     <gui fullscreen="0">
- 
+
       <!-- 3D scene -->
       <plugin filename="MinimalScene" name="3D View">
         <gz-gui>
@@ -16,7 +16,7 @@
           <property type="bool" key="showTitleBar">true</property>
           <property type="string" key="state">docked</property>
         </gz-gui>
- 
+
         <engine>ogre2</engine>
         <scene>scene</scene>
         <camera_pose>-10.0 -12 8.0 0 0.5 0.3</camera_pose>
@@ -39,7 +39,7 @@
           <property key="showTitleBar" type="bool">false</property>
         </gz-gui>
       </plugin>
- 
+
     </gui>
 
     <physics name='default_physics' default='1' type='ignored'>
@@ -61,7 +61,7 @@
     <plugin
       filename="gz-sim-scene-broadcaster-system"
       name="gz::sim::systems::SceneBroadcaster">
-    </plugin> 
+    </plugin>
 
     <plugin
       filename="gz-sim-sensors-system"
@@ -149,6 +149,6 @@
     </model>
 
   </world>
-   
+
 </sdf>
 

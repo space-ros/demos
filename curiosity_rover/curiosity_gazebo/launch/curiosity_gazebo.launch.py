@@ -33,14 +33,14 @@ def generate_launch_description():
     curiosity_gazebo_path = get_package_share_directory("curiosity_gazebo")
     curiosity_rover_models_path = get_package_share_directory("curiosity_description")
 
-    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH', 
+    env_gz_plugin = SetEnvironmentVariable('GZ_SIM_SYSTEM_PLUGIN_PATH',
         os.pathsep.join(
             [
                 os.environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
                 os.environ.get("LD_LIBRARY_PATH", default="")
             ]
     ))
-    env_gz_resource = SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH", 
+    env_gz_resource = SetEnvironmentVariable("GZ_SIM_RESOURCE_PATH",
         os.pathsep.join(
             [
                 os.environ.get("GZ_SIM_RESOURCE_PATH", default=""),
@@ -75,9 +75,9 @@ def generate_launch_description():
                ('gz_args', [
                    mars_world_model,
                    ' -r',
-                   ' -v 4' 
+                   ' -v 4'
                ])
-            ]   
+            ]
     )
 
     robot_state_publisher = Node(

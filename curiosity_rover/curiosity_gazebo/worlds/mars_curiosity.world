@@ -1,12 +1,12 @@
 <sdf version="1.8">
   <world name="default">
-  
+
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
       <background>0.9 0.753 0.66 1</background>
       <grid>false</grid>
-    </scene>  
-  
+    </scene>
+
     <gui fullscreen="0">
 
       <plugin filename="MinimalScene" name="3D View">
@@ -15,7 +15,7 @@
           <property type="bool" key="showTitleBar">false</property>
           <property type="string" key="state">docked</property>
         </gz-gui>
- 
+
         <engine>ogre2</engine>
         <scene>scene</scene>
         <camera_pose>-5.0 0.0 -6.0 0.0 0.0 0.0</camera_pose>
@@ -38,13 +38,13 @@
           <property key="showTitleBar" type="bool">false</property>
         </gz-gui>
       </plugin>
- 
+
       <plugin filename="ImageDisplay" name="Image Display">
         <gz-gui>
           <property key="state" type="string">floating</property>
         </gz-gui>
-      </plugin> 
-      
+      </plugin>
+
     </gui>
 
     <plugin
@@ -60,7 +60,7 @@
     <plugin
       filename="gz-sim-scene-broadcaster-system"
       name="gz::sim::systems::SceneBroadcaster">
-    </plugin> 
+    </plugin>
 
 
     <light type="directional" name="sun">
