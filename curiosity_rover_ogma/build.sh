@@ -7,14 +7,8 @@ echo ""
 echo "##### Building Space ROS Demo Docker Image #####"
 echo ""
 
-# Build dependency
-
-ORG=nasa
-IMAGE=ogma
-TAG=latest
-
 # Run Ogma on this project and collect the output
-docker build -t $ORG/$IMAGE:$TAG --output type=local,dest=./monitor .
+docker build --output type=local,dest=./monitor .
 
 # Build dependency used for this demo
 if ! docker image inspect "osrf/space-ros:curiosity_demo" >/dev/null 2>&1; then
