@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Exit script with failure if build fails
+set -eo pipefail
+
 echo ""
 echo "##### Building Space ROS Demo Docker Image #####"
 echo ""
@@ -9,9 +12,6 @@ echo ""
 ORG=nasa
 IMAGE=ogma
 TAG=latest
-
-# Exit script with failure if build fails
-set -eo pipefail
 
 # Run Ogma on this project and collect the output
 docker build -t $ORG/$IMAGE:$TAG --output type=local,dest=./monitor .
