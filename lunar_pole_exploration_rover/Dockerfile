@@ -19,12 +19,13 @@
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
 
-FROM osrf/space-ros:humble-2024.10.0
+FROM osrf/space-ros:jazzy-2026.07.0
 
 # Define arguments used in the metadata definition
 ARG VCS_REF
 ARG VERSION="preview"
-ARG ROSDISTRO="humble"
+ARG ROSDISTRO="jazzy"
+ARG USERNAME="spaceros-user"
 
 # Specify the docker image metadata
 LABEL org.label-schema.schema-version="1.0"
@@ -72,93 +73,41 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   python3-vcstool \
   wget
 
-# Install some pip packages needed for testing
-RUN python3 -m pip install -U \
-  argcomplete \
-  flake8-blind-except \
-  flake8-builtins \
-  flake8-class-newline \
-  flake8-comprehensions \
-  flake8-deprecated \
-  flake8-docstrings \
-  flake8-import-order \
-  flake8-quotes \
-  pytest-repeat \
-  pytest-rerunfailures \
-  pytest
-
 # Define a few key variables
-ENV DEMO_DIR=${HOME_DIR}/demos_ws
-ENV IGNITION_VERSION=fortress
-ENV GZ_VERSION=fortress
-
-# Clone all space-ros sources. We use lfs specifically to pull resources
-# from the simulation repo.
-RUN mkdir ${SPACEROS_DIR}/src \
-  && vcs import ${SPACEROS_DIR}/src < ${SPACEROS_DIR}/exact.repos \
-  && vcs custom ${SPACEROS_DIR}/src --args lfs pull
+ENV DEMO_DIR=${HOME}/demos_ws
+ENV GZ_VERSION=harmonic
+# Space ROS is built with CycloneDDS only; the Jazzy binaries would default to Fast DDS
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
 # Define key locations
 RUN mkdir -p ${DEMO_DIR}/src
 WORKDIR ${DEMO_DIR}
 
 COPY . src/lunar_pole_exploration_rover
-RUN rosdep update
+RUN sudo rosdep init && rosdep update
 
-# Generate repos file for dependencies, excluding packages from Space ROS core.
-COPY --chown=${USERNAME}:${USERNAME} demo-pkgs.txt /tmp/
-COPY --chown=${USERNAME}:${USERNAME} excluded-pkgs.txt /tmp/
-RUN rosinstall_generator \
-  --upstream \
-  --rosdistro ${ROSDISTRO} \
-  --deps \
-  --exclude-path ${SPACEROS_DIR}/src \
-  --exclude $(cat /tmp/excluded-pkgs.txt) -- \
-  -- $(cat /tmp/demo-pkgs.txt) \
-  > /tmp/demo_generated_pkgs.repos
-
-RUN vcs import src < /tmp/demo_generated_pkgs.repos \
-  && vcs custom ${SPACEROS_DIR}/src --args lfs pull
-
-# Get the source for the dependencies
+# Get the source for the simulation assets (rover model, terrain, power plugins).
+# We use lfs specifically to pull resources from the simulation repo.
 COPY --chown=${USERNAME}:${USERNAME} demo_manual_pkgs.repos /tmp/
 RUN vcs import src < /tmp/demo_manual_pkgs.repos \
-  && vcs custom ${SPACEROS_DIR}/src --args lfs pull \
-  && /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"'
+  && vcs custom src --args lfs pull
 
-# Drop packages that arrive with the repos above but that this demo never uses.
-# They are not free: vision_msgs_rviz_plugins does find_package(rviz_common), which
-# pulls the whole RViz stack (rviz_ogre_vendor and friends) into the source build,
-# and the upstream demo packages make rosdep apt-install ~200 ros-humble-* debs into
-# /opt/ros/humble, which nothing ever sources. The rqt tools could not run here in
-# any case: rqt_gui is not in the workspace, only as one of those unsourced debs.
-# The list is dependency-closed - ros_gz and ros_ign are metapackages that exec_depend
-# on the demo packages, and gz_ros2_control_tests tests them, so leaving any of those
-# behind just makes rosdep try to apt-install what was removed.
-RUN set -e; for pkg in \
-      vision_msgs/vision_msgs_rviz_plugins \
-      ros_gz/ros_gz \
-      ros_gz/ros_ign \
-      ros_gz/ros_gz_sim_demos \
-      ros_gz/ros_ign_gazebo_demos \
-      gz_ros2_control/gz_ros2_control_demos \
-      gz_ros2_control/ign_ros2_control_demos \
-      gz_ros2_control/gz_ros2_control_tests \
-      ros2_control/rqt_controller_manager \
-      ros2_controllers/rqt_joint_trajectory_controller \
-    ; do touch "src/$pkg/COLCON_IGNORE"; done
-
+# Everything else the demo needs (Gazebo Harmonic, ros_gz, ros2_control and the
+# controllers) comes from the ROS 2 Jazzy binary packages, resolved through rosdep.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   sudo apt-get update -y \
-&& /bin/bash -c 'source "${SPACEROS_DIR}/install/setup.bash"' \
 && rosdep install --from-paths src --ignore-src -r -y --rosdistro ${ROSDISTRO}
 
 ENV MAKEFLAGS="-j1"
 
 # build demo
-RUN /bin/bash -c 'source ${SPACEROS_DIR}/install/setup.bash \
+RUN /bin/bash -c 'source /opt/ros/${ROSDISTRO}/setup.bash \
+  && source ${SPACEROS_DIR}/setup.bash \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --event-handlers desktop_notification- status-'
+
+# Create the render group if it doesn't exist
+RUN sudo groupadd -f render
 
 # Add the user to the render group so that the user can access /dev/dri/renderD128
 RUN sudo usermod -aG render $USERNAME

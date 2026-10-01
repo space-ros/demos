@@ -4,6 +4,8 @@
 
 This package (and associated assets in the simulation repository) provides a Gazebo simulation of a lunar south pole exploration mission inspired by the real NASA VIPER mission.
 
+The demo runs on ROS 2 Jazzy and Gazebo Harmonic.
+
 It includes a realistic environment, the Mons Mouton, where the VIPER rover was planned to land, and a fully controllable rover model.
 
 The key elements of the simulation is the integration of specifically developed Gazebo plugins. A solar panel plugin and associated battery and power consumption plugins aim to simulate the power generation challenge of the lunar south pole.
@@ -297,14 +299,14 @@ The control nodes considers four different types of motion depending on the valu
 ##### Subscribed Topics
 
 * **/cmd_vel** (`geometry_msgs/msg/Twist`) -- Velocity command to the rover
-* **/model/lunar_pole_exploration_rover/sensor/aft_cam_left/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/aft_cam_right/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/nav_cam_left/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/nav_cam_right/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_left_front/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_right_front/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_left_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
-* **/model/lunar_pole_exploration_rover/sensor/haz_cam_right_rear/activate** (`std_msgs/msg/Boolean`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/AftCam_left/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/AftCam_right/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/NavCam_left/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/NavCam_right/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_left_front/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_right_front/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_left_rear/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
+* **/model/lunar_pole_exploration_rover/sensor/HazCam_right_rear/activate** (`std_msgs/msg/Bool`) -- Use to activate/deactivate the sensor and its associated power load
 
 ##### Published Topics
 
@@ -313,8 +315,9 @@ The control nodes considers four different types of motion depending on the valu
 * **/model/lunar_pole_exploration_rover/rear_solar_panel/solar_panel_output** (`std_msgs/msg/Float32`) -- Publishes the current output of the rear solar panel in watt
 * **/model/lunar_pole_exploration_rover/odometry** (`nav_msgs/msg/Odometry`) -- Robot odometry
 * **/model/lunar_pole_exploration_rover/odometry_with_covariance**(`nav_msgs/msg/OdometryWithCovariance`) -- Robot odometry
-* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state** (`sensor_msgs/msg/BatterySate`) -- Publishes the current state of the battery `rechargeable_battery´
 * **/model/lunar_pole_exploration_rover/pose**(`geometry_msgs/msg/Pose`) -- Robot estimated pose from odometry
+* **/tf** (`tf2_msgs/msg/TFMessage`) -- Transform between the odometry and the `base_footprint`, derived by the `odom_tf_publisher` node; the rest of the rover's frame tree comes from `robot_state_publisher`
+* **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/state** (`sensor_msgs/msg/BatteryState`) -- Publishes the current state of the battery `rechargeable_battery`
 * **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_supply**(`std_msgs/msg/Float32`) -- Total power supply from external power source to the battery `rechargeable_battery`
 * **/model/lunar_pole_exploration_rover/battery/rechargeable_battery/total_power_consumption**(`std_msgs/msg/Float32`) -- Total power comsumed from the battery `rechargeable_battery`
 * **aft_cam_left/camera_info** (`sensor_msgs/msg/CameraInfo`) -- AftCam left camera info
