@@ -63,7 +63,7 @@ def spawn_robot(context: LaunchContext, namespace: LaunchConfiguration):
         name="robot_state_publisher",
         output="both",
         parameters=[
-            {'use_sim_time': LaunchConfiguration('use_sim_time')}, 
+            {'use_sim_time': LaunchConfiguration('use_sim_time')},
             {"robot_description": robot_desc},
         ]
     )
@@ -102,7 +102,7 @@ def spawn_robot(context: LaunchContext, namespace: LaunchConfiguration):
         ],
         output="screen",
     )
-    
+
 
     # Launch key_teleop.launch.xml from leo_teleop package
     key_teleop_launch =  IncludeLaunchDescription(
@@ -134,13 +134,13 @@ def generate_launch_description():
         default_value='0',
         description="The x_pose of the rover's starting position"
     )
-    
+
     y_arg = DeclareLaunchArgument(
         'y_pose',
         default_value='0',
         description="The y_pose of the rover's starting position"
     )
-    
+
     z_arg = DeclareLaunchArgument(
         'z_pose',
         default_value='560',
@@ -153,7 +153,7 @@ def generate_launch_description():
         [ x_arg,
           y_arg,
           z_arg,
-          name_argument, 
+          name_argument,
           OpaqueFunction(function=spawn_robot, args=[namespace])
         ]
     )

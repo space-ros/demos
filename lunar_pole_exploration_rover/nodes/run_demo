@@ -48,7 +48,7 @@ class RunDemo(Node):
             Empty,
             'rotate_on_place',
             self.rotate_on_place_callback)
-        
+
         self.move_sideway_and_turn_left_srv = self.create_service(
             Empty,
             'move_sideway_and_turn_left',
@@ -125,7 +125,7 @@ class RunDemo(Node):
         self.curr_action = action
         self.stopped = False
         return response
-    
+
     def move_sideway_and_turn_left_callback(self, request, response):
         self.get_logger().info("Moving sideway and turning left ")
         action = Twist()

@@ -133,7 +133,7 @@ class MoveWheel(Node):
         # Robot turning radius according to Ideal Ackerman Steering
         steering_radius = lin_vel / angular_vel
 
-        # Center of rotation (rotated by previous robot side motion 
+        # Center of rotation (rotated by previous robot side motion
         # direction angle)
         xR = - steering_radius * math.sin(robot_side_angle)
         yR = steering_radius * math.cos(robot_side_angle)

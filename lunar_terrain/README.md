@@ -10,7 +10,7 @@ The Space ROS Lunar Terrain Demo docker image uses the spaceros docker image (*o
 The Dockerfile installs all of the prerequisite system dependencies along with the demo source code, then builds the Space ROS Lunar Sim Demo.
 
 This demo includes a Gazebo simulation of the lunar environment (specfically around the Shackleton crater near the south pole). It uses
-Digital Elevation Models (DEMs) from the Lunar Orbiter Laser Altimeter (LOLA) to accurately simulate the lunar surface in a specific region. It also contains a dynamic model of the Sun that moves according to Ephemeris data.  
+Digital Elevation Models (DEMs) from the Lunar Orbiter Laser Altimeter (LOLA) to accurately simulate the lunar surface in a specific region. It also contains a dynamic model of the Sun that moves according to Ephemeris data.
 
 ## Building the Demo Docker
 
@@ -52,7 +52,7 @@ This will launch the gazebo lunar world, spawn the rover and start teleop. This 
 
 
 ## lunar_sun_gz_plugin
-This package contains a gazebo plugin to move an actor and create a light source at the location of the actor. 
+This package contains a gazebo plugin to move an actor and create a light source at the location of the actor.
 The plugin must be added to an actor named `animated_sun`, which can be done as follows:
 ```
 <actor name="animated_sun">
