@@ -1,0 +1,9 @@
+[book]
+title = "Space ROS ProcGen Environments"
+description = "Procedurally generated environments for Space ROS"
+authors = ["Andrej Orsula"]
+language = "en"
+
+[output.html]
+site-url = "/spaceros_demos/"
+git-repository-url = "https://github.com/AndrejOrsula/spaceros_demos/tree/procgen_envs/spaceros_procgen_envs"
