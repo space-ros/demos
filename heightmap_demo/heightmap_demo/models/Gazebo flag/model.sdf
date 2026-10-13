@@ -1,0 +1,226 @@
+<?xml version='1.0' ?>
+<sdf version="1.9">
+  <model name="gazebo_flag">
+    <static>true</static>
+    <link name="pole">
+      <visual name="pole_visual">
+        <pose>0 0 2.286.0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0381</radius>
+            <length>4.572</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.8 0.8 0.8</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <metalness>0.4</metalness>
+              <roughness>0.2</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <visual name="top_visual">
+        <pose>0 0 4.572 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <diffuse>0.7 0.4 0.0</diffuse>
+          <specular>0.7 0.7 0.7</specular>
+          <pbr>
+            <metal>
+              <metalness>0.4</metalness>
+              <roughness>0.2</roughness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="pole_collision">
+        <pose>0 0 2.286.0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.0381</radius>
+            <length>4.572</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name="top_collision">
+        <pose>0 0 4.572 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+    </link>
+    <link name="link">
+      <pose>0.0 0.76 4.055 1.570796 0 1.570796</pose>
+      <visual name="visual_side1">
+        <geometry>
+          <mesh>
+            <uri>meshes/flag1cr.dae</uri>
+          </mesh>
+        </geometry>
+        <plugin filename="gz-sim-shader-param-system" name="gz::sim::systems::ShaderParam">
+          <shader language="glsl">
+            <vertex>materials/programs/flag_vs_330.glsl</vertex>
+            <fragment>materials/programs/flag_fs_330.glsl</fragment>
+          </shader>
+          <shader language="metal">
+            <vertex>materials/programs/flag_vs.metal</vertex>
+            <fragment>materials/programs/flag_fs.metal</fragment>
+          </shader>
+          <param>
+            <shader>vertex</shader>
+            <name>worldviewproj_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>worldview_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>inverse_transpose_world_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>t</name>
+            <value>TIME</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>amplitude</name>
+            <type>float</type>
+            <value>0.2</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>speed</name>
+            <type>float</type>
+            <value>0.5</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>frequency</name>
+            <type>float</type>
+            <value>5.0</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>flip</name>
+            <value>0</value>
+            <type>int</type>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>size</name>
+            <type>float_array</type>
+            <value>1.52 0.914</value>
+          </param>
+          <param>
+            <shader>fragment</shader>
+            <!-- shine light at flag -->
+            <name>light_dir</name>
+            <type>float_array</type>
+            <value>1 0 0</value>
+          </param>
+          <param>
+            <shader>fragment</shader>
+            <name>texMap</name>
+            <type>texture</type>
+            <value>materials/textures/gazebo.png</value>
+          </param>
+        </plugin>
+      </visual>
+      <visual name="visual_side2">
+        <geometry>
+          <mesh>
+            <uri>meshes/flag2cr.dae</uri>
+          </mesh>
+        </geometry>
+        <plugin filename="gz-sim-shader-param-system" name="gz::sim::systems::ShaderParam">
+          <shader language="glsl">
+            <vertex>materials/programs/flag_vs_330.glsl</vertex>
+            <fragment>materials/programs/flag_fs_330.glsl</fragment>
+          </shader>
+          <shader language="metal">
+            <vertex>materials/programs/flag_vs.metal</vertex>
+            <fragment>materials/programs/flag_fs.metal</fragment>
+          </shader>
+          <param>
+            <shader>vertex</shader>
+            <name>worldviewproj_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>worldview_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>inverse_transpose_world_matrix</name>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>t</name>
+            <value>TIME</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>amplitude</name>
+            <type>float</type>
+            <value>0.2</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>speed</name>
+            <type>float</type>
+            <value>0.5</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>frequency</name>
+            <type>float</type>
+            <value>5.0</value>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>flip</name>
+            <value>1</value>
+            <type>int</type>
+          </param>
+          <param>
+            <shader>vertex</shader>
+            <name>size</name>
+            <type>float_array</type>
+            <value>1.52 0.914</value>
+          </param>
+          <param>
+            <shader>fragment</shader>
+            <name>light_dir</name>
+            <type>float_array</type>
+            <!-- shine light at flag -->
+            <value>1 0 0.1</value>
+          </param>
+          <param>
+            <shader>fragment</shader>
+            <name>texMap</name>
+            <type>texture</type>
+            <value>materials/textures/gazebo.png</value>
+          </param>
+        </plugin>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>1.52 0.914 0.05</size>
+          </box>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

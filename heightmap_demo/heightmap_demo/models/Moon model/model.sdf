@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <model name="moon_model">
+    <static>true</static>
+    <pose>0 0 -5 0 0 0</pose>
+
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <heightmap>
+            <uri>materials/textures/final.png</uri>
+            <size>8192 8192 391.196</size>
+            <pos>0 0 -70</pos>
+          </heightmap>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <heightmap>
+            <use_terrain_paging>false</use_terrain_paging>
+
+            <texture>
+              <diffuse>materials/textures/TerrainNew_Albedo.jpg</diffuse>
+              <normal>materials/textures/TerrainNew_Normal.jpg</normal>
+              <size>120</size>
+            </texture>
+            <!-- <blend>
+              <min_height>6</min_height>
+              <fade_dist>6</fade_dist>
+            </blend> -->
+
+            <uri>materials/textures/final.png</uri>
+
+            <size>4096 4096 391.196</size>
+
+            <!-- <size>4096 4096 700</size> -->
+
+            <!-- <size>8192 8192 391.196</size> -->
+            <pos>0 0 -70</pos>
+            <!-- <pos>-3005.41 86.0 -7869.73</pos> -->
+          </heightmap>
+        </geometry>
+      </visual>
+
+      
+    </link>
+
+    <link name="stars">
+      <pose>0 0 0 0 0 0</pose>
+      <visual name="stars">
+        <geometry>
+          <mesh>
+            <uri>meshes/Stars.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <emissive>1 1 1 1</emissive>
+        </material>
+      </visual>
+    </link>
+    <link name="sun">
+      <pose>0 0 0 0 0 3.14</pose>
+      <visual name="sun">
+        <geometry>
+          <mesh>
+            <uri>meshes/Sun.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/SunOpaque.png</albedo_map>
+              <emissive_map>materials/textures/SunOpaque_Emissive.png</emissive_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+    <link name="earth">
+      <pose>0 0 10000 0 0 0</pose>
+      <visual name="earth">
+        <geometry>
+          <mesh>
+            <uri>meshes/Earth.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/Earth.jpg</albedo_map>
+              <emissive_map>materials/textures/Earth.jpg</emissive_map>
+              <metalness>0</metalness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+
+  </model>
+</sdf>
