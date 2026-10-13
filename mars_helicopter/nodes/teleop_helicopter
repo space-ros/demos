@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+
+import rclpy
+from rclpy.node import Node
+from builtin_interfaces.msg import Duration
+
+from std_msgs.msg import String, Float64
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from std_srvs.srv import Empty
+
+import sys, select, os
+if os.name == 'nt':
+  import msvcrt, time
+else:
+  import tty, termios
+
+import threading
+import time
+import copy
+import shutil
+
+from utils.key_capture import KeyCapture
+from utils.display_cmd import CommandDisplay
+
+ROTOR_OPERATIONAL_SPEED = 270.0
+DELTA_INCREASE_COLL = 0.05
+DELTA_DECREASE_COLL = -0.01
+DELTA_CYCLIC = 0.01
+DELTA_YAW = 0.1
+
+
+class CommandLimits():
+    def __init__(self, lim_thrust_coll, lim_lat_cycl, lim_long_cycl, lim_yaw):
+        self.lim_thrust_coll = lim_thrust_coll
+        self.lim_lat_cycl = lim_lat_cycl
+        self.lim_long_cycl = lim_long_cycl
+
+class HeliCommands():
+    def __init__(self):
+        self.cmd_speed = 0.0
+        self.cmd_thrust_coll = 0.0
+        self.cmd_yaw_coll = 0.0
+        self.cmd_lat_cycl = 0.0
+        self.cmd_long_cycl = 0.0
+
+    def print_status(self):
+        """Prints the current status of all command attributes."""
+        print(f"Speed Command: {self.cmd_speed:.2f}")
+        print(f"Thrust Collective Command: {self.cmd_thrust_coll:.2f}")
+        print(f"Yaw Collective Command: {self.cmd_yaw_coll:.2f}")
+        print(f"Lateral Cyclic Command: {self.cmd_lat_cycl:.2f}")
+        print(f"Longitudinal Cyclic Command: {self.cmd_long_cycl:.2f}")
+
+def clamp(n, smallest, largest): return max(smallest, min(n, largest))
+
+def limit_add(val, delta, xinf, xsup):
+    return clamp(val + delta, xinf, xsup)
+
+class TeleopHelicopter(Node):
+
+    def __init__(self, limits: CommandLimits):
+        super().__init__('teleop_helicopter_node')
+        self.ang_vel_T_pub_ = self.create_publisher(Float64, '/rotor_top_revolute/angular_velocity', 10)
+        self.ang_vel_B_pub_ = self.create_publisher(Float64, '/rotor_bottom_revolute/angular_velocity', 10)
+        self.coll_T_pub_ = self.create_publisher(Float64, '/rotor_top_revolute/collective', 10)
+        self.coll_B_pub_ = self.create_publisher(Float64, '/rotor_bottom_revolute/collective', 10)
+        self.lon_cyc_T_pub_ = self.create_publisher(Float64, '/rotor_top_revolute/longitudinal_cyclic', 10)
+        self.lon_cyc_B_pub_ = self.create_publisher(Float64, '/rotor_bottom_revolute/longitudinal_cyclic', 10)
+        self.lat_cyc_T_pub_ = self.create_publisher(Float64, '/rotor_top_revolute/lateral_cyclic', 10)
+        self.lat_cyc_B_pub_ = self.create_publisher(Float64, '/rotor_bottom_revolute/lateral_cyclic', 10)
+        self.commands = HeliCommands()
+        self.lock = threading.Lock() # to use when accessing commands
+        self.lims = limits
+
+    def parse_commands(self, keys):
+        with self.lock:
+            coll = self.commands.cmd_thrust_coll
+            long_cycl = self.commands.cmd_long_cycl
+            lat_cycl = self.commands.cmd_lat_cycl
+            coll_lims = self.lims.lim_thrust_coll
+            long_cycl_lims = self.lims.lim_long_cycl
+            lat_cycl_lims = self.lims.lim_lat_cycl
+            if (' ' in keys):
+                self.commands.cmd_thrust_coll = limit_add(coll, DELTA_INCREASE_COLL, coll_lims[0], coll_lims[1])
+            else:
+                self.commands.cmd_thrust_coll = limit_add(coll, DELTA_DECREASE_COLL, coll_lims[0], coll_lims[1])
+
+
+            if ('w' in keys and 's' in keys):
+                pass
+            elif ('w' in keys):
+                if (long_cycl > 0):
+                    self.commands.cmd_long_cycl = limit_add(long_cycl, DELTA_CYCLIC, long_cycl_lims[0], long_cycl_lims[1])
+                else:
+                     self.commands.cmd_long_cycl = DELTA_CYCLIC
+            elif ('s' in keys):
+                if (long_cycl < 0):
+                    self.commands.cmd_long_cycl = limit_add(long_cycl, -DELTA_CYCLIC, long_cycl_lims[0], long_cycl_lims[1])
+                else:
+                     self.commands.cmd_long_cycl = -DELTA_CYCLIC
+            else:
+                self.commands.cmd_long_cycl = 0.0
+
+            if ('d' in keys and 'a' in keys):
+                pass
+            elif ('d' in keys):
+                if (lat_cycl > 0):
+                    self.commands.cmd_lat_cycl = limit_add(lat_cycl, DELTA_CYCLIC, lat_cycl_lims[0], lat_cycl_lims[1])
+                else:
+                     self.commands.cmd_lat_cycl = DELTA_CYCLIC
+            elif ('a' in keys):
+                if (lat_cycl < 0):
+                    self.commands.cmd_lat_cycl = limit_add(lat_cycl, -DELTA_CYCLIC, lat_cycl_lims[0], lat_cycl_lims[1])
+                else:
+                     self.commands.cmd_lat_cycl = -DELTA_CYCLIC
+            else:
+                self.commands.cmd_lat_cycl = 0.0
+
+            if ('\r' in keys):
+                if (self.commands.cmd_speed > 0):
+                    self.commands.cmd_speed = 0.0
+                else:
+                    self.commands.cmd_speed = ROTOR_OPERATIONAL_SPEED
+
+            if ('h' in keys and 'l' in keys):
+                pass
+            elif ('l' in keys):
+                self.commands.cmd_yaw_coll = DELTA_YAW
+            elif ('h' in keys):
+                self.commands.cmd_yaw_coll = -DELTA_YAW
+            else:
+                self.commands.cmd_yaw_coll = 0.0
+
+            commands = copy.copy(self.commands)
+
+        return commands
+
+    def get_commands(self):
+        with self.lock:
+            commands = copy.copy(self.commands)  # Make a copy to safely access
+        return commands
+    
+    def publish_commands(self):
+        # angular velocity
+        msg = Float64()
+        msg.data = self.commands.cmd_speed
+        self.ang_vel_T_pub_.publish(msg)
+        self.ang_vel_B_pub_.publish(msg)
+
+        # collective pitch (thrust and yaw)
+        top_coll = self.commands.cmd_thrust_coll + self.commands.cmd_yaw_coll
+        bottom_coll = self.commands.cmd_thrust_coll - self.commands.cmd_yaw_coll
+        msg.data = top_coll
+        self.coll_T_pub_.publish(msg)
+        msg.data = bottom_coll
+        self.coll_B_pub_.publish(msg)
+
+        # longitudinal pitch
+        long_cycl = self.commands.cmd_long_cycl
+        msg.data = long_cycl
+        self.lon_cyc_T_pub_.publish(msg)
+        msg.data = -long_cycl
+        self.lon_cyc_B_pub_.publish(msg)
+
+        # lateral pitch
+        lat_cycl = self.commands.cmd_lat_cycl
+        msg.data = lat_cycl
+        self.lat_cyc_T_pub_.publish(msg)
+        msg.data = -lat_cycl
+        self.lat_cyc_B_pub_.publish(msg)
+
+
+def clear_screen():
+    sys.stdout.write('\033[H\033[J')  # ANSI escape code to clear the terminal screen
+    sys.stdout.flush()
+
+def print_command_descriptions():
+    # Get terminal size
+    terminal_size = shutil.get_terminal_size()
+    terminal_width = terminal_size.columns
+
+    # Define the width for the descriptions
+    description_width = terminal_width - 40  # Adjust based on grid width
+
+    # Command descriptions
+    command_descriptions = [
+        "Commands: (Simultaneous commands not yet supported)",
+        "Longitudinal Cyclic: W (Pitch down), S (Pitch up)",
+        "Lateral Cyclic: A (Roll left), D (Roll right)",
+        "Differential Collective: H (Yaw Left), L (Yaw Right)",
+        "Thrust: SPACEBAR (Increase)",
+        "Switch Rotors On/Off: ENTER (Toggle)"
+    ]
+
+    # Print command descriptions
+    for p in command_descriptions:
+        formatted_line = p.ljust(description_width)
+        print(formatted_line)
+
+def main(args=None):
+
+    rclpy.init(args=args)
+    limits = CommandLimits((0.0, 0.4),(-0.05, 0.05),(-0.05, 0.05),(-0.1,0.1))
+    teleop_node = TeleopHelicopter(limits)
+    grid_size = 50
+    cmd_display = CommandDisplay(limits, grid_size)
+    print("Teleop node online")
+    print_command_descriptions()
+    input("Press Enter to continue...")
+
+    key_capture = KeyCapture()
+    key_capture.start_listening() # start a thread for key detection
+
+    #command_display = CommandDisplay()
+
+    # main loop
+    try:
+        while True:
+            keys = key_capture.get_pressed_keys()
+            if '\x03' in keys:
+                print(f"Teleoperation node is closing.")
+                break
+
+            commands = teleop_node.parse_commands(keys)
+            #clear_screen()
+            cmd_display.draw_commands(commands)
+
+            teleop_node.publish_commands()
+
+
+            time.sleep(0.1)  # Check for key presses every 100 ms
+    except KeyboardInterrupt:
+        print("Stopping key capture...")
+    finally:
+        key_capture.stop_listening()
+
+
+    # Cleanup and shutdown
+    teleop_node.destroy_node()
+    rclpy.shutdown()
+    #thread.join()  # Wait for the thread to finish
+
+
+if __name__ == '__main__':
+    main()
