@@ -42,6 +42,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV NAVIGATION2_WS=${HOME}/nav2_ws
 ENV NAV2_DEMO_WS=${HOME}/nav2_demo_ws
 
+# Install rviz2 to send goals to Nav2.
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    sudo apt update && \
+    sudo -E apt install -y ros-${ROS_DISTRO}-rviz2
+
 # Build only what RViz needs beyond the Space ROS Nav2 image:
 # - nav2_rviz_plugins (excluded from osrf/space-ros-nav2 to avoid RViz/Gazebo bloat)
 # - nav2_demo_rviz (launch + default RViz config; replaces apt nav2_bringup)
