@@ -1,0 +1,34 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+module-name = "spaceros_procgen_envs._rs"
+manifest-path = "crates/spaceros_procgen_envs_py/Cargo.toml"
+
+[tool.pytest.ini_options]
+env = ["SPACEROS_DEMO_SKIP_REGISTRATION=true"]
+
+[project]
+name = "spaceros_procgen_envs"
+description = "Procedurally generated environments for Space ROS"
+authors = [{ name = "Andrej Orsula", email = "orsula.andrej@gmail.com" }]
+maintainers = [{ name = "Andrej Orsula", email = "orsula.andrej@gmail.com" }]
+urls = { Repository = "https://github.com/AndrejOrsula/spaceros_demos/tree/procgen_envs/spaceros_procgen_envs" }
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Rust",
+  "License :: OSI Approved :: Apache Software License",
+  "Framework :: Robot Framework",
+]
+keywords = ["simulation", "robotics", "space"]
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = ["platformdirs>=4.2,<5", "pydantic>=2.7,<3"]
+
+[project.optional-dependencies]
+all = ["spaceros_procgen_envs[tests]"]
+tests = ["pytest>=8.2,<9", "pytest-env>=1.1,<2"]
