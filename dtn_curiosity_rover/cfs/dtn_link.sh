@@ -1,5 +1,5 @@
 #!/bin/bash
-# Control this node's side of the DTN link (the interface on the 172.28.10.0/24 network).
+# Control this node's side of the DTN link (the interface holding DTN_NODE_ADDR).
 #
 #   dtn_link.sh delay <ms>   one-way light-time delay, link up
 #   dtn_link.sh down         link outage: drop everything this node sends
@@ -11,11 +11,12 @@
 # the first bundle sent on the link.
 set -euo pipefail
 
-IFACE=$(ip -o -4 addr show | awk '$4 ~ /^172\.28\.10\./ {print $2; exit}')
+ADDR=${DTN_NODE_ADDR:?DTN_NODE_ADDR is not set}
+IFACE=$(ip -o -4 addr show | awk -v a="${ADDR}" 'index($4, a "/") == 1 {print $2; exit}')
 STATE=/tmp/dtn_link_delay_ms
 
 if [ -z "${IFACE}" ]; then
-  echo "dtn_link: no interface on the DTN link network" >&2
+  echo "dtn_link: no interface with address ${ADDR}" >&2
   exit 1
 fi
 

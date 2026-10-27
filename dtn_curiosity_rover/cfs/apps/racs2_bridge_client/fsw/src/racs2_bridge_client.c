@@ -171,8 +171,8 @@ static void RACS2_BRIDGE_QueueOutbound(const racs2_user_msg_t *Msg)
     Frame->Len = RACS2_BRIDGE_HEADER_LNGTH + BodyLen;
     PendingCount++;
 
-    OS_printf("[rover %s] received %s command from the ground, forwarding to ROS 2%s\n", Stamp, Topic,
-              Connected ? "" : " (bridge not connected yet, queued)");
+    OS_printf("[rover %s] received %s command from the ground, body #%08x, forwarding to ROS 2%s\n", Stamp, Topic,
+              (unsigned int)racs2_body_hash(Msg->body_data, BodyLen), Connected ? "" : " (bridge not connected yet, queued)");
 
     if (WebSocket != NULL)
     {

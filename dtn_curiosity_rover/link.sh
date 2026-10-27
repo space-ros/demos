@@ -6,6 +6,7 @@
 #   ./link.sh up           end the outage
 #   ./link.sh status
 set -euo pipefail
+export MSYS_NO_PATHCONV=1 # Git Bash on Windows: keep container paths as they are
 for node in dtn_ground dtn_rover_cfs; do
   echo -n "${node}: "
   docker exec "${node}" /cfs/dtn_link.sh "$@"
