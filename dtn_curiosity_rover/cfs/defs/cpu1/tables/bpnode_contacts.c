@@ -19,7 +19,7 @@
  */
 
 /*
- * Modified for the space-ros/demos dtn_curiosity_rover demo: contact 0 routes all of ipn:200 to 172.28.10.20 (the other node on the demo's DTN link), with a 30 s custody retransmit timeout and 1 s custody signal trigger.
+ * Modified for the space-ros/demos dtn_curiosity_rover demo: contact 0 routes all of ipn:200 to the rover node (DTN_ROVER_ADDR, filled in at build time), with a 30 s custody retransmit timeout and 1 s custody signal trigger.
  */
 
 /*
@@ -59,7 +59,7 @@ BPLib_CLA_ContactsTable_t ContactsTable = {
                 },
                 .CLAType             = BPLib_UDP_CLA,
                 .ClaInAddr           = "0.0.0.0",
-                .ClaOutAddr          = "172.28.10.20",
+                .ClaOutAddr          = "@DTN_ROVER_ADDR@",
                 .ClaInPort           = 4501,
                 .ClaOutPort          = 4551,
                 .RetransmitTimeout   = 30000,    /* 30 secs, must exceed the round-trip light time */

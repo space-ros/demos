@@ -114,8 +114,9 @@ static void RUN_APP_SendTwist(const char *Name)
     RUN_APP_Timestamp(Stamp, sizeof(Stamp));
     if (Status == CFE_SUCCESS)
     {
-        OS_printf("[ground %s] sent '%s' (linear.x=%.1f angular.z=%.1f) as MsgID 0x%04X\n", Stamp, Name, LinearX,
-                  AngularZ, RACS2_BRIDGE_MID);
+        OS_printf("[ground %s] sent '%s' (linear.x=%.1f angular.z=%.1f) as MsgID 0x%04X, body #%08x\n", Stamp, Name,
+                  LinearX, AngularZ, RACS2_BRIDGE_MID,
+                  (unsigned int)racs2_body_hash(RUN_APP_Msg.body_data, RUN_APP_Msg.body_data_length));
     }
     else
     {

@@ -2,20 +2,20 @@
 #
 #   ground ==(dtn_link, delayed)==> rover_cfs --(rover_lan)--> rover_ros --> curiosity_gui (Gazebo)
 #
-# ground and rover_cfs are cFS nodes with NASA's BPNode/bplib. LINK_DELAY_MS is the
-# one-way light time each of them adds on the DTN link.
+# ground and rover_cfs are cFS nodes with NASA's BPNode/bplib. Settings are in .env.
 
 x-cfs-node: &cfs-node
   image: space-ros/dtn-cfs
   build:
     context: .
     dockerfile: Dockerfile.cfs
+    args:
+      DTN_GROUND_ADDR: ${DTN_GROUND_ADDR:-172.28.10.10}
+      DTN_ROVER_ADDR: ${DTN_ROVER_ADDR:-172.28.10.20}
   cap_add:
     - NET_ADMIN # tc netem on the DTN link
   sysctls:
     fs.mqueue.msg_max: 256 # cFS message queues are deeper than the container default
-  environment:
-    - LINK_DELAY_MS=${LINK_DELAY_MS:-5000}
 
 services:
   ground:
@@ -24,19 +24,26 @@ services:
     stdin_open: true # keyboard teleop: docker attach dtn_ground
     tty: true
     command: ["/cfs/start_node.sh", "ground"]
+    environment:
+      - DTN_NODE_ADDR=${DTN_GROUND_ADDR:-172.28.10.10}
+      - LINK_DELAY_MS=${LINK_DELAY_MS:-5000}
     networks:
       dtn_link:
-        ipv4_address: 172.28.10.10
+        ipv4_address: ${DTN_GROUND_ADDR:-172.28.10.10}
 
   rover_cfs:
     <<: *cfs-node
     container_name: dtn_rover_cfs
     command: ["/cfs/start_node.sh", "rover"]
+    environment:
+      - DTN_NODE_ADDR=${DTN_ROVER_ADDR:-172.28.10.20}
+      - LINK_DELAY_MS=${LINK_DELAY_MS:-5000}
+      - RACS2_BRIDGE_HOST=rover_ros
+      - RACS2_BRIDGE_PORT=8765
     networks:
       dtn_link:
-        ipv4_address: 172.28.10.20
-      rover_lan:
-        ipv4_address: 172.28.20.20
+        ipv4_address: ${DTN_ROVER_ADDR:-172.28.10.20}
+      rover_lan: {}
 
   # Space ROS side of the rover: the RACS2 ROS 2 bridge and the Curiosity demo nodes
   # from racs2_demos_on_spaceros, unchanged.
@@ -60,8 +67,7 @@ services:
         -p wss_uri:=0.0.0.0 &) &&
         ros2 launch curiosity_rover_demo mars_rover.launch.py
     networks:
-      rover_lan:
-        ipv4_address: 172.28.20.30
+      - rover_lan
 
   curiosity_gui:
     image: osrf/space-ros:curiosity_gui
@@ -85,15 +91,11 @@ services:
       - source /opt/ros/jazzy/setup.bash && source ~/curiosity_ws/install/setup.bash && ros2 launch curiosity_gazebo curiosity_gazebo.launch.py
     privileged: true # for UI
     networks:
-      rover_lan:
-        ipv4_address: 172.28.20.40
+      - rover_lan
 
 networks:
   dtn_link:
     ipam:
       config:
-        - subnet: 172.28.10.0/24
-  rover_lan:
-    ipam:
-      config:
-        - subnet: 172.28.20.0/24
+        - subnet: ${DTN_LINK_SUBNET:-172.28.10.0/24}
+  rover_lan: {}

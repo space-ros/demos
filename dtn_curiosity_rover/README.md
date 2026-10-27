@@ -64,8 +64,8 @@ Commands can also be sent from another terminal:
 
 ### Changing the link
 
-The one-way delay is set with `LINK_DELAY_MS` when the demo starts, for example
-`LINK_DELAY_MS=1300 ./run.sh` for the Moon. While the demo runs:
+The one-way delay is set with `LINK_DELAY_MS` in `.env`, or when the demo starts, for
+example `LINK_DELAY_MS=1300 ./run.sh` for the Moon. While the demo runs:
 
 ```bash
 ./link.sh delay 10000   # one-way light time in milliseconds
@@ -79,19 +79,44 @@ The one-way delay is set with `LINK_DELAY_MS` when the demo starts, for example
 The ground console prints each command as it is sent:
 
 ```
-[ground 07:04:30.531Z] sent 'forward' (linear.x=2.0 angular.z=0.0) as MsgID 0x1EFE
+[ground 07:50:49.940Z] sent 'forward' (linear.x=2.0 angular.z=0.0) as MsgID 0x1EFE, body #0335f8d5
 ```
 
-and the rover node logs it when it arrives (`docker logs -f dtn_rover_cfs`):
+and the rover node logs it when it arrives (`docker logs -f dtn_rover_cfs`), with the
+same body fingerprint:
 
 ```
-[rover 07:04:36.518Z] received /cmd_vel command from the ground, forwarding to ROS 2
+[rover 07:50:55.691Z] received /cmd_vel command from the ground, body #0335f8d5, forwarding to ROS 2
 ```
 
 With the default 5 s delay, commands arrive about 6 s after they are sent (the light
 time plus BPNode's processing). A command sent during an outage is delivered after the
 link comes back, by the next custody retransmission (every 30 s). Because that
 retransmission happens per bundle, a command that was lost can arrive after later ones.
+
+### Testing
+
+```bash
+./test.sh         # DTN checks on the two cFS nodes: delay, ordering, outage recovery
+./test.sh --sim   # also drives the rover in a headless Gazebo and checks that it moves
+```
+
+`test.sh` runs with a 3 s delay and stops the demo when it finishes.
+
+### Settings
+
+`.env` holds the demo's settings:
+
+| Setting | Default | |
+| --- | --- | --- |
+| `LINK_DELAY_MS` | `5000` | One-way light-time delay on the DTN link. |
+| `DTN_LINK_SUBNET` | `172.28.10.0/24` | Docker network between the two cFS nodes. |
+| `DTN_GROUND_ADDR` | `172.28.10.10` | Ground node's address on that network. |
+| `DTN_ROVER_ADDR` | `172.28.10.20` | Rover node's address on that network. |
+
+BPNode's UDP convergence layer only takes IPv4 addresses, which are compiled into its
+contact tables, so run `./build.sh` again after changing the addresses. The rover node
+reaches the ROS 2 bridge by its service name, `rover_ros`.
 
 ## How it works
 
@@ -116,12 +141,14 @@ is left unshaped so address resolution does not time out under long delays).
 ### cFS build
 
 `Dockerfile.cfs` builds cFS `v7.0.0` with BPNode and bplib `v7.0.5` and CF `v7.0.0`.
-The mission configuration starts from the cFE `sample_defs` and adds BPNode's per-node
-tables and startup scripts from `nasa/bp` `dtn_defs`, with these changes for cFS
-`v7.0.0`:
+`cfs/prepare_defs.sh` assembles the mission configuration: it starts from the cFE
+`sample_defs` and adds BPNode's per-node tables and startup scripts from `nasa/bp`
+`dtn_defs`, with these changes for cFS `v7.0.0`. Each change is checked, so the build
+stops with an error if a newer cFS or BPNode release no longer matches it.
 
 * BPNode's tables in `cfs/defs/cpu*/tables`: each node's contact 0 points at the other
-  node, the ground's ADU proxy carries `0x1EFE`, and custody timers are shortened.
+  node's address, the ground's ADU proxy carries `0x1EFE`, and custody timers are
+  shortened.
 * Longer file, path and table names, and more Software Bus pipes, as in `dtn_defs`.
 * The SCH_LAB and TO_LAB table names that cFS `v7.0.0` registers, and include paths for
   those tables.
@@ -129,7 +156,8 @@ tables and startup scripts from `nasa/bp` `dtn_defs`, with these changes for cFS
 
 `run_app` and `racs2_bridge_client` are cFS v7 ports of the apps in
 `racs2_demos_on_spaceros` and `jaxa/racs2_bridge`, using the same message layout and
-websocket frame format.
+websocket frame format. Both log a short fingerprint of each message body, so a command
+can be matched to its arrival on the rover.
 
 ### Limits
 

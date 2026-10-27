@@ -24,4 +24,20 @@ typedef struct
     uint8                     body_data[BODY_DATA_MAX_LNGTH];
 } racs2_user_msg_t;
 
+/*
+ * Short fingerprint of a message body (32-bit FNV-1a), logged by run_app and
+ * racs2_bridge_client so a command can be matched to its arrival on the rover.
+ */
+static inline uint32 racs2_body_hash(const uint8 *Data, size_t Len)
+{
+    uint32 Hash = 2166136261u;
+    size_t i;
+
+    for (i = 0; i < Len; i++)
+    {
+        Hash = (Hash ^ Data[i]) * 16777619u;
+    }
+    return Hash;
+}
+
 #endif /* RACS2_USER_MSG_H */

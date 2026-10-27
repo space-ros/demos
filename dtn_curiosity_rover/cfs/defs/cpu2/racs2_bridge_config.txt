@@ -1,2 +1,2 @@
-wss_uri=172.28.20.30
+wss_uri=rover_ros
 wss_port=8765
