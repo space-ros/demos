@@ -1,0 +1,69 @@
+# cFS with the BPNode DTN application (Bundle Protocol v7, nasa/bp + nasa/bplib),
+# built following the BPNode user guide. One image serves both DTN nodes:
+# cpu1 runs on the ground side, cpu2 on the rover side.
+
+FROM ubuntu:22.04 AS source
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG CFS_VERSION=v7.0.0
+ARG CF_VERSION=v7.0.0
+ARG BPNODE_VERSION=v7.0.5
+ARG BPLIB_VERSION=v7.0.5
+ARG QCBOR_VERSION=v1.5.1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential cmake git pkg-config ca-certificates \
+      libsqlite3-dev iproute2 iputils-ping python3 \
+      libwebsockets-dev libprotobuf-c-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# QCBOR, the CBOR library bplib uses
+RUN git clone -q --depth 1 --branch ${QCBOR_VERSION} https://github.com/laurencelundblade/QCBOR.git /src/qcbor \
+    && cmake -DBUILD_SHARED_LIBS=ON -S /src/qcbor -B /src/qcbor/build \
+    && cmake --build /src/qcbor/build -j4 \
+    && cmake --install /src/qcbor/build \
+    && ldconfig
+
+# cFS bundle with BPNode, bplib and CF (v7.0.0 does not bundle CF)
+WORKDIR /cfs
+RUN git clone -q --depth 1 --branch ${CFS_VERSION} --recurse-submodules --shallow-submodules \
+      https://github.com/nasa/cFS.git /cfs \
+    && git clone -q --depth 1 --branch ${BPNODE_VERSION} https://github.com/nasa/bp.git apps/bpnode \
+    && git clone -q --depth 1 --branch ${BPLIB_VERSION} https://github.com/nasa/bplib.git libs/bplib \
+    && ( [ -d apps/cf ] || git clone -q --depth 1 --branch ${CF_VERSION} https://github.com/nasa/CF.git apps/cf ) \
+    && cp cfe/cmake/Makefile.sample Makefile
+
+FROM source AS build
+
+# Mission config: start from the cFE sample_defs (which match this cFS release),
+# then add BPNode's per-node tables and startup scripts from nasa/bp dtn_defs.
+# dtn_defs' own cFE config headers are not used: they predate cFS v7.0.0.
+RUN cp -r cfe/cmake/sample_defs dtn_defs \
+    && cp -r apps/bpnode/dtn_defs/cpu1 apps/bpnode/dtn_defs/cpu2 dtn_defs/ \
+    && mkdir -p dtn_defs/tables \
+    && cp apps/bpnode/dtn_defs/tables/*.c dtn_defs/tables/ \
+    && rm -f dtn_defs/cpu1_cfe_es_startup.scr \
+    && echo 'list(APPEND MISSION_MODULE_SEARCH_PATH "apps/bpnode/psp_mod")' >> dtn_defs/mission_build_custom.cmake \
+    && echo 'set(OSAL_CONFIG_MAX_FILE_NAME 32)  # racs2_bridge_client.so is longer than the default 20' >> dtn_defs/default_osconfig.cmake
+
+# Values BPNode needs from its dtn_defs cfe_mission_cfg.h (longer file names and
+# paths for bundle storage, more SB pipes), and the table names that SCH_LAB
+# and TO_LAB register in cFS v7.0.0
+RUN sed -i -E \
+      -e 's/^(#define CFE_MISSION_MAX_PATH_LEN) .*/\1 128/' \
+      -e 's/^(#define CFE_MISSION_MAX_FILE_LEN) .*/\1 64/' \
+      -e 's/^(#define CFE_MISSION_SB_MAX_PIPES) .*/\1 64/' \
+      dtn_defs/example_mission_cfg.h \
+    && sed -i 's/SCH_LAB_APP\.ScheduleTable/SCH_LAB_APP.Schedule/' dtn_defs/tables/sch_lab_table.c \
+    && sed -i 's/TO_LAB_APP\.TO_LAB_Subs/TO_LAB_APP.Subscriptions/' dtn_defs/tables/to_lab_sub.c
+
+# Demo overlay: two-node targets, startup scripts, BPNode tables, table name limits
+COPY cfs/defs/ dtn_defs/
+
+# Demo apps: run_app (ground teleop) and racs2_bridge_client (rover side of the RACS2 bridge)
+COPY cfs/apps/ apps/
+
+ENV MISSIONCONFIG=dtn SIMULATION=native
+RUN make prep && make -j4 && make install
+
+COPY --chmod=755 cfs/start_node.sh cfs/dtn_link.sh /cfs/
