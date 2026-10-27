@@ -27,6 +27,7 @@
 #define RACS2_BRIDGE_HEADER_LNGTH  32
 #define RACS2_BRIDGE_PIPE_DEPTH    32
 #define RACS2_BRIDGE_RCV_TIMEOUT   50 /* msec */
+#define RACS2_BRIDGE_RETRY_SEC     5  /* seconds between connect attempts */
 #define RACS2_BRIDGE_MAX_PENDING   16
 
 typedef struct
@@ -299,20 +300,25 @@ void RACS2_BRIDGE_Main(void)
 
     while (CFE_ES_RunLoop(&RunStatus) == true)
     {
-        if (WebSocket == NULL && time(NULL) != LastAttempt)
+        /* A connect attempt can block while the bridge's host name does not resolve, so
+        ** retry only every few seconds */
+        if (WebSocket == NULL && time(NULL) - LastAttempt >= RACS2_BRIDGE_RETRY_SEC)
         {
             LastAttempt = time(NULL);
             RACS2_BRIDGE_Connect();
         }
 
+        /* Take every message waiting on the pipe, so a burst (such as the commands an
+        ** orbiter relay delivers in one pass) is not spread over several loops */
         Status = CFE_SB_ReceiveBuffer(&BufPtr, CmdPipe, RACS2_BRIDGE_RCV_TIMEOUT);
-        if (Status == CFE_SUCCESS)
+        while (Status == CFE_SUCCESS)
         {
             CFE_MSG_GetMsgId(&BufPtr->Msg, &MsgId);
             if (CFE_SB_MsgIdToValue(MsgId) == RACS2_BRIDGE_MID)
             {
                 RACS2_BRIDGE_QueueOutbound((const racs2_user_msg_t *)BufPtr);
             }
+            Status = CFE_SB_ReceiveBuffer(&BufPtr, CmdPipe, CFE_SB_POLL);
         }
 
         lws_service(LwsContext, 0);
