@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   curiosity_gui:
     image: osrf/space-ros:curiosity_gui
