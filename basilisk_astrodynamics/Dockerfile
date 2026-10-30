@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-FROM osrf/space-ros:jazzy-2026.07.0
+FROM osrf/space-ros:jazzy-2026.10.0
 
 USER root
 
