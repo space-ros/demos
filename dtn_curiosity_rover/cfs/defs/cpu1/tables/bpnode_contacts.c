@@ -1,0 +1,129 @@
+/*
+ * NASA Docket No. GSC-18,587-1 and identified as “The Bundle Protocol Core Flight
+ * System Application (BP) v6.5”
+ *
+ * Copyright © 2020 United States Government as represented by the Administrator of
+ * the National Aeronautics and Space Administration. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+/*
+ * Modified for the space-ros/demos dtn_curiosity_rover demo: contact 0 routes all of ipn:200 to the rover node (DTN_ROVER_ADDR, filled in at build time), with a 30 s custody retransmit timeout and 1 s custody signal trigger.
+ */
+
+/*
+** \file
+**   This file contains the source code for the Contacts Table
+*/
+
+#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
+#include "bpnode_tbl.h"
+#include "bplib.h"
+
+
+BPLib_CLA_ContactsTable_t ContactsTable = {
+    .ContactSet = {
+            {
+                .DestEIDs = {
+                    {
+                        .Scheme       = BPLIB_EID_SCHEME_IPN,
+                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                        .MaxAllocator = 0,
+                        .MinAllocator = 0,
+                        .MaxNode      = 200,
+                        .MinNode      = 200,
+                        .MaxService   = 255,
+                        .MinService   = 0
+                    },
+                    {
+                        .Scheme       = BPLIB_EID_SCHEME_IPN,
+                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                        .MaxAllocator = 0,
+                        .MinAllocator = 0,
+                        .MaxNode      = 101,
+                        .MinNode      = 101,
+                        .MaxService   = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0,
+                        .MinService   = BPNODE_EID_SERVICE_NUM_FOR_CHANNEL_0
+                    }
+                },
+                .CLAType             = BPLib_UDP_CLA,
+                .ClaInAddr           = "0.0.0.0",
+                .ClaOutAddr          = "@DTN_ROVER_ADDR@",
+                .ClaInPort           = 4501,
+                .ClaOutPort          = 4551,
+                .RetransmitTimeout   = 30000,    /* 30 secs, must exceed the round-trip light time */
+                .CSTimeTrigger       = 1000,     /* 1 sec */
+                .CSSizeTrigger       = (BPLIB_MINIMUM_ENCODED_CCS_LEN + 10),
+                .IngressBitsPerCycle = 20000000, /* Ingress rate, 20 Mb per cycle */
+                .EgressBitsPerCycle  = 20000000  /* Egress rate, 20 Mb per cycle */
+            },
+            {
+                .DestEIDs = {
+                    {
+                        .Scheme       = BPLIB_EID_SCHEME_IPN,
+                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                        .MaxAllocator = 0,
+                        .MinAllocator = 0,
+                        .MaxNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_1,
+                        .MinNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_1,
+                        .MaxService   = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1,
+                        .MinService   = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_1
+                    }
+                },
+                .CLAType                = BPLib_SB_CLA,
+                .ClaInAddr              = "",
+                .ClaOutAddr             = "",
+                .ClaInPort              = 0,
+                .ClaOutPort             = 0,
+                .RetransmitTimeout      = 60000,    /* 60 secs */
+                .CSTimeTrigger          = 30000,    /* 30 secs */
+                .CSSizeTrigger          = (BPLIB_MINIMUM_ENCODED_CCS_LEN + 10),
+                .IngressBitsPerCycle    = 20000000, /* Ingress rate, 20 Mb per cycle */
+                .EgressBitsPerCycle     = 20000000  /* Egress rate, 20 Mb per cycle */
+            },
+            {
+                .DestEIDs = {
+                    {
+                        .Scheme       = BPLIB_EID_SCHEME_IPN,
+                        .IpnSspFormat = BPLIB_EID_IPN_SSP_FORMAT_TWO_DIGIT,
+                        .MaxAllocator = 0,
+                        .MinAllocator = 0,
+                        .MaxNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_2,
+                        .MinNode      = BPNODE_EID_NODE_NUM_FOR_CONTACT_2,
+                        .MaxService   = BPNODE_EID_SERVICE_NUM_FOR_CONTACT_2,
+                        .MinService   = 0
+                    }
+                },
+                .CLAType             = BPLib_UDP_CLA,
+                .ClaInAddr           = "0.0.0.0",
+                .ClaOutAddr          = "127.0.0.1",
+                .ClaInPort           = 4502,
+                .ClaOutPort          = 4552,
+                .RetransmitTimeout   = 60000,    /* 60 secs */
+                .CSTimeTrigger       = 30000,    /* 30 secs */
+                .CSSizeTrigger       = (BPLIB_MINIMUM_ENCODED_CCS_LEN + 10),
+                .IngressBitsPerCycle = 20000000,      /* Ingress rate, 20 Mb per cycle */
+                .EgressBitsPerCycle  = 20000000       /* Egress rate, 20 Mb per cycle */
+            }
+        }
+};
+
+/*
+** The macro below identifies:
+**    1) the data structure type to use as the table image format
+**    2) the name of the table to be placed into the cFE Example Table File Header
+**    3) a brief description of the contents of the file image
+**    4) the desired name of the table image binary file that is cFE compatible
+*/
+CFE_TBL_FILEDEF(ContactsTable, BPNODE.ContactsTable, Contacts Setup Table, bpnode_contacts.tbl)

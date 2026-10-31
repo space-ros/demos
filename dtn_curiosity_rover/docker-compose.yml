@@ -1,0 +1,101 @@
+# Curiosity rover driven over DTN (Bundle Protocol v7).
+#
+#   ground ==(dtn_link, delayed)==> rover_cfs --(rover_lan)--> rover_ros --> curiosity_gui (Gazebo)
+#
+# ground and rover_cfs are cFS nodes with NASA's BPNode/bplib. Settings are in .env.
+
+x-cfs-node: &cfs-node
+  image: space-ros/dtn-cfs
+  build:
+    context: .
+    dockerfile: Dockerfile.cfs
+    args:
+      DTN_GROUND_ADDR: ${DTN_GROUND_ADDR:-172.28.10.10}
+      DTN_ROVER_ADDR: ${DTN_ROVER_ADDR:-172.28.10.20}
+  cap_add:
+    - NET_ADMIN # tc netem on the DTN link
+  sysctls:
+    fs.mqueue.msg_max: 256 # cFS message queues are deeper than the container default
+
+services:
+  ground:
+    <<: *cfs-node
+    container_name: dtn_ground
+    stdin_open: true # keyboard teleop: docker attach dtn_ground
+    tty: true
+    command: ["/cfs/start_node.sh", "ground"]
+    environment:
+      - DTN_NODE_ADDR=${DTN_GROUND_ADDR:-172.28.10.10}
+      - LINK_DELAY_MS=${LINK_DELAY_MS:-5000}
+    networks:
+      dtn_link:
+        ipv4_address: ${DTN_GROUND_ADDR:-172.28.10.10}
+
+  rover_cfs:
+    <<: *cfs-node
+    container_name: dtn_rover_cfs
+    command: ["/cfs/start_node.sh", "rover"]
+    environment:
+      - DTN_NODE_ADDR=${DTN_ROVER_ADDR:-172.28.10.20}
+      - LINK_DELAY_MS=${LINK_DELAY_MS:-5000}
+      - RACS2_BRIDGE_HOST=rover_ros
+      - RACS2_BRIDGE_PORT=8765
+    networks:
+      dtn_link:
+        ipv4_address: ${DTN_ROVER_ADDR:-172.28.10.20}
+      rover_lan: {}
+
+  # Space ROS side of the rover: the RACS2 ROS 2 bridge and the Curiosity demo nodes
+  # from racs2_demos_on_spaceros, unchanged.
+  rover_ros:
+    image: jaxa/space-ros:racs2_demo
+    build:
+      context: ../racs2_demos_on_spaceros
+      dockerfile: ./Dockerfile.RACS2
+    container_name: dtn_rover_ros
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    command:
+      - /bin/bash
+      - -c
+      - >-
+        source "$${RACS2_VENV_DIR}/bin/activate" &&
+        source /home/spaceros-user/curiosity_ws/install/setup.bash &&
+        (ros2 run bridge_py_s bridge_py_s_node --ros-args
+        --params-file /home/spaceros-user/curiosity_ws/src/bridge_py_s/config/params.yaml
+        -p wss_uri:=0.0.0.0 &) &&
+        ros2 launch curiosity_rover_demo mars_rover.launch.py
+    networks:
+      - rover_lan
+
+  curiosity_gui:
+    image: osrf/space-ros:curiosity_gui
+    build:
+      context: ../curiosity_rover
+      dockerfile: ./Dockerfile.GUI
+    container_name: dtn_curiosity_gui
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - XDG_RUNTIME_DIR
+      - XAUTHORITY=$XAUTHORITY
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /run/user:/run/user:ro
+    command:
+      - bash
+      - -c
+      - source /opt/ros/jazzy/setup.bash && source ~/curiosity_ws/install/setup.bash && ros2 launch curiosity_gazebo curiosity_gazebo.launch.py
+    privileged: true # for UI
+    networks:
+      - rover_lan
+
+networks:
+  dtn_link:
+    ipam:
+      config:
+        - subnet: ${DTN_LINK_SUBNET:-172.28.10.0/24}
+  rover_lan: {}

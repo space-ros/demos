@@ -1,0 +1,55 @@
+# cFS with the BPNode DTN application (Bundle Protocol v7, nasa/bp + nasa/bplib),
+# built following the BPNode user guide. One image serves both DTN nodes:
+# cpu1 runs on the ground side, cpu2 on the rover side.
+
+ARG BASE_IMAGE=ubuntu:22.04
+FROM ${BASE_IMAGE} AS source
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG CFS_VERSION=v7.0.0
+ARG CF_VERSION=v7.0.0
+ARG BPNODE_VERSION=v7.0.5
+ARG BPLIB_VERSION=v7.0.5
+ARG QCBOR_VERSION=v1.5.1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential cmake git pkg-config ca-certificates \
+      libsqlite3-dev iproute2 iputils-ping python3 \
+      libwebsockets-dev libprotobuf-c-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# QCBOR, the CBOR library bplib uses
+RUN git clone -q --depth 1 --branch ${QCBOR_VERSION} https://github.com/laurencelundblade/QCBOR.git /src/qcbor \
+    && cmake -DBUILD_SHARED_LIBS=ON -S /src/qcbor -B /src/qcbor/build \
+    && cmake --build /src/qcbor/build -j4 \
+    && cmake --install /src/qcbor/build \
+    && ldconfig
+
+# cFS bundle with BPNode, bplib and CF (v7.0.0 does not bundle CF)
+WORKDIR /cfs
+RUN git clone -q --depth 1 --branch ${CFS_VERSION} --recurse-submodules --shallow-submodules \
+      https://github.com/nasa/cFS.git /cfs \
+    && git clone -q --depth 1 --branch ${BPNODE_VERSION} https://github.com/nasa/bp.git apps/bpnode \
+    && git clone -q --depth 1 --branch ${BPLIB_VERSION} https://github.com/nasa/bplib.git libs/bplib \
+    && ( [ -d apps/cf ] || git clone -q --depth 1 --branch ${CF_VERSION} https://github.com/nasa/CF.git apps/cf ) \
+    && cp cfe/cmake/Makefile.sample Makefile
+
+FROM source AS build
+
+# DTN link addresses of the two nodes (BPNode's UDP convergence layer needs IPv4
+# addresses, which are compiled into its contact tables)
+ARG DTN_GROUND_ADDR=172.28.10.10
+ARG DTN_ROVER_ADDR=172.28.10.20
+
+# Mission config: cFE sample_defs + BPNode per-node tables + the demo overlay
+COPY cfs/defs/ /tmp/defs-overlay/
+COPY --chmod=755 cfs/prepare_defs.sh /tmp/
+RUN /tmp/prepare_defs.sh /tmp/defs-overlay "${DTN_GROUND_ADDR}" "${DTN_ROVER_ADDR}"
+
+# Demo apps: run_app (ground teleop) and racs2_bridge_client (rover side of the RACS2 bridge)
+COPY cfs/apps/ apps/
+
+ENV MISSIONCONFIG=dtn SIMULATION=native
+RUN make prep && make -j4 && make install
+
+COPY --chmod=755 cfs/start_node.sh cfs/dtn_link.sh /cfs/
