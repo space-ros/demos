@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Underlay: apt RViz (present on osrf/space-ros-nav2)
+# Underlay: apt RViz (installed in this image)
 if [ -f "/opt/ros/${ROS_DISTRO}/setup.bash" ]; then
   # shellcheck disable=SC1090
   source "/opt/ros/${ROS_DISTRO}/setup.bash"

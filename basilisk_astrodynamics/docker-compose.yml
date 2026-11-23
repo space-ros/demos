@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+services:
+  basilisk:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: space-ros-basilisk-demo:latest
+    network_mode: host
+    stdin_open: true
+    tty: true
+    environment:
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: ${XAUTHORITY}
+      XDG_RUNTIME_DIR: /tmp/runtime-root
+      QT_X11_NO_MITSHM: "1"
+      LIBGL_ALWAYS_SOFTWARE:
+      MESA_LOADER_DRIVER_OVERRIDE:
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - ${VIDEO_GID:-44}
+      - ${RENDER_GID:-110}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-/dev/null}:${XAUTHORITY:-/dev/null}:ro
+    command: ["bash", "-lc", "sleep infinity"]

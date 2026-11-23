@@ -16,4 +16,5 @@ Submissions to this repo should include:
 4. [Nav2 Demo](nav2_demo/README.md)
 5. [ROS Trick Demo](ros_trick/README.md)
 6. [Space Robots Demo](space_robots/README.md)
+7. [Basilisk Astrodynamics](basilisk_astrodynamics/README.md)
 
