@@ -61,7 +61,7 @@ RUN cabal install --lib \
       --constraint="copilot>=4.8"
 RUN git clone https://github.com/nasa/ogma
 
-ARG OGMA_HEAD=5c89042
+ARG OGMA_HEAD=v1.17.0
 RUN cd ogma && git checkout ${OGMA_HEAD}
 RUN cd ogma && cabal install ogma-cli:ogma
 
