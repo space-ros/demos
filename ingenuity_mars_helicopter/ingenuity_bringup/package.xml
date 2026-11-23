@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ingenuity_bringup</name>
+  <version>0.1.0</version>
+  <description>ingenuity_bringup</description>
+
+  <maintainer email="barisyazici@alumni.sabanciuniv.edu">Baris Yazici</maintainer>
+
+  <license>Apache License 2.0</license>
+  <author>Baris Yazici</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>control_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>rclcpp_action</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>imu_sensor_broadcaster</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>ros_ign_gazebo</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <exec_depend>helicopter_flight_control</exec_depend>
+  <exec_depend>helicopter_flight_simulation</exec_depend>
+
+
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
