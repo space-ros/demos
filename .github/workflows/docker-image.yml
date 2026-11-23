@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Discover build scripts
         id: set-matrix
-        uses: actions/github-script@v6
+        uses: actions/github-script@v9
         with:
           script: |
             // Get the repository tree recursively using GitHub API
