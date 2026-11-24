@@ -30,16 +30,23 @@ jobs:
               item.type === 'blob' && item.path.endsWith('/build.sh')
             );
 
-            // Create matrix with script path and readable name
-            const matrix = buildScripts.map(item => {
-              const path = require('path');
-              const parentDir = path.dirname(item.path);
-              const name = path.basename(parentDir);
+            // Demos that cannot build on arm64 yet:
+            // basilisk_astrodynamics downloads the x86_64-only Vizard binary.
+            // lunar_terrain uses the amd64-only jazzy-2025.10.0 base image.
+            // nav2_demo, space_robots and ros_trick use the stacks images, which are amd64 only until space-ros/stacks#295 ships.
+            const amd64Only = new Set(['basilisk_astrodynamics', 'lunar_terrain', 'nav2_demo', 'space_robots', 'ros_trick']);
+            const platforms = [
+              { arch: 'amd64', runner: 'ubuntu-24.04' },
+              { arch: 'arm64', runner: 'ubuntu-24.04-arm' }
+            ];
 
-              return {
-                script: item.path,
-                name: name
-              };
+            // Create matrix with script path, readable name and platform
+            const path = require('path');
+            const matrix = buildScripts.flatMap(item => {
+              const name = path.basename(path.dirname(item.path));
+              return platforms
+                .filter(p => p.arch === 'amd64' || !amd64Only.has(name))
+                .map(p => ({ script: item.path, name: name, ...p }));
             });
 
             console.log('Found scripts:', matrix);
@@ -47,14 +54,14 @@ jobs:
 
   build:
     needs: discover-scripts
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     if: ${{ fromJson(needs.discover-scripts.outputs.matrix) != '[]' }}
     strategy:
       fail-fast: false
       matrix:
         include: ${{ fromJson(needs.discover-scripts.outputs.matrix) }}
 
-    name: Build ${{ matrix.name }}
+    name: Build ${{ matrix.name }} (${{ matrix.arch }})
 
     steps:
       - name: Checkout
