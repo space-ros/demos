@@ -17,4 +17,5 @@ Submissions to this repo should include:
 5. [ROS Trick Demo](ros_trick/README.md)
 6. [Space Robots Demo](space_robots/README.md)
 7. [Basilisk Astrodynamics](basilisk_astrodynamics/README.md)
+8. [Curiosity Rover over DTN](dtn_curiosity_rover/README.md)
 

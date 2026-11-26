@@ -1,0 +1,2 @@
+wss_uri=rover_ros
+wss_port=8765
