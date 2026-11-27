@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cd3112a..72403c5 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -36,7 +36,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
+ )
+
+ install(DIRECTORY include/
+-        DESTINATION include
++        DESTINATION include/${PROJECT_NAME}
+         FILES_MATCHING PATTERN "*.h"
+         PATTERN ".svn" EXCLUDE)
+
