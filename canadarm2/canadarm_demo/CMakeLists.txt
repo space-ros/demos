@@ -9,12 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(rclpy REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "action/MoveJoint.action"
-)
-
+find_package(canadarm_common REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -30,7 +25,6 @@ endif()
 
 
 install(DIRECTORY
-  action
   launch
   DESTINATION share/${PROJECT_NAME}
 )

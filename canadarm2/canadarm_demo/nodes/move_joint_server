@@ -7,7 +7,7 @@ from rclpy.node import Node  # type: ignore
 
 from std_msgs.msg import Float64MultiArray  # type: ignore
 
-from canadarm_demo.action import MoveJoint
+from canadarm_common.action import MoveJoint
 
 
 class MoveJointActionServer(Node):
