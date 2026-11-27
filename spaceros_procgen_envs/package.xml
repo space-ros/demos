@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>spaceros_procgen_envs</name>
+    <version>0.1.0</version>
+    <description>Space ROS ProcGen Environments</description>
+    <maintainer email="orsula.andrej@gmail.com">Andrej Orsula</maintainer>
+    <license>Apache-2.0</license>
+    <url type="repository">
+        https://github.com/AndrejOrsula/spaceros_demos/tree/procgen_envs/spaceros_procgen_envs
+    </url>
+    <author email="orsula.andrej@gmail.com">Andrej Orsula</author>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>
